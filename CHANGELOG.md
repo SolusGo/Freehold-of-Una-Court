@@ -2,6 +2,15 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-03 - Centrelink visibility fix
+
+### Fixed
+
+- Centrelink now appears as one of Una Court's two unique components on the civilization selection and Dawn of Man screens.
+- Trentrouls remains the leader and unique starting hero, but no longer consumes one of Civ V's two displayed component slots.
+- Expanded Una Court's Dawn of Man, Civilopedia, and strategy text to identify Centrelink and its local Happiness bonus.
+- Bumped the mod to version 2 so Civilization V installs the corrected database presentation as a new build.
+
 ## 2026-08-03 - Initial playable alpha
 
 ### Added

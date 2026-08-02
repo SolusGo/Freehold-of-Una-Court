@@ -42,7 +42,7 @@
         <FileName>UI/UnaCourtPanel.xml</FileName>
       </Content>
     </ModContent>
-    <ModVersion>1</ModVersion>
+    <ModVersion>2</ModVersion>
     <Stability>Alpha</Stability>
     <ModReferences />
   </PropertyGroup>

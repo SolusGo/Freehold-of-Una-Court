@@ -210,9 +210,14 @@ INSERT INTO Unit_FreePromotions (UnitType, PromotionType) VALUES
 ('UNIT_UNA_BUDDY', 'PROMOTION_UNA_BELOVED_COMPANION'),
 ('UNIT_UNA_BUDDY', 'PROMOTION_IGNORE_TERRAIN_COST');
 
-INSERT INTO Civilization_UnitClassOverrides (CivilizationType, UnitClassType, UnitType) VALUES
-('CIVILIZATION_UNA_COURT', 'UNITCLASS_UNA_TRENTROULS', 'UNIT_UNA_TRENTROULS'),
-('CIVILIZATION_UNA_COURT', 'UNITCLASS_UNA_BUDDY', 'UNIT_UNA_BUDDY');
+-- Civ V's setup and Dawn of Man screens display at most two unique components
+-- and list unit overrides before building overrides. Trentrouls is already the
+-- leader and the default unit of his untrainable starting class, so only Buddy
+-- needs to be registered as a civilization unit override. This leaves the
+-- second visible component slot for Centrelink without affecting Trentrouls'
+-- starting spawn or gameplay systems.
+INSERT INTO Civilization_UnitClassOverrides (CivilizationType, UnitClassType, UnitType)
+VALUES ('CIVILIZATION_UNA_COURT', 'UNITCLASS_UNA_BUDDY', 'UNIT_UNA_BUDDY');
 
 INSERT INTO Civilization_FreeUnits (CivilizationType, UnitClassType, UnitAIType, Count) VALUES
 ('CIVILIZATION_UNA_COURT', 'UNITCLASS_SETTLER', 'UNITAI_SETTLE', 1),
