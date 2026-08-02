@@ -65,7 +65,7 @@ SELECT
     'TXT_KEY_CIV_UNA_COURT_STRATEGY', 1, 1,
     'TXT_KEY_CIV_UNA_COURT_SHORT_DESC', 'TXT_KEY_CIV_UNA_COURT_ADJECTIVE',
     'PLAYERCOLOR_UNA_COURT', ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix,
-    PortraitIndex, IconAtlas, AlphaIconAtlas, MapImage,
+    0, 'UNA_CIV_ATLAS', 'UNA_CIV_ALPHA_ATLAS', MapImage,
     'TXT_KEY_CIV5_DOM_UNA_COURT_TEXT', DawnOfManImage, DawnOfManAudio, SoundtrackTag
 FROM Civilizations WHERE Type = 'CIVILIZATION_AMERICA';
 

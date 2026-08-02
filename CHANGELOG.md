@@ -2,6 +2,20 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-03 - Una Court nation emblem
+
+### Added
+
+- Added the supplied gold target-and-dog design as Una Court's civilization portrait.
+- Added a transparent alpha version of the emblem for civilization flags and compact interface elements.
+- Created native DDS assets at Civ V's required portrait and civilization-alpha atlas sizes.
+- Retained the supplied full-resolution source image for future art revisions.
+
+### Changed
+
+- Replaced Una Court's temporary American civilization icon and alpha emblem with dedicated custom atlases.
+- Kept the mod at version 3 so deployment continues to replace the existing version 3 folder.
+
 ## 2026-08-03 - Trentrouls portrait art
 
 ### Added
