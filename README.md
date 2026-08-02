@@ -60,7 +60,7 @@ The core civilization, era scaling, Trentrouls, Buddy, Centrelink, Body Possessi
 
 Current limitations:
 
-- Una Court's civilization emblem, Trentrouls, Buddy, and Centrelink have custom icons; remaining scene and map art currently uses base-game placeholders.
+- Una Court's civilization emblem, Dawn of Man scene, location map, Trentrouls, Buddy, and Centrelink all use custom artwork; unit models and the animated diplomacy scene still use base-game placeholders.
 - Possessing highly specialized units may not preserve every unusual unit-specific state.
 - Multiplayer is intentionally disabled while the custom gameplay systems are stabilized.
 

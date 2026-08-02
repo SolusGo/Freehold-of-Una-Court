@@ -2,6 +2,19 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-03 - Dawn of Man and location artwork
+
+### Added
+
+- Added the supplied photograph of Trent as Una Court's 1024x768 Dawn of Man image.
+- Added the supplied Una Court location map in Civ V's 360x412 civilization-map format.
+- Retained both original source images for future crop or presentation revisions.
+
+### Changed
+
+- Replaced the temporary American Dawn of Man and map images with dedicated Una Court assets.
+- Kept the mod at version 3 so deployment continues to replace the existing version 3 folder.
+
 ## 2026-08-03 - Una Court nation emblem
 
 ### Added
