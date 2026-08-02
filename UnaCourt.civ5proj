@@ -58,6 +58,12 @@
     <Content Include="Art\Buddy\BuddyIcon64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\Buddy\BuddyIcon45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\Buddy\BuddyIcon32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Centrelink\CentrelinkIcon256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Centrelink\CentrelinkIcon128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Centrelink\CentrelinkIcon80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Centrelink\CentrelinkIcon64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Centrelink\CentrelinkIcon45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Centrelink\CentrelinkIcon32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="SQL\00_UnaCourt_Core.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="SQL\10_UnaCourt_Scaling.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="SQL\20_UnaCourt_Text.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
@@ -71,6 +77,7 @@
   <ItemGroup>
     <Folder Include="Art\" />
     <Folder Include="Art\Buddy\" />
+    <Folder Include="Art\Centrelink\" />
     <Folder Include="SQL\" />
     <Folder Include="Lua\" />
     <Folder Include="UI\" />

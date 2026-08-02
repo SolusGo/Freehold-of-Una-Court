@@ -2,6 +2,19 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-03 - Centrelink icon art
+
+### Added
+
+- Added custom Centrelink artwork for the building portrait and civilization unique-component display.
+- Created native DDS icon assets at Civ V's 256, 128, 80, 64, 45, and 32 pixel atlas sizes.
+- Retained the supplied full-resolution Centrelink wordmark while using its coloured emblem for legibility in small UI icons.
+
+### Changed
+
+- Replaced Centrelink's temporary Bank portrait with the custom `UNA_CENTRELINK_ATLAS` artwork.
+- Kept the mod at version 3 so future deployments replace the existing version 3 folder.
+
 ## 2026-08-03 - Buddy portrait art
 
 ### Added

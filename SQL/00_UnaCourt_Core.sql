@@ -238,7 +238,7 @@ SELECT
     HurryCostModifier, MinAreaSize, ConquestProb, 1, 0,
     TradeRouteRecipientBonus, TradeRouteTargetBonus,
     BuildingClass, ArtDefineTag, PrereqTech, SpecialistType, SpecialistCount,
-    GreatWorkSlotType, GreatWorkCount, FreeStartEra, PortraitIndex, IconAtlas,
+    GreatWorkSlotType, GreatWorkCount, FreeStartEra, 0, 'UNA_CENTRELINK_ATLAS',
     ArtInfoCulturalVariation, ArtInfoEraVariation, ArtInfoRandomVariation, 1
 FROM Buildings WHERE Type = 'BUILDING_BANK';
 
