@@ -60,7 +60,7 @@ The core civilization, era scaling, Trentrouls, Buddy, Centrelink, Body Possessi
 
 Current limitations:
 
-- Base-game placeholder art is used throughout.
+- Buddy has a custom portrait; remaining art currently uses base-game placeholders.
 - Possessing highly specialized units may not preserve every unusual unit-specific state.
 - Multiplayer is intentionally disabled while the custom gameplay systems are stabilized.
 
@@ -80,6 +80,7 @@ The built mod is deployed by ModBuddy to your Civilization V `MODS` folder. Gene
 
 ## Source layout
 
+- `Art/` — custom icon atlases and retained source artwork
 - `SQL/` — civilization, units, building, scaling data, and text
 - `Lua/` — gameplay systems, possession logic, AI, and save persistence
 - `UI/` — in-game Una Court command panel

@@ -2,6 +2,19 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-03 - Buddy portrait art
+
+### Added
+
+- Added custom Buddy artwork for unit portraits and civilization unique-component displays.
+- Created native DDS icon assets at Civ V's 256, 128, 80, 64, 45, and 32 pixel atlas sizes.
+- Retained the supplied full-resolution source image for future art revisions.
+
+### Changed
+
+- Replaced Buddy's temporary Scout portrait with the custom `UNA_BUDDY_ATLAS` artwork.
+- Bumped the mod to version 3 so Civilization V installs the new graphics as a fresh build.
+
 ## 2026-08-03 - Centrelink visibility fix
 
 ### Fixed

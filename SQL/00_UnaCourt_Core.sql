@@ -190,7 +190,7 @@ SELECT
     'UNITCLASS_UNA_BUDDY', CombatClass, Domain, DefaultUnitAI,
     1, 1, 1, 'TECH_AGRICULTURE', NULL, NULL, 0, 2,
     UnitArtInfo, UnitArtInfoCulturalVariation, UnitArtInfoEraVariation,
-    UnitFlagIconOffset, PortraitIndex, IconAtlas, UnitFlagAtlas, 1, 1
+    UnitFlagIconOffset, 0, 'UNA_BUDDY_ATLAS', UnitFlagAtlas, 1, 1
 FROM Units WHERE Type = 'UNIT_SCOUT';
 
 INSERT INTO Unit_AITypes (UnitType, UnitAIType) VALUES
