@@ -1,0 +1,15 @@
+# ModBuddy generated output
+.modbuddy/
+bin/
+obj/
+Build/
+Packages/
+*.civ5mod
+*.civ5suo
+*.user
+
+# Local validation and editor files
+.codex-doc-read/
+*.log
+Thumbs.db
+.DS_Store

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Deploy" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
+    <ProjectGuid>{DD8E98FB-7DCE-4BD3-A24C-F37D28684EA8}</ProjectGuid>
+    <Name>The Freehold of Una Court</Name>
+    <SafeName>The Freehold of Una Court</SafeName>
+    <Guid>7ec83c11-5853-453c-9ca7-0b2cf85a2a48</Guid>
+    <Teaser>Protect Trentrouls, empower him with Buddy, and turn enemy units against their masters.</Teaser>
+    <Description>A Community Patch civilization led by Trentrouls. Includes era-scaled empire yields, Trentrouls and Buddy, Centrelink, Body Possession, and the fall of Una Court.</Description>
+    <Authors>ThatOneYi</Authors>
+    <AssemblyName>UnaCourt</AssemblyName>
+    <RootNamespace>UnaCourt</RootNamespace>
+    <Civ5Path>C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization V</Civ5Path>
+    <Civ5UserPath>C:\Users\ThatOneYi\Documents\My Games\Sid Meier's Civilization 5</Civ5UserPath>
+    <AffectsSavedGames>true</AffectsSavedGames>
+    <MinCompatibleSaveVersion>0</MinCompatibleSaveVersion>
+    <SupportsSinglePlayer>true</SupportsSinglePlayer>
+    <SupportsMultiplayer>false</SupportsMultiplayer>
+    <SupportsHotSeat>false</SupportsHotSeat>
+    <SupportsMac>false</SupportsMac>
+    <ReloadAudioSystem>false</ReloadAudioSystem>
+    <ReloadLandmarkSystem>false</ReloadLandmarkSystem>
+    <ReloadStrategicViewSystem>false</ReloadStrategicViewSystem>
+    <ReloadUnitSystem>false</ReloadUnitSystem>
+    <ModActions>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/00_UnaCourt_Core.sql</FileName></Action>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/10_UnaCourt_Scaling.sql</FileName></Action>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/20_UnaCourt_Text.sql</FileName></Action>
+    </ModActions>
+    <ModContent>
+      <Content>
+        <Type>InGameUIAddin</Type>
+        <Name>Una Court Gameplay Loader</Name>
+        <Description>Loads Una Court gameplay systems.</Description>
+        <FileName>Lua/UnaCourtLoader.lua</FileName>
+      </Content>
+      <Content>
+        <Type>InGameUIAddin</Type>
+        <Name>Una Court Command Panel</Name>
+        <Description>Displays Trentrouls, Buddy, and Body Possession controls.</Description>
+        <FileName>UI/UnaCourtPanel.xml</FileName>
+      </Content>
+    </ModContent>
+    <ModVersion>1</ModVersion>
+    <Stability>Alpha</Stability>
+    <ModReferences />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Default' ">
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="SQL\00_UnaCourt_Core.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="SQL\10_UnaCourt_Scaling.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="SQL\20_UnaCourt_Text.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="Lua\UnaCourtLoader.lua"><SubType>Lua</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="Lua\UnaCourtCore.lua"><SubType>Lua</SubType><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Lua\UnaCourtPossession.lua"><SubType>Lua</SubType><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="UI\UnaCourtPanel.xml"><SubType>Lua</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="UI\UnaCourtPanel.lua"><SubType>Lua</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="README.md"><ImportIntoVFS>False</ImportIntoVFS></Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SQL\" />
+    <Folder Include="Lua\" />
+    <Folder Include="UI\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Firaxis\ModBuddy\Civ5Mod.targets" />
+</Project>

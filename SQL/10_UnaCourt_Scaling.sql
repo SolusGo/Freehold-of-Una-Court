@@ -1,0 +1,57 @@
+-- ===========================================================================
+-- Era-scaled city yield dummy buildings (1% through 16%).
+-- Lua assigns exactly one level to every Una Court city while Trentrouls lives.
+-- ===========================================================================
+
+INSERT INTO BuildingClasses
+    (Type, Description, DefaultBuilding, MaxGlobalInstances, MaxTeamInstances, MaxPlayerInstances)
+SELECT
+    'BUILDINGCLASS_UNA_COURT_BONUS_' || Value,
+    'TXT_KEY_BUILDING_UNA_COURT_BONUS',
+    'BUILDING_UNA_COURT_BONUS_' || Value,
+    -1, -1, -1
+FROM (
+    SELECT 1 AS Value UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+    UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8
+    UNION ALL SELECT 9 UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12
+    UNION ALL SELECT 13 UNION ALL SELECT 14 UNION ALL SELECT 15 UNION ALL SELECT 16
+);
+
+INSERT INTO Buildings
+    (Type, Description, Civilopedia, Help, Cost, FaithCost, HurryCostModifier,
+     NeverCapture, NukeImmune, GreatPeopleRateModifier, BuildingClass,
+     IsDummy, ShowInPedia, PortraitIndex, IconAtlas)
+SELECT
+    'BUILDING_UNA_COURT_BONUS_' || Value,
+    'TXT_KEY_BUILDING_UNA_COURT_BONUS',
+    'TXT_KEY_BUILDING_UNA_COURT_BONUS_PEDIA',
+    'TXT_KEY_BUILDING_UNA_COURT_BONUS_HELP',
+    -1, -1, -1, 1, 1, Value,
+    'BUILDINGCLASS_UNA_COURT_BONUS_' || Value,
+    1, 0, 0, 'BUILDING_ATLAS'
+FROM (
+    SELECT 1 AS Value UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+    UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8
+    UNION ALL SELECT 9 UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12
+    UNION ALL SELECT 13 UNION ALL SELECT 14 UNION ALL SELECT 15 UNION ALL SELECT 16
+);
+
+INSERT INTO Building_YieldModifiers (BuildingType, YieldType, Yield)
+SELECT
+    'BUILDING_UNA_COURT_BONUS_' || Levels.Value,
+    Yields.YieldType,
+    Levels.Value
+FROM (
+    SELECT 1 AS Value UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+    UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8
+    UNION ALL SELECT 9 UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12
+    UNION ALL SELECT 13 UNION ALL SELECT 14 UNION ALL SELECT 15 UNION ALL SELECT 16
+) AS Levels
+CROSS JOIN (
+    SELECT 'YIELD_FOOD' AS YieldType
+    UNION ALL SELECT 'YIELD_PRODUCTION'
+    UNION ALL SELECT 'YIELD_GOLD'
+    UNION ALL SELECT 'YIELD_SCIENCE'
+    UNION ALL SELECT 'YIELD_CULTURE'
+    UNION ALL SELECT 'YIELD_FAITH'
+) AS Yields;
