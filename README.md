@@ -60,7 +60,7 @@ The core civilization, era scaling, Trentrouls, Buddy, Centrelink, Body Possessi
 
 Current limitations:
 
-- Buddy and Centrelink have custom icons; remaining art currently uses base-game placeholders.
+- Trentrouls, Buddy, and Centrelink have custom icons; remaining art currently uses base-game placeholders.
 - Possessing highly specialized units may not preserve every unusual unit-specific state.
 - Multiplayer is intentionally disabled while the custom gameplay systems are stabilized.
 

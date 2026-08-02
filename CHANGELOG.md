@@ -2,6 +2,20 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-03 - Trentrouls portrait art
+
+### Added
+
+- Added a custom green-and-gold leader portrait inspired by Trent's supplied reference photo.
+- Added a distinct armoured Trentrouls unit portrait featuring teal Body Possession energy.
+- Created native DDS icon assets for both portraits at Civ V's 256, 128, 80, 64, 45, and 32 pixel atlas sizes.
+- Retained the two full-resolution painted outputs for future art revisions without adding the private reference photograph to the repository.
+
+### Changed
+
+- Replaced Trentrouls' temporary Washington leader portrait and Warrior unit portrait with dedicated custom atlases.
+- Kept the mod at version 3 so deployment continues to replace the existing version 3 folder.
+
 ## 2026-08-03 - Centrelink icon art
 
 ### Added

@@ -25,6 +25,7 @@
     <ReloadUnitSystem>false</ReloadUnitSystem>
     <ModActions>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>Art/UnaCourt_IconAtlases.xml</FileName></Action>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>Art/UnaCourt_TrentIconAtlases.xml</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/00_UnaCourt_Core.sql</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/10_UnaCourt_Scaling.sql</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/20_UnaCourt_Text.sql</FileName></Action>
@@ -52,6 +53,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Art\UnaCourt_IconAtlases.xml"><SubType>XML</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="Art\UnaCourt_TrentIconAtlases.xml"><SubType>XML</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="Art\Buddy\BuddyIcon256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\Buddy\BuddyIcon128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\Buddy\BuddyIcon80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
@@ -64,6 +66,18 @@
     <Content Include="Art\Centrelink\CentrelinkIcon64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\Centrelink\CentrelinkIcon45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\Centrelink\CentrelinkIcon32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\TrentLeader\TrentLeaderIcon256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\TrentLeader\TrentLeaderIcon128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\TrentLeader\TrentLeaderIcon80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\TrentLeader\TrentLeaderIcon64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\TrentLeader\TrentLeaderIcon45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\TrentLeader\TrentLeaderIcon32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Trentrouls\TrentroulsIcon256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Trentrouls\TrentroulsIcon128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Trentrouls\TrentroulsIcon80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Trentrouls\TrentroulsIcon64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Trentrouls\TrentroulsIcon45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Trentrouls\TrentroulsIcon32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="SQL\00_UnaCourt_Core.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="SQL\10_UnaCourt_Scaling.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="SQL\20_UnaCourt_Text.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
@@ -78,6 +92,8 @@
     <Folder Include="Art\" />
     <Folder Include="Art\Buddy\" />
     <Folder Include="Art\Centrelink\" />
+    <Folder Include="Art\TrentLeader\" />
+    <Folder Include="Art\Trentrouls\" />
     <Folder Include="SQL\" />
     <Folder Include="Lua\" />
     <Folder Include="UI\" />

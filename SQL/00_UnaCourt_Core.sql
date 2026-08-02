@@ -30,7 +30,7 @@ SELECT
     'LEADER_UNA_TRENTROULS', 'TXT_KEY_LEADER_UNA_TRENTROULS',
     'TXT_KEY_LEADER_UNA_TRENTROULS_PEDIA', 'TXT_KEY_CIVILOPEDIA_LEADERS_UNA_TRENTROULS',
     ArtDefineTag, 'VICTORY_PURSUIT_DOMINATION', 'VICTORY_PURSUIT_SCIENCE',
-    8, 4, 4, 8, 5, 3, 5, 7, 4, 7, 8, 3, 4, 6, 5, PortraitIndex, IconAtlas
+    8, 4, 4, 8, 5, 3, 5, 7, 4, 7, 8, 3, 4, 6, 5, 0, 'UNA_TRENT_LEADER_ATLAS'
 FROM Leaders WHERE Type = 'LEADER_WASHINGTON';
 
 INSERT INTO Leader_Traits (LeaderType, TraitType)
@@ -172,7 +172,7 @@ SELECT
     'UNITCLASS_UNA_TRENTROULS', CombatClass, Domain, DefaultUnitAI,
     1, 1, 1, NULL, NULL, NULL, -1, 0,
     UnitArtInfo, UnitArtInfoCulturalVariation, UnitArtInfoEraVariation,
-    UnitFlagIconOffset, PortraitIndex, IconAtlas, UnitFlagAtlas, 1, 1
+    UnitFlagIconOffset, 0, 'UNA_TRENTROULS_UNIT_ATLAS', UnitFlagAtlas, 1, 1
 FROM Units WHERE Type = 'UNIT_WARRIOR';
 
 -- Buddy: Scout art and movement, deliberately only 3 Combat Strength.
