@@ -2,6 +2,16 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-03 - Dawn of Man aesthetic pass
+
+### Changed
+
+- Reworked Trent's Dawn of Man image into a painterly Civ V-style court portrait while preserving his identity, seated pose, glasses, and smartphone.
+- Added dark-green-and-gold Freehold clothing, warm fireplace lighting, and a more imposing carved-stone setting.
+- Restyled the real Una Court location map with parchment colour grading, subtle paper texture, edge shading, and a green-gold frame while preserving its roads, marker, labels, river, and attribution.
+- Kept the original photograph and map alongside the new full-resolution styled source assets for future revisions.
+- Kept the mod at version 3 so deployment continues to replace the existing version 3 folder.
+
 ## 2026-08-03 - Dawn of Man and location artwork
 
 ### Added
