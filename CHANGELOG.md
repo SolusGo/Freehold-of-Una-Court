@@ -2,6 +2,16 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-03 - Gold medallion icon pass
+
+### Changed
+
+- Reduced the visual scale of Una Court's custom portraits so their artwork no longer crowds the civilization-selection icon slots.
+- Added layered dark-and-gold Civ V-style medallion rims to Trent's leader portrait, Trentrouls, Buddy, Centrelink, and the Una Court civilization emblem.
+- Rebuilt all five colour atlases at the required 256, 128, 80, 64, 45, and 32 pixel sizes with clean transparent corners and DXT5 compression.
+- Left the civilization alpha atlas unchanged so flag recolouring continues to work normally.
+- Kept the mod at version 3 so deployment continues to replace the existing version 3 folder.
+
 ## 2026-08-03 - Dawn of Man aesthetic pass
 
 ### Changed
