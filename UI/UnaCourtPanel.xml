@@ -17,7 +17,8 @@
       <Label ID="StatusLabel" Anchor="L,T" Offset="14,12" Size="348,98" WrapWidth="348" Font="TwCenMT16" FontStyle="Shadow" String="" ColorSet="Beige_Black_Alpha" />
     </Grid>
 
-    <Label Anchor="L,T" Offset="34,232" Size="360,22" Font="TwCenMT18" FontStyle="Shadow" String="BODY POSSESSION TARGETS" ColorSet="Beige_Black_Alpha" />
+    <Label Anchor="L,T" Offset="34,232" Size="198,22" Font="TwCenMT18" FontStyle="Shadow" String="POSSESSION TARGETS" ColorSet="Beige_Black_Alpha" />
+    <GridButton ID="ConfirmPossessionButton" Anchor="R,T" Offset="28,226" Size="154,32" Style="BaseButton" String="Confirm Possession" ToolTip="Select a target below before confirming" />
     <Grid Anchor="C,T" Offset="0,262" Size="376,180" Style="GridBlackIndent8">
       <ScrollPanel ID="TargetScroll" Anchor="C,C" Size="362,166" Vertical="1">
         <Stack ID="TargetStack" Anchor="L,T" Offset="4,4" Size="354,0" StackGrowth="Bottom" Padding="4" />

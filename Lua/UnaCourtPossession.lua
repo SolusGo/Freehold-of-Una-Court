@@ -128,6 +128,30 @@ local function UpdateTrentPromotion(playerID)
     if PROMO_COOLDOWN ~= nil then trent:SetHasPromotion(PROMO_COOLDOWN, not ready) end
 end
 
+local function NotifyPossessionReady(player)
+    if player == nil or not player:IsHuman() then return end
+
+    local trent = FindTrent(player)
+    local x = trent ~= nil and trent:GetX() or -1
+    local y = trent ~= nil and trent:GetY() or -1
+    local title = "Body Possession Ready"
+    local message = "Trentrouls may possess another eligible enemy unit within two tiles."
+
+    if player.AddNotification ~= nil
+        and NotificationTypes ~= nil
+        and NotificationTypes.NOTIFICATION_GENERIC ~= nil then
+        local ok, err = pcall(function()
+            player:AddNotification(NotificationTypes.NOTIFICATION_GENERIC, message, title, x, y)
+        end)
+        if ok then return end
+        print("Una Court ready notification failed: " .. tostring(err))
+    end
+
+    if Events.GameplayAlertMessage ~= nil then
+        Events.GameplayAlertMessage(title .. ": " .. message)
+    end
+end
+
 function UnaCourt_GetPossessionStatus(playerID)
     return {
         active = GetNumber(playerID, "ACTIVE") == 1,
@@ -236,7 +260,16 @@ local function PossessionDoTurn(playerID)
     if not IsUnaPlayer(player) then return end
 
     local cooldown = GetNumber(playerID, "COOLDOWN")
-    if cooldown > 0 then SetNumber(playerID, "COOLDOWN", cooldown - 1) end
+    if cooldown > 0 then
+        local remainingCooldown = cooldown - 1
+        SetNumber(playerID, "COOLDOWN", remainingCooldown)
+        if remainingCooldown <= 0 then
+            NotifyPossessionReady(player)
+            if LuaEvents.UnaCourtPossessionChanged ~= nil then
+                LuaEvents.UnaCourtPossessionChanged(playerID)
+            end
+        end
+    end
 
     if GetNumber(playerID, "ACTIVE") == 1 then
         local unitID = GetNumber(playerID, "UNIT_ID")

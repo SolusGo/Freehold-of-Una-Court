@@ -2,6 +2,21 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-03 - Possession safety and tactical information
+
+### Added
+
+- Added a one-time standard Civ V notification when Body Possession's cooldown reaches zero.
+- Added a preview-and-confirm possession workflow: selecting a target highlights it and centers the camera, while a separate confirmation button performs the possession.
+- Added Trentrouls' current and next-Era Combat Strength plus the full game-speed-adjusted possession duration and cooldown to the command panel.
+
+### Changed
+
+- Eligible possession targets are now sorted by distance first, then by highest Combat Strength, with stable name and unit-ID tie breakers.
+- Target entries now display their distance and Combat Strength directly.
+- Kept every new control inside the unchanged right-side 424x520 command panel; no TopPanel, UnitPanel, CityView, Community Patch, or EUI context is overridden.
+- Kept the mod at version 3 so deployment continues to replace the existing version 3 folder.
+
 ## 2026-08-03 - Unit-finding and Buddy distance controls
 
 ### Added
