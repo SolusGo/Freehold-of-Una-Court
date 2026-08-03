@@ -5,7 +5,7 @@
 INSERT INTO Language_en_US (Tag, Text) VALUES
 ('TXT_KEY_TRAIT_UNA_COURT_LIVES_THROUGH_HIM', 'The Court Lives Through Him'),
 ('TXT_KEY_TRAIT_UNA_COURT_LIVES_THROUGH_HIM_SHORT', 'The Court Lives Through Him'),
-('TXT_KEY_TRAIT_UNA_COURT_LIVES_THROUGH_HIM_HELP', 'While Trentrouls lives, all cities gain +1% [ICON_FOOD] Food, [ICON_PRODUCTION] Production, [ICON_GOLD] Gold, [ICON_RESEARCH] Science, [ICON_CULTURE] Culture, [ICON_PEACE] Faith, and Great Person generation for each Era reached. These bonuses are doubled while Buddy is adjacent to Trentrouls. If Trentrouls dies, Una Court collapses.'),
+('TXT_KEY_TRAIT_UNA_COURT_LIVES_THROUGH_HIM_HELP', 'While Trentrouls lives, all cities gain +1% to all yields and Great Person generation per Era. Doubled while Buddy is adjacent. If Trentrouls dies, Una Court collapses.'),
 
 ('TXT_KEY_LEADER_UNA_TRENTROULS', 'Trentrouls'),
 ('TXT_KEY_LEADER_UNA_TRENTROULS_PEDIA', 'Trentrouls is the irreplaceable ruler of Una Court. Its prosperity, military confidence, and continued existence are inseparable from his survival. With Buddy at his side he is formidable; without that companionship, every march toward the front is an intolerable risk.'),

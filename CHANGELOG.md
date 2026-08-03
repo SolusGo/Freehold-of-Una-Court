@@ -2,6 +2,15 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-03 - Selection-screen spacing and readability
+
+### Changed
+
+- Reduced the complete Buddy, Centrelink, and Una Court civilization medallions to 88% of their atlas slots so they match neighbouring civilizations' component icons.
+- Left Trent's corrected leader size, Trentrouls' unit portrait, and the civilization flag alpha atlas unchanged.
+- Shortened the unique ability summary to three concise sentences so it no longer crosses the civilization-row divider.
+- Kept the mod at version 3 so deployment continues to replace the existing version 3 folder.
+
 ## 2026-08-03 - Duplicate starting Warrior fix
 
 ### Fixed
