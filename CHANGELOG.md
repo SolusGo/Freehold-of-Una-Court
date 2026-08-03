@@ -2,6 +2,14 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-03 - Silent Dawn of Man presentation
+
+### Changed
+
+- Removed Una Court's inherited American Dawn of Man audio event so the loading presentation is silent.
+- Preserved the inherited soundtrack tag so ordinary in-game music continues after loading.
+- Kept the mod at version 3 so deployment continues to replace the existing version 3 folder.
+
 ## 2026-08-03 - Selection-screen spacing and readability
 
 ### Changed
