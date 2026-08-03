@@ -7,7 +7,7 @@
 
 -- Player colours
 INSERT OR REPLACE INTO Colors (Type, Red, Green, Blue, Alpha) VALUES
-('COLOR_UNA_COURT_PRIMARY',   0.16, 0.34, 0.20, 1.0),
+('COLOR_UNA_COURT_PRIMARY',   0.62, 0.20, 0.12, 1.0),
 ('COLOR_UNA_COURT_SECONDARY', 0.92, 0.78, 0.28, 1.0);
 
 INSERT OR REPLACE INTO PlayerColors (Type, PrimaryColor, SecondaryColor, TextColor)

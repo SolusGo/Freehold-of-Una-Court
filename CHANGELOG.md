@@ -2,6 +2,14 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-03 - Ginger-red civilization colour
+
+### Changed
+
+- Replaced Una Court's dark-green primary player colour with a warm auburn/ginger red inspired by Trent's hair (`#9E331F`).
+- Retained the existing gold secondary colour for strong contrast across map borders, city banners, unit flags, and strategic-view markers.
+- Kept the mod at version 3 so deployment continues to replace the existing version 3 folder.
+
 ## 2026-08-03 - Multiple opening Warriors cleanup
 
 ### Fixed
