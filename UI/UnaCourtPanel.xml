@@ -25,7 +25,9 @@
     </Grid>
     <Label ID="NoTargetsLabel" Anchor="C,T" Offset="0,326" Size="330,42" WrapWidth="330" Font="TwCenMT16" FontStyle="Shadow" String="No eligible targets within two tiles." ColorSet="Beige_Black_Alpha" Hidden="1" />
 
-    <GridButton ID="RefreshButton" Anchor="C,B" Offset="-92,24" Size="160,36" Style="BaseButton" String="[ICON_RESEARCH] Refresh" />
-    <GridButton ID="CloseButton" Anchor="C,B" Offset="92,24" Size="160,36" Style="BaseButton" String="Close" />
+    <GridButton ID="FindTrentButton" Anchor="L,B" Offset="14,24" Size="100,36" Style="BaseButton" String="Find Trent" ToolTip="Select Trentrouls and center the map on him" />
+    <GridButton ID="FindBuddyButton" Anchor="L,B" Offset="120,24" Size="100,36" Style="BaseButton" String="Find Buddy" ToolTip="Select Buddy and center the map on him" />
+    <GridButton ID="RefreshButton" Anchor="L,B" Offset="226,24" Size="86,36" Style="BaseButton" String="Refresh" ToolTip="Refresh Una Court's status and possession targets" />
+    <GridButton ID="CloseButton" Anchor="L,B" Offset="318,24" Size="92,36" Style="BaseButton" String="Close" />
   </Grid>
 </Context>

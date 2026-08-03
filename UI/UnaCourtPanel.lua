@@ -10,6 +10,7 @@ local PROMO_POSSESSED = GameInfoTypes.PROMOTION_UNA_POSSESSED
 local DOMAIN_AIR = GameInfoTypes.DOMAIN_AIR
 local SAVE = Modding.OpenSaveData()
 local targetManager = InstanceManager:new("UnaCourtTargetInstance", "TargetButton", Controls.TargetStack)
+local cityScreenOpen = false
 
 local function SaveNumber(playerID, suffix)
     return tonumber(SAVE.GetValue("UNA_POSSESSION_" .. tostring(playerID) .. "_" .. suffix)) or 0
@@ -46,9 +47,14 @@ local function IsEligible(playerID, trent, target)
         and Teams[Players[playerID]:GetTeam()]:IsAtWar(owner:GetTeam())
 end
 
-local function BuddyIsAdjacent(trent, buddy)
-    if trent == nil or buddy == nil then return false end
-    return Map.PlotDistance(trent:GetX(), trent:GetY(), buddy:GetX(), buddy:GetY()) <= 1
+local function BuddyDistance(trent, buddy)
+    if trent == nil or buddy == nil then return nil end
+    return Map.PlotDistance(trent:GetX(), trent:GetY(), buddy:GetX(), buddy:GetY())
+end
+
+local function IsCityScreenOpen()
+    if UI.IsCityScreenUp ~= nil and UI.IsCityScreenUp() then return true end
+    return cityScreenOpen
 end
 
 local function UnitLabel(target)
@@ -68,7 +74,7 @@ end
 local function RefreshPanel()
     local playerID = Game.GetActivePlayer()
     local player = Players[playerID]
-    local visible = IsUnaPlayer(player)
+    local visible = IsUnaPlayer(player) and not IsCityScreenOpen()
     Controls.CommandButton:SetHide(not visible)
     if not visible then
         Controls.CommandPanel:SetHide(true)
@@ -78,14 +84,25 @@ local function RefreshPanel()
     local trent = FindUnit(player, UNIT_TRENT)
     local buddy = FindUnit(player, UNIT_BUDDY)
     local eraBonus = trent ~= nil and math.max(1, math.min(8, player:GetCurrentEra() + 1)) or 0
-    local adjacent = BuddyIsAdjacent(trent, buddy)
+    local buddyDistance = BuddyDistance(trent, buddy)
+    local adjacent = buddyDistance ~= nil and buddyDistance <= 1
     if adjacent then eraBonus = eraBonus * 2 end
+
+    Controls.FindTrentButton:SetDisabled(trent == nil)
+    Controls.FindBuddyButton:SetDisabled(buddy == nil)
 
     local active = SaveNumber(playerID, "ACTIVE") == 1
     local turns = SaveNumber(playerID, "TURNS")
     local cooldown = SaveNumber(playerID, "COOLDOWN")
     local trentState = trent ~= nil and "[COLOR_POSITIVE_TEXT]ALIVE[ENDCOLOR]" or "[COLOR_NEGATIVE_TEXT]FALLEN[ENDCOLOR]"
-    local buddyState = adjacent and "[COLOR_POSITIVE_TEXT]ADJACENT[ENDCOLOR]" or (buddy ~= nil and "Away" or "Not trained")
+    local buddyState = "Not trained"
+    if buddy ~= nil and trent == nil then
+        buddyState = "Trentrouls fallen"
+    elseif adjacent then
+        buddyState = "[COLOR_POSITIVE_TEXT]ADJACENT[ENDCOLOR]"
+    elseif buddyDistance ~= nil then
+        buddyState = tostring(buddyDistance) .. " tiles away"
+    end
     local possessionState = active and ("Active: " .. tostring(turns) .. " turns remaining")
         or (cooldown > 0 and ("Cooldown: " .. tostring(cooldown) .. " turns") or "[COLOR_POSITIVE_TEXT]READY[ENDCOLOR]")
 
@@ -131,7 +148,27 @@ local function RefreshPanel()
     UpdateLayout()
 end
 
+local function FocusUnit(unitType)
+    local player = Players[Game.GetActivePlayer()]
+    if not IsUnaPlayer(player) or IsCityScreenOpen() then return end
+
+    local unit = FindUnit(player, unitType)
+    if unit == nil then
+        RefreshPanel()
+        return
+    end
+
+    local plot = unit:GetPlot()
+    Controls.CommandPanel:SetHide(true)
+    if plot ~= nil then UI.LookAt(plot, 0) end
+    UI.SelectUnit(unit)
+end
+
 local function TogglePanel()
+    if IsCityScreenOpen() then
+        Controls.CommandPanel:SetHide(true)
+        return
+    end
     if Controls.CommandPanel:IsHidden() then
         RefreshPanel()
         Controls.CommandPanel:SetHide(false)
@@ -141,6 +178,8 @@ local function TogglePanel()
 end
 
 Controls.CommandButton:RegisterCallback(Mouse.eLClick, TogglePanel)
+Controls.FindTrentButton:RegisterCallback(Mouse.eLClick, function() FocusUnit(UNIT_TRENT) end)
+Controls.FindBuddyButton:RegisterCallback(Mouse.eLClick, function() FocusUnit(UNIT_BUDDY) end)
 Controls.RefreshButton:RegisterCallback(Mouse.eLClick, RefreshPanel)
 Controls.CloseButton:RegisterCallback(Mouse.eLClick, function() Controls.CommandPanel:SetHide(true) end)
 
@@ -155,6 +194,19 @@ end)
 if Events.ActivePlayerTurnStart ~= nil then Events.ActivePlayerTurnStart.Add(RefreshPanel) end
 if Events.SerialEventUnitInfoDirty ~= nil then Events.SerialEventUnitInfoDirty.Add(RefreshPanel) end
 if Events.SerialEventUnitCreated ~= nil then Events.SerialEventUnitCreated.Add(RefreshPanel) end
+if Events.SerialEventEnterCityScreen ~= nil then
+    Events.SerialEventEnterCityScreen.Add(function()
+        cityScreenOpen = true
+        Controls.CommandButton:SetHide(true)
+        Controls.CommandPanel:SetHide(true)
+    end)
+end
+if Events.SerialEventExitCityScreen ~= nil then
+    Events.SerialEventExitCityScreen.Add(function()
+        cityScreenOpen = false
+        RefreshPanel()
+    end)
+end
 if LuaEvents.UnaCourtPossessionChanged ~= nil then LuaEvents.UnaCourtPossessionChanged.Add(RefreshPanel) end
 
 RefreshPanel()

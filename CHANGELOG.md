@@ -2,6 +2,19 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-03 - Unit-finding and Buddy distance controls
+
+### Added
+
+- Added `Find Trent` and `Find Buddy` buttons to the existing Una Court command panel; each selects its unit and centers the map on it.
+- Added Buddy's exact map distance to the status display when Buddy is not adjacent to Trentrouls.
+
+### Changed
+
+- Reflowed the command panel's existing bottom row to fit the two new controls without enlarging or moving the panel.
+- The Una Court launcher and command panel now hide while the city screen is open, preventing overlap with city-view controls while leaving the top-left unit panel untouched.
+- Kept the mod at version 3 so deployment continues to replace the existing version 3 folder.
+
 ## 2026-08-03 - Silent Dawn of Man presentation
 
 ### Changed
