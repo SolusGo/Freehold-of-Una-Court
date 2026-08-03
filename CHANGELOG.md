@@ -2,6 +2,15 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-03 - Multiple opening Warriors cleanup
+
+### Fixed
+
+- Corrected the starting-unit fallback for handicap and mod combinations that grant more than one ordinary Warrior.
+- Una Court now removes the complete turn-zero Warrior starting package before creating or retaining Trentrouls, rather than removing only the first Warrior found.
+- The cleanup remains restricted to turn zero; Warriors trained, upgraded, captured, spawned, or loaded on later turns are untouched.
+- Kept the mod at version 3 so deployment continues to replace the existing version 3 folder.
+
 ## 2026-08-03 - Possession safety and tactical information
 
 ### Added

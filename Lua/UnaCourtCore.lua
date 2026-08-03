@@ -84,13 +84,26 @@ local function UnaCourt_IsOpeningTurn()
     return ok and tonumber(elapsedTurns) == 0
 end
 
-local function UnaCourt_RemoveExtraStartingWarrior(player, playerID)
+local function UnaCourt_RemoveStartingWarriors(player, playerID)
     if not UnaCourt_IsOpeningTurn() then return false end
-    local warrior = UnaCourt_FindStartingUnit(player, UNIT_WARRIOR)
-    if warrior == nil then return false end
-    warrior:Kill(false, -1)
-    print("Una Court removed the extra starting Warrior for player " .. tostring(playerID))
-    return true
+
+    local warriorIDs = {}
+    for unit in player:Units() do
+        if unit:GetUnitType() == UNIT_WARRIOR then
+            warriorIDs[#warriorIDs + 1] = unit:GetID()
+        end
+    end
+
+    for _, unitID in ipairs(warriorIDs) do
+        local warrior = player:GetUnitByID(unitID)
+        if warrior ~= nil then warrior:Kill(false, -1) end
+    end
+
+    if #warriorIDs > 0 then
+        print("Una Court removed " .. tostring(#warriorIDs)
+            .. " opening Warrior(s) for player " .. tostring(playerID))
+    end
+    return #warriorIDs > 0
 end
 
 local function UnaCourt_EnsureStartingTrentrouls(playerID)
@@ -100,9 +113,9 @@ local function UnaCourt_EnsureStartingTrentrouls(playerID)
     local existingTrent = UnaCourt_FindTrentrouls(player)
     if existingTrent ~= nil then
         -- SQL normally grants Trentrouls before this Lua loads. Civ V/VP may
-        -- independently grant the ordinary opening Warrior as well, so remove
-        -- that single duplicate during setup before returning the existing hero.
-        UnaCourt_RemoveExtraStartingWarrior(player, playerID)
+        -- independently grant one or more ordinary opening Warriors as well,
+        -- so remove the complete Warrior package before returning the hero.
+        UnaCourt_RemoveStartingWarriors(player, playerID)
         CORE_SAVE.SetValue(UnaCourt_TrentGrantedKey(playerID), 1)
         return existingTrent
     end
@@ -111,12 +124,19 @@ local function UnaCourt_EnsureStartingTrentrouls(playerID)
         return nil
     end
 
+    -- Never replace a Warrior when loading or continuing a later turn. If
+    -- Trentrouls is absent after setup, the empire-collapse path owns that state.
+    if not UnaCourt_IsOpeningTurn() then return nil end
+
     local x, y = nil, nil
     local warrior = UnaCourt_FindStartingUnit(player, UNIT_WARRIOR)
     if warrior ~= nil then
         x, y = warrior:GetX(), warrior:GetY()
-        warrior:Kill(false, -1)
     end
+
+    -- Some handicap/mod combinations grant multiple opening Warriors. Replace
+    -- their entire starting package with Trentrouls, not merely its first unit.
+    UnaCourt_RemoveStartingWarriors(player, playerID)
 
     if x == nil or y == nil then
         local settler = UnaCourt_FindStartingUnit(player, UNIT_SETTLER)
