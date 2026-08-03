@@ -2,6 +2,15 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-03 - Leader medallion sizing correction
+
+### Changed
+
+- Reduced Trent's leader medallion to 82% of its atlas slot so it matches the dimensions of stock and neighbouring modded leader portraits.
+- Added transparent padding around all six leader atlas sizes to prevent the portrait from crossing civilization-row dividers.
+- Left the component, unit, building, civilization, and flag icons unchanged.
+- Kept the mod at version 3 so deployment continues to replace the existing version 3 folder.
+
 ## 2026-08-03 - Gold medallion icon pass
 
 ### Changed
