@@ -78,12 +78,31 @@ local function UnaCourt_FindStartingUnit(player, unitType)
     return nil
 end
 
+local function UnaCourt_IsOpeningTurn()
+    if Game == nil or Game.GetElapsedGameTurns == nil then return false end
+    local ok, elapsedTurns = pcall(function() return Game.GetElapsedGameTurns() end)
+    return ok and tonumber(elapsedTurns) == 0
+end
+
+local function UnaCourt_RemoveExtraStartingWarrior(player, playerID)
+    if not UnaCourt_IsOpeningTurn() then return false end
+    local warrior = UnaCourt_FindStartingUnit(player, UNIT_WARRIOR)
+    if warrior == nil then return false end
+    warrior:Kill(false, -1)
+    print("Una Court removed the extra starting Warrior for player " .. tostring(playerID))
+    return true
+end
+
 local function UnaCourt_EnsureStartingTrentrouls(playerID)
     local player = Players[playerID]
     if not UnaCourt_IsPlayer(player) then return nil end
 
     local existingTrent = UnaCourt_FindTrentrouls(player)
     if existingTrent ~= nil then
+        -- SQL normally grants Trentrouls before this Lua loads. Civ V/VP may
+        -- independently grant the ordinary opening Warrior as well, so remove
+        -- that single duplicate during setup before returning the existing hero.
+        UnaCourt_RemoveExtraStartingWarrior(player, playerID)
         CORE_SAVE.SetValue(UnaCourt_TrentGrantedKey(playerID), 1)
         return existingTrent
     end

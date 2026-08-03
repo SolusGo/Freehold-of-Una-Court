@@ -2,6 +2,15 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-03 - Duplicate starting Warrior fix
+
+### Fixed
+
+- Una Court now begins with its Settler and Trentrouls without also retaining Civ V's ordinary opening Warrior.
+- Corrected the starting-unit fallback's existing-Trentrouls path, which previously returned before removing the separately granted Warrior.
+- Limited the cleanup to one Warrior on turn zero so trained, upgraded, captured, or later-game Warriors are never affected.
+- Kept the mod at version 3 so deployment continues to replace the existing version 3 folder.
+
 ## 2026-08-03 - Leader medallion sizing correction
 
 ### Changed
