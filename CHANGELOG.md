@@ -2,6 +2,21 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-06 - Dominion Trentrouls possession portrait
+
+### Added
+
+- Added a dedicated Dominion Trentrouls unique-unit portrait based on the supplied reference photograph.
+- Reimagined Trentrouls in a Civ V-style painted crimson-and-black court outfit, reaching forward with glowing eyes and red-violet psychic energy to communicate that Body Swap is ready.
+- Created native DXT5 atlas assets at Civ V's required 256, 128, 80, 64, 45, and 32 pixel sizes.
+- Retained the full-resolution generated portrait in `Art/Source` for future revisions.
+
+### Changed
+
+- The Dominion Trentrouls unit now references `DOMINION_TRENTROULS_UNIT_ATLAS`; the Freehold retains its existing teal-energy Trentrouls portrait.
+- Applied the same 88% visual footprint and layered gold medallion frame used by the other right-side civilization component icons.
+- Kept the mod at version 3 so deployment replaces the existing version 3 folder.
+
 ## 2026-08-06 - Dominion civilization emblem
 
 ### Added

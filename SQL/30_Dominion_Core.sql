@@ -152,7 +152,7 @@ SELECT
     'UNITCLASS_WARRIOR', CombatClass, Domain, DefaultUnitAI,
     1, 1, 1, NULL, NULL, NULL, -1, 0,
     UnitArtInfo, UnitArtInfoCulturalVariation, UnitArtInfoEraVariation,
-    UnitFlagIconOffset, 0, 'UNA_TRENTROULS_UNIT_ATLAS', UnitFlagAtlas, 1, 1, 1
+    UnitFlagIconOffset, 0, 'DOMINION_TRENTROULS_UNIT_ATLAS', UnitFlagAtlas, 1, 1, 1
 FROM Units WHERE Type = 'UNIT_WARRIOR';
 
 INSERT INTO Unit_AITypes (UnitType, UnitAIType)

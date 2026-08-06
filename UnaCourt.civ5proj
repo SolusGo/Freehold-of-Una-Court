@@ -106,6 +106,12 @@
     <Content Include="Art\Trentrouls\TrentroulsIcon64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\Trentrouls\TrentroulsIcon45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\Trentrouls\TrentroulsIcon32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\DominionTrentrouls\DominionTrentroulsIcon256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\DominionTrentrouls\DominionTrentroulsIcon128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\DominionTrentrouls\DominionTrentroulsIcon80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\DominionTrentrouls\DominionTrentroulsIcon64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\DominionTrentrouls\DominionTrentroulsIcon45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\DominionTrentrouls\DominionTrentroulsIcon32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="SQL\00_UnaCourt_Core.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="SQL\10_UnaCourt_Scaling.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="SQL\20_UnaCourt_Text.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
@@ -127,6 +133,7 @@
     <Folder Include="Art\Civilization\" />
     <Folder Include="Art\DawnOfMan\" />
     <Folder Include="Art\DominionCivilization\" />
+    <Folder Include="Art\DominionTrentrouls\" />
     <Folder Include="Art\TrentLeader\" />
     <Folder Include="Art\Trentrouls\" />
     <Folder Include="SQL\" />
