@@ -101,7 +101,7 @@ INSERT INTO UnitClasses
     (Type, Description, MaxGlobalInstances, MaxTeamInstances, MaxPlayerInstances, DefaultUnit)
 VALUES
 ('UNITCLASS_UNA_TRENTROULS', 'TXT_KEY_UNIT_UNA_TRENTROULS', -1, -1, 1, 'UNIT_UNA_TRENTROULS'),
-('UNITCLASS_UNA_BUDDY', 'TXT_KEY_UNIT_UNA_BUDDY', -1, -1, 1, 'UNIT_UNA_BUDDY');
+('UNITCLASS_UNA_BUDDY', 'TXT_KEY_UNIT_UNA_BUDDY', -1, -1, 1, NULL);
 
 -- Core promotions. Era promotions are hidden and mutually managed by Lua.
 INSERT INTO UnitPromotions

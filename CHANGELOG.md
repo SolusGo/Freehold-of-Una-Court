@@ -2,6 +2,15 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-06 - Dominion emblem clarity and Buddy restriction
+
+### Fixed
+
+- Restricted Buddy's custom unit class to the Freehold civilization override, preventing the Dominion and all unrelated civilizations from training him.
+- Simplified the Dominion civilization medallion for small UI sizes by removing the compressed grey backdrop and redundant inner keylines, using a clean black field and brighter crimson emblem instead.
+- Regenerated and validated the complete DXT5 civilization colour atlas while retaining its established 88% Civ V-safe footprint.
+- Kept the mod at version 3 so deployment replaces the existing version 3 folder.
+
 ## 2026-08-06 - Dominion leader portrait correction
 
 ### Fixed
