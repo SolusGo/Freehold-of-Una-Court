@@ -156,7 +156,9 @@ local function DestroyEmpire(playerID, killerPlayerID)
     if player == nil then return end
 
     if Dominion_EndBodySwap ~= nil then
-        pcall(function() Dominion_EndBodySwap(playerID, "Trentrouls has fallen", false) end)
+        -- The original body is already in the DLL's death path. End the swap
+        -- without issuing a second immediate Kill on that same unit.
+        pcall(function() Dominion_EndBodySwap(playerID, "Trentrouls has fallen", false, true) end)
     end
 
     local capital = player:GetCapitalCity()
@@ -182,7 +184,11 @@ local function DestroyEmpire(playerID, killerPlayerID)
     end
 
     local units = {}
-    for unit in player:Units() do units[#units + 1] = unit:GetID() end
+    for unit in player:Units() do
+        -- Trentrouls may remain enumerable while the combat DLL completes his
+        -- delayed death. Let the original combat sequence delete him.
+        if unit:GetUnitType() ~= UNIT_TRENT then units[#units + 1] = unit:GetID() end
+    end
     for _, unitID in ipairs(units) do
         local unit = player:GetUnitByID(unitID)
         if unit ~= nil then unit:Kill(false, killerPlayerID or -1) end
@@ -195,8 +201,13 @@ end
 function Dominion_ProcessPendingCollapses(force)
     local ready = {}
     for playerID, pending in pairs(pendingCollapses) do
-        if force or pending.ready then
+        if force then
             ready[#ready + 1] = { playerID = playerID, killer = pending.killer }
+        elseif pending.ready then
+            pending.settleTicks = math.max(0, (pending.settleTicks or 0) - 1)
+            if pending.settleTicks == 0 then
+                ready[#ready + 1] = { playerID = playerID, killer = pending.killer }
+            end
         end
     end
     for _, pending in ipairs(ready) do
@@ -271,8 +282,8 @@ if GameEvents.UnitPrekill ~= nil then
                 end
             end
         end
-        if dominionID ~= nil and not collapsing[dominionID] then
-            pendingCollapses[dominionID] = { killer = killerPlayerID, ready = false }
+        if dominionID ~= nil and not collapsing[dominionID] and pendingCollapses[dominionID] == nil then
+            pendingCollapses[dominionID] = { killer = killerPlayerID, ready = false, settleTicks = 2 }
             print("Dominion queued post-combat collapse for player " .. tostring(dominionID))
         end
     end)

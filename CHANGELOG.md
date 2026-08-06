@@ -2,6 +2,16 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-06 - Combat-safe Trentrouls collapse
+
+### Fixed
+
+- Prevented the Dominion collapse from immediately killing the same Trentrouls object already undergoing the Community Patch DLL's delayed combat death.
+- Excluded the dying original body from the Dominion's remaining-unit purge and allowed the combat system to finish deleting it normally.
+- Made both Freehold and Dominion death queues idempotent so duplicate `UnitPrekill` callbacks cannot reset or repeat a collapse.
+- Added two settled post-combat update frames before empire cleanup, with the next-player-turn path retained as a safe fallback.
+- Kept the mod at version 3 so deployment replaces the existing version 3 folder.
+
 ## 2026-08-06 - Dominion emblem clarity and Buddy restriction
 
 ### Fixed

@@ -184,7 +184,7 @@ function Dominion_StartBodySwap(playerID, trentID, targetOwnerID, targetUnitID)
     return true
 end
 
-function Dominion_EndBodySwap(playerID, reason, restoreTrent)
+function Dominion_EndBodySwap(playerID, reason, restoreTrent, skipOriginalBodyKill)
     local player = Players[playerID]
     if player == nil or GetNumber(playerID, "ACTIVE") ~= 1 then return false end
     if restoreTrent == nil then restoreTrent = true end
@@ -203,7 +203,10 @@ function Dominion_EndBodySwap(playerID, reason, restoreTrent)
             if returned ~= nil and returned.SetMoves ~= nil then returned:SetMoves(0) end
         end
     end
-    if enemyTrent ~= nil then
+    -- When the original body itself triggered the Dominion's collapse, the
+    -- combat DLL already owns its delayed-death sequence. Killing that same
+    -- object again here produces CvUnit's isInCombat assertion.
+    if enemyTrent ~= nil and not skipOriginalBodyKill then
         local state = Capture(enemyTrent)
         enemyTrent:Kill(false, playerID)
         if restoreTrent and player:IsAlive() then

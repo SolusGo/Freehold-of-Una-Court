@@ -311,11 +311,19 @@ end
 local function UnaCourt_ProcessPendingCollapses(force)
     local ready = {}
     for playerID, pending in pairs(pendingCollapses) do
-        if force or pending.ready then
+        if force then
             ready[#ready + 1] = {
                 playerID = playerID,
                 killerPlayerID = pending.killerPlayerID
             }
+        elseif pending.ready then
+            pending.settleTicks = math.max(0, (pending.settleTicks or 0) - 1)
+            if pending.settleTicks == 0 then
+                ready[#ready + 1] = {
+                    playerID = playerID,
+                    killerPlayerID = pending.killerPlayerID
+                }
+            end
         end
     end
 
@@ -387,14 +395,15 @@ if GameEvents.UnitPrekill ~= nil then
     GameEvents.UnitPrekill.Add(function(killedPlayerID, _, killedUnitType, _, _, _, killerPlayerID)
         if killedUnitType == UNIT_TRENT then
             local player = Players[killedPlayerID]
-            if UnaCourt_IsPlayer(player) and not collapsing[killedPlayerID] then
+            if UnaCourt_IsPlayer(player) and not collapsing[killedPlayerID] and pendingCollapses[killedPlayerID] == nil then
                 -- Never destroy the empire from UnitPrekill itself. During a
                 -- combat kill, the DLL still marks Trentrouls and his opponent
                 -- as in combat; recursively killing units here triggers a
                 -- CvUnit assertion. EndCombatSim releases the queue safely.
                 pendingCollapses[killedPlayerID] = {
                     killerPlayerID = killerPlayerID,
-                    ready = false
+                    ready = false,
+                    settleTicks = 2
                 }
                 print("Una Court queued post-combat collapse for player " .. tostring(killedPlayerID))
             end
@@ -410,8 +419,8 @@ if Events.EndCombatSim ~= nil then
     end)
 end
 
--- EndCombatSim is raised while the UI finishes the combat presentation. Wait
--- one update tick before mutating city and unit ownership.
+-- EndCombatSim is raised while the UI finishes the combat presentation. Give
+-- the DLL two settled update frames before mutating city and unit ownership.
 if ContextPtr ~= nil and ContextPtr.SetUpdate ~= nil then
     ContextPtr:SetUpdate(function()
         UnaCourt_ProcessPendingCollapses(false)
