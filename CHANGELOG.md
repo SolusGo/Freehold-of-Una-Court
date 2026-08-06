@@ -2,6 +2,30 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-06 - Dominion of Una Court
+
+### Added
+
+- Added the Dominion of Una Court as a second selectable civilization led by Supreme Possessor Trentrouls.
+- Added Dominion Trentrouls with 8/10/16/22/30/42/56/72 era-scaled Combat Strength and a Settler-plus-Trentrouls opening with no ordinary Warrior.
+- Added Body Swap: exchange Trentrouls with an eligible enemy within two tiles, control the borrowed body with +5% Combat Strength, and leave the original body under enemy control.
+- Added game-speed-scaled Body Swap duration and cooldown, era-scaled Golden Age Point rewards, AI target selection, save persistence, and permanent borrowed-unit actions.
+- Added a Dominion mode to the existing command panel with preview-and-confirm targeting, body status, timing, strength, and Find Borrowed controls.
+- Added separate red-and-gold Dominion player colours and complete Civilopedia, strategy, Dawn of Man, city, unit, promotion, and leader text.
+
+### Changed
+
+- Centrelink is shared through one building definition and two civilization overrides; both Una Courts receive the same Bank replacement with +1 local Happiness.
+- The existing right-side UI context now serves both civilizations without replacing TopPanel, UnitPanel, CityView, Community Patch, or EUI files.
+- Updated the README to describe both playable Una Court variants and their distinct mechanics.
+- Kept the mod at version 3 so deployment replaces the existing version 3 folder.
+
+### Safety
+
+- Deferred Dominion collapse and borrowed-body return processing until combat has ended, preventing recursive unit deletion inside the Community Patch DLL combat callback.
+- Isolated all Dominion saved-data keys and promotions from the Freehold's existing Body Possession system.
+- Excluded air, missile, nuclear, suicide, trade, immune, Una Court hero, and Barbarian targets from Body Swap.
+
 ## 2026-08-03 - Ginger-red civilization colour
 
 ### Changed

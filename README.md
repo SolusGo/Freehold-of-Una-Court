@@ -1,92 +1,81 @@
-# The Freehold of Una Court
+# Una Court Civilizations
 
-A custom civilization for Sid Meier's Civilization V: Brave New World, designed for the Community Patch / Vox Populi ruleset.
+A version 3 Civilization V: Brave New World mod for the Community Patch / Vox Populi ruleset. It adds two selectable civilizations led by Trentrouls: the companion-focused **Freehold of Una Court** and the aggressive **Dominion of Una Court**.
 
-Lead the Freehold as **Trentrouls**, an irreplaceable ruler who begins the game on the map. His presence steadily empowers the entire empire, and his companion Buddy can double both his personal strength and the Freehold's growing bonuses. Protect him carefully: if Trentrouls dies, the Freehold collapses.
+Both civilizations begin with a Settler and their own Trentrouls instead of an ordinary Warrior. In either realm, Trentrouls is irreplaceable: if his body dies, the civilization collapses.
 
-## Civilization overview
+## The Freehold of Una Court
 
-### Leader: Trentrouls
+The Freehold rewards protecting Trentrouls and keeping Buddy close.
 
-Trentrouls replaces the starting Warrior and functions as the heart of the civilization. His combat strength grows with each era:
+### The Court Lives Through Him
 
-| Era | Strength |
-| --- | ---: |
-| Ancient | 7 |
-| Classical | 9 |
-| Medieval | 12 |
-| Renaissance | 16 |
-| Industrial | 23 |
-| Modern | 32 |
-| Atomic | 43 |
-| Information | 50 |
+- Every city gains +1% Food, Production, Gold, Science, Culture, Faith, and Great Person generation per era, from +1% to +8%.
+- Buddy doubles the empire bonus while adjacent to Trentrouls.
+- Trentrouls grows from 7 Combat Strength in the Ancient Era to 50 in the Information Era; Buddy doubles his current strength while adjacent.
+- Trentrouls may temporarily possess an eligible non-Barbarian enemy unit within two tiles.
+- If Trentrouls dies, the Freehold collapses.
 
-When Buddy is adjacent, Trentrouls' current strength is doubled.
+### Buddy
 
-Trentrouls can also use **Body Possession** on an eligible enemy unit within two tiles. Possession temporarily transfers Trentrouls into the target body, after which he returns. The cooldown and duration scale with game speed.
+Buddy is a retrainable, one-at-a-time companion unit. He costs 125 Production, has 3 Combat Strength, ignores terrain movement costs, and empowers Trentrouls while adjacent.
 
-### Unique ability: The Court Lives Through Him
+## The Dominion of Una Court
 
-While Trentrouls lives, every city receives an empire-wide bonus that increases by era:
+The Dominion is the aggressive alternate Trentrouls civilization. It turns nearby enemy units into weapons, but each exchange gives the enemy control of Trentrouls' original—and fatal—body.
 
-- +1% in the Ancient Era, rising by 1% each era to +8% in the Information Era.
-- Applies to Food, Production, Gold, Science, Culture, Faith, and Great Person generation.
-- The bonus is doubled while Buddy is adjacent to Trentrouls.
+### The One Who Possesses Una Court
 
-If Trentrouls is killed, the Freehold immediately collapses: the killer captures the capital, the remaining cities and units are removed, and the Freehold is eliminated.
+- Every city gains the same +1% to +8% era-scaled yields and Great Person generation as the Freehold.
+- The empire bonus doubles while a Body Swap is active.
+- Starting a Body Swap grants 5 to 12 Golden Age Points by era on Standard speed, scaled for the selected game speed.
+- Trentrouls grows through 8/10/16/22/30/42/56/72 Combat Strength by era.
+- If Trentrouls' original body dies, including while controlled by an enemy, the Dominion collapses.
 
-### Unique unit: Buddy
+### Body Swap
 
-Buddy is a cheap, limited companion unit:
+Trentrouls can exchange bodies with an eligible enemy unit within two tiles while at war:
 
-- Cost: 125 Production
-- Combat strength: 3
-- Ignores terrain movement costs
-- Limited to one at a time
-- Doubles Trentrouls' strength and empire bonus while adjacent
-- Can be trained again if lost
+- The Dominion receives the borrowed body with +5% Combat Strength.
+- The enemy receives Trentrouls' original body for the swap's duration.
+- The borrowed body can move, fight, found cities, build, spread religion, and perform Great Person actions normally. Those actions are permanent.
+- The enemy-controlled Trentrouls can move one tile or make one melee attack per turn, but cannot move and then attack.
+- Losing or expending the borrowed body returns Trentrouls. Killing his original body destroys the Dominion.
+- Air units, missiles, nuclear and suicide units, trade units, immune units, other Una Court heroes, and Barbarians are excluded for stability.
 
-### Unique building: Centrelink
+| Game speed | Active duration | Full cooldown |
+| --- | ---: | ---: |
+| Quick | 1 turn | 8 turns |
+| Standard | 2 turns | 12 turns |
+| Epic | 3 turns | 18 turns |
+| Marathon | 6 turns | 36 turns |
 
-Centrelink replaces the Bank and provides **+1 local Happiness** in addition to the Bank's normal benefits.
+## Shared unique building: Centrelink
 
-## How it plays
+Both civilizations replace the Bank with the same single **Centrelink** building definition. Centrelink retains the Bank's normal benefits and adds +1 local Happiness.
 
-The Freehold is a high-risk, high-reward civilization. Keeping Trentrouls alive rewards you with an increasingly powerful empire, while moving Buddy alongside him creates short windows of exceptional strength. Body Possession offers tactical disruption and mobility, but committing Trentrouls to the front line always risks losing the entire civilization.
+## Interface and compatibility
 
-## Current alpha status
+The existing right-side command panel automatically switches between Freehold Body Possession and Dominion Body Swap. It includes preview-and-confirm targeting, current and next-era strength, ability timing, and unit-finding controls. The panel hides in city view and does not replace the TopPanel, UnitPanel, CityView, Community Patch, or EUI contexts.
 
-The core civilization, era scaling, Trentrouls, Buddy, Centrelink, Body Possession UI and AI behavior, save persistence, and defeat collapse are implemented.
+## Current alpha limitations
 
-Current limitations:
+- The two civilizations currently share Una Court's icon, Dawn of Man artwork, map, unit portrait, and base-game unit models.
+- Highly specialized modded units may contain internal state that Civ V Lua cannot perfectly preserve through an ownership transfer.
+- Multiplayer and hotseat are intentionally disabled while the scripted transfer systems are stabilized.
 
-- Una Court's civilization emblem, Dawn of Man scene, location map, Trentrouls, Buddy, and Centrelink all use custom artwork; unit models and the animated diplomacy scene still use base-game placeholders.
-- Possessing highly specialized units may not preserve every unusual unit-specific state.
-- Multiplayer is intentionally disabled while the custom gameplay systems are stabilized.
-
-## Requirements
+## Requirements and installation
 
 - Sid Meier's Civilization V: Brave New World
 - Community Patch / Vox Populi DLL
 - ModBuddy from the Civilization V SDK to build from source
 
-## Build and install
-
-1. Open `UnaCourt.civ5proj` in ModBuddy.
-2. Choose **Build > Build Solution**.
-3. In Civilization V, open **Mods**, enable **The Freehold of Una Court**, and start a new game.
-
-The built mod is deployed by ModBuddy to your Civilization V `MODS` folder. Generated packages and local build artifacts are intentionally excluded from this repository.
+Open `UnaCourt.civ5proj`, choose **Build > Build Solution**, then enable **The Freehold of Una Court (v 3)** in Civilization V's Mods menu and start a new game. The version remains fixed at 3 so new builds replace the existing mod folder.
 
 ## Source layout
 
 - `Art/` — custom icon atlases and retained source artwork
-- `SQL/` — civilization, units, building, scaling data, and text
-- `Lua/` — gameplay systems, possession logic, AI, and save persistence
-- `UI/` — in-game Una Court command panel
-- `UnaCourt.civ5proj` — ModBuddy project
-- `CHANGELOG.md` — dated summary of changes included in each push
-
-## Development status
-
-This is an early playable implementation. Balance values and edge-case behavior may change as testing continues. See [CHANGELOG.md](CHANGELOG.md) for the history of shipped changes.
+- `SQL/` — both civilizations, units, the shared building, scaling data, and text
+- `Lua/` — Freehold possession, Dominion Body Swap, AI, collapse safety, and save persistence
+- `UI/` — shared Una Court command panel
+- `CHANGELOG.md` — player-facing and technical changes for each push

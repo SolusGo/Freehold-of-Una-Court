@@ -12,3 +12,5 @@ end
 
 UnaInclude("UnaCourtCore.lua")
 UnaInclude("UnaCourtPossession.lua")
+UnaInclude("DominionCore.lua")
+UnaInclude("DominionBodySwap.lua")

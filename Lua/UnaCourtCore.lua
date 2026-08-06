@@ -415,6 +415,8 @@ end
 if ContextPtr ~= nil and ContextPtr.SetUpdate ~= nil then
     ContextPtr:SetUpdate(function()
         UnaCourt_ProcessPendingCollapses(false)
+        if Dominion_ProcessPendingCollapses ~= nil then Dominion_ProcessPendingCollapses(false) end
+        if Dominion_ProcessPendingReturns ~= nil then Dominion_ProcessPendingReturns(false) end
     end)
 end
 

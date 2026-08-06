@@ -6,8 +6,8 @@
     <Name>The Freehold of Una Court</Name>
     <SafeName>The Freehold of Una Court</SafeName>
     <Guid>7ec83c11-5853-453c-9ca7-0b2cf85a2a48</Guid>
-    <Teaser>Protect Trentrouls, empower him with Buddy, and turn enemy units against their masters.</Teaser>
-    <Description>A Community Patch civilization led by Trentrouls. Includes era-scaled empire yields, Trentrouls and Buddy, Centrelink, Body Possession, and the fall of Una Court.</Description>
+    <Teaser>Choose the Freehold or Dominion of Una Court and turn enemy units against their masters.</Teaser>
+    <Description>Two Community Patch civilizations led by Trentrouls: the Buddy-supported Freehold and the aggressive body-swapping Dominion. Both share Centrelink.</Description>
     <Authors>ThatOneYi</Authors>
     <AssemblyName>UnaCourt</AssemblyName>
     <RootNamespace>UnaCourt</RootNamespace>
@@ -30,6 +30,8 @@
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/00_UnaCourt_Core.sql</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/10_UnaCourt_Scaling.sql</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/20_UnaCourt_Text.sql</FileName></Action>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/30_Dominion_Core.sql</FileName></Action>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/40_Dominion_Text.sql</FileName></Action>
     </ModActions>
     <ModContent>
       <Content>
@@ -41,7 +43,7 @@
       <Content>
         <Type>InGameUIAddin</Type>
         <Name>Una Court Command Panel</Name>
-        <Description>Displays Trentrouls, Buddy, and Body Possession controls.</Description>
+        <Description>Displays Freehold Body Possession and Dominion Body Swap controls.</Description>
         <FileName>UI/UnaCourtPanel.xml</FileName>
       </Content>
     </ModContent>
@@ -96,9 +98,13 @@
     <Content Include="SQL\00_UnaCourt_Core.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="SQL\10_UnaCourt_Scaling.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="SQL\20_UnaCourt_Text.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="SQL\30_Dominion_Core.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="SQL\40_Dominion_Text.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="Lua\UnaCourtLoader.lua"><SubType>Lua</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="Lua\UnaCourtCore.lua"><SubType>Lua</SubType><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Lua\UnaCourtPossession.lua"><SubType>Lua</SubType><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Lua\DominionCore.lua"><SubType>Lua</SubType><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Lua\DominionBodySwap.lua"><SubType>Lua</SubType><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="UI\UnaCourtPanel.xml"><SubType>Lua</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="UI\UnaCourtPanel.lua"><SubType>Lua</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="README.md"><ImportIntoVFS>False</ImportIntoVFS></Content>
