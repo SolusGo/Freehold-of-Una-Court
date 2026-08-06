@@ -2,6 +2,14 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-06 - Dominion heraldic banners
+
+### Changed
+
+- Replaced the generic mask motifs on the Dominion Dawn of Man banners with the civilization's actual circular house-and-split-mask emblem.
+- Integrated the emblem into the aged crimson fabric, folds, perspective, and torch lighting while preserving Trentrouls, his throne pose, psychic effects, architecture, and composition.
+- Rebuilt the exact 1024x768 DXT1 game texture; the shared Una Court map and fixed mod version 3 remain unchanged.
+
 ## 2026-08-06 - Dominion Dawn of Man throne scene
 
 ### Added
