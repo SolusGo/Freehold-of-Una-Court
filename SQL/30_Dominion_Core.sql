@@ -4,6 +4,13 @@
 -- the single BUILDING_UNA_CENTRELINK definition from 00_UnaCourt_Core.sql.
 -- ===========================================================================
 
+-- Ask the Community Patch DLL to raise GameEvents.GameSave before it writes
+-- the native unit stream. The Lua gameplay layer uses this to return temporary
+-- possession bodies to their ordinary owners before any save is serialized.
+UPDATE CustomModOptions
+SET Value = 1
+WHERE Name = 'EVENTS_GAME_SAVE';
+
 INSERT OR REPLACE INTO Colors (Type, Red, Green, Blue, Alpha) VALUES
 ('COLOR_DOMINION_UNA_PRIMARY',   0.42, 0.04, 0.03, 1.0),
 ('COLOR_DOMINION_UNA_SECONDARY', 0.95, 0.58, 0.12, 1.0);

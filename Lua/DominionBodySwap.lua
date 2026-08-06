@@ -368,5 +368,23 @@ if LuaEvents.DominionBodySwapRequest ~= nil then
     end)
 end
 
+-- Civ V/VP serializes unit ownership before gameplay Lua is rebuilt on load.
+-- A save containing both temporary bodies can therefore become unreadable.
+-- Normalize ownership in the DLL's pre-save hook; the cooldown deliberately
+-- remains, so saving cannot be used to bypass Body Swap's recovery time.
+if GameEvents.GameSave ~= nil then
+    GameEvents.GameSave.Add(function()
+        for playerID = 0, (GameDefines.MAX_MAJOR_CIVS or 22) - 1 do
+            if GetNumber(playerID, "ACTIVE") == 1 then
+                local ended = Dominion_EndBodySwap(playerID, "the game was saved safely", true)
+                print("Dominion pre-save Body Swap cleanup for player " .. tostring(playerID)
+                    .. ": " .. tostring(ended))
+            end
+        end
+    end)
+else
+    print("Dominion warning: Community Patch GameSave hook is unavailable")
+end
+
 for playerID = 0, (GameDefines.MAX_MAJOR_CIVS or 22) - 1 do UpdateReadyPromotion(playerID) end
 print("Dominion Body Swap initialized")

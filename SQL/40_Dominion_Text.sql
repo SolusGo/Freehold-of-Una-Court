@@ -36,7 +36,7 @@ INSERT INTO Language_en_US (Tag, Text) VALUES
 
 ('TXT_KEY_UNIT_DOMINION_TRENTROULS', 'Trentrouls'),
 ('TXT_KEY_UNIT_DOMINION_TRENTROULS_HELP', 'Irreplaceable Dominion hero with Era-scaled Combat Strength. May Body Swap with an eligible enemy within 2 tiles. The Dominion receives the borrowed body and doubled city bonuses while the enemy controls Trentrouls'' original body. His death eliminates the Dominion.'),
-('TXT_KEY_UNIT_DOMINION_TRENTROULS_STRATEGY', 'Use Body Swap to steal technologically advanced or strategically valuable units. The borrowed body receives +5% Combat Strength, but exposing Trentrouls'' original body to enemy control can end the game immediately.'),
+('TXT_KEY_UNIT_DOMINION_TRENTROULS_STRATEGY', 'Use Body Swap to steal technologically advanced or strategically valuable units. The borrowed body receives +5% Combat Strength, but exposing Trentrouls'' original body to enemy control can end the game immediately. Saving safely ends an active Body Swap and returns both bodies to their normal owners.'),
 ('TXT_KEY_UNIT_DOMINION_TRENTROULS_PEDIA', 'The Supreme Possessor begins in his original body and can never be replaced. His Combat Strength rises from 8 in the Ancient Era to 72 in the Information Era. He has no upgrade route and receives no upgrade from Ancient Ruins.'),
 
 ('TXT_KEY_PROMOTION_DOMINION_ONE_TRUE_RULER', 'Original Body of the Supreme Possessor'),

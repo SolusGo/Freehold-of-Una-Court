@@ -321,5 +321,21 @@ if LuaEvents.UnaCourtPossessRequest ~= nil then
     end)
 end
 
+-- Apply the same pre-save normalization used by Dominion Body Swap. This keeps
+-- the save's native unit ownership conventional and leaves the cooldown intact.
+if GameEvents.GameSave ~= nil then
+    GameEvents.GameSave.Add(function()
+        for playerID = 0, (GameDefines.MAX_MAJOR_CIVS or 22) - 1 do
+            if GetNumber(playerID, "ACTIVE") == 1 then
+                local ended = UnaCourt_EndPossession(playerID, "the game was saved safely")
+                print("Una Court pre-save possession cleanup for player " .. tostring(playerID)
+                    .. ": " .. tostring(ended))
+            end
+        end
+    end)
+else
+    print("Una Court warning: Community Patch GameSave hook is unavailable")
+end
+
 for playerID = 0, (GameDefines.MAX_MAJOR_CIVS or 22) - 1 do UpdateTrentPromotion(playerID) end
 print("Una Court Body Possession initialized")

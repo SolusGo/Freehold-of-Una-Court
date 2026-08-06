@@ -2,6 +2,21 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-07 - Save-safe possession ownership
+
+### Fixed
+
+- Enabled the Community Patch pre-save gameplay event for Una Court.
+- Active Dominion Body Swap now ends immediately before manual saves, quicksaves, and autosaves are serialized, returning both bodies to their ordinary owners while retaining the cooldown.
+- Applied the same pre-save ownership normalization to Freehold Body Possession.
+- Removed temporary cross-civilization unit ownership from newly written save files to avoid native load failures before gameplay Lua initializes.
+- Documented the intentional save behavior in the Civilopedia strategy and README.
+- Kept the mod at version 3 so deployment replaces the existing version 3 folder.
+
+### Compatibility
+
+- Existing saves that already crash during native deserialization cannot be repaired by Lua because the crash occurs before Lua loads; this change protects newly created saves.
+
 ## 2026-08-07 - Next-turn empire collapse
 
 ### Changed
