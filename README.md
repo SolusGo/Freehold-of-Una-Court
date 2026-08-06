@@ -60,7 +60,7 @@ The existing right-side command panel automatically switches between Freehold Bo
 
 ## Current alpha limitations
 
-- The two civilizations currently share Una Court's icon, Dawn of Man artwork, map, unit portrait, and base-game unit models.
+- The two civilizations currently share Dawn of Man artwork, map, unit portrait, and base-game unit models; each civilization now has its own emblem and flag alpha.
 - Highly specialized modded units may contain internal state that Civ V Lua cannot perfectly preserve through an ownership transfer.
 - Multiplayer and hotseat are intentionally disabled while the scripted transfer systems are stabilized.
 

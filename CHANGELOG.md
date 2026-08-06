@@ -2,6 +2,21 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-06 - Dominion civilization emblem
+
+### Added
+
+- Added the supplied red-and-black house-and-mask design as the Dominion of Una Court's dedicated civilization emblem.
+- Added a Dominion-specific monochrome alpha emblem for map flags and compact interface elements.
+- Created native DXT5 assets at Civ V's required 256, 128, 80, 64, 45, and 32 pixel colour-atlas sizes and 128, 80, 64, 45, and 32 pixel alpha-atlas sizes.
+- Retained the supplied full-resolution image in `Art/Source` for future revisions.
+
+### Changed
+
+- Applied the same 88% visual footprint and layered Civ V-style gold medallion frame used by Una Court's other selection-screen component icons.
+- The Dominion now references its own colour and alpha atlases; the Freehold retains its existing dog-and-target emblem.
+- Kept the mod at version 3 so deployment replaces the existing version 3 folder.
+
 ## 2026-08-06 - Dominion of Una Court
 
 ### Added
