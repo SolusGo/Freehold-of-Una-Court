@@ -149,61 +149,6 @@ function Dominion_RefreshPlayer(playerID)
     ApplyCityBonus(player)
 end
 
-local function FindHumanDefeatWinner(playerID, killerPlayerID)
-    local player = Players[playerID]
-    local defeatedTeam = player ~= nil and player:GetTeam() or -1
-    local killer = killerPlayerID ~= nil and killerPlayerID >= 0 and Players[killerPlayerID] or nil
-    if killer ~= nil and killer:IsAlive() and killer:GetTeam() ~= defeatedTeam and not killer:IsBarbarian()
-        and (killer.IsMinorCiv == nil or not killer:IsMinorCiv()) then
-        return killer
-    end
-
-    for otherPlayerID = 0, (GameDefines.MAX_MAJOR_CIVS or 22) - 1 do
-        local other = Players[otherPlayerID]
-        if otherPlayerID ~= playerID and other ~= nil and other:IsAlive()
-            and other:GetTeam() ~= defeatedTeam
-            and not other:IsBarbarian()
-            and (other.IsMinorCiv == nil or not other:IsMinorCiv()) then
-            return other
-        end
-    end
-    return nil
-end
-
--- Eliminating the active human by removing their final city can enter
--- CvPlayer::kill while the UI still owns an end-turn blocker (production,
--- voting, etc.). VP asserts in that state. Declaring a living opponent the
--- winner produces the same real defeat without mutating the active player's
--- cities inside the blocker update.
-local function EndHumanGame(playerID, killerPlayerID)
-    local player = Players[playerID]
-    if player == nil or not player:IsHuman() or Game.GetActivePlayer() ~= playerID then return false end
-
-    local winner = FindHumanDefeatWinner(playerID, killerPlayerID)
-    local victoryID = GameInfoTypes.VICTORY_DOMINATION
-    if winner ~= nil and victoryID ~= nil and Game.SetWinner ~= nil then
-        local ok = pcall(function() Game.SetWinner(winner:GetTeam(), victoryID) end)
-        if ok then
-            print("Dominion ended the human game after Trentrouls fell; winner player "
-                .. tostring(winner:GetID()))
-            return true
-        end
-    end
-
-    -- Compatibility fallback for DLL builds that do not expose Game.SetWinner.
-    if winner ~= nil and Events.EndGameShow ~= nil and EndGameTypes ~= nil
-        and EndGameTypes.Domination ~= nil then
-        local ok = pcall(function()
-            Events.EndGameShow(EndGameTypes.Domination, winner:GetID())
-        end)
-        if ok then
-            print("Dominion showed the human defeat screen after Trentrouls fell")
-            return true
-        end
-    end
-    return false
-end
-
 local function DestroyEmpire(playerID, killerPlayerID)
     if collapsing[playerID] then return end
     collapsing[playerID] = true
@@ -219,11 +164,6 @@ local function DestroyEmpire(playerID, killerPlayerID)
     if Events.GameplayAlertMessage ~= nil then
         Events.GameplayAlertMessage("Trentrouls has fallen. The Dominion of Una Court has collapsed.")
     end
-
-    -- The human game is now over. Keep the map intact behind the defeat screen
-    -- instead of triggering VP's end-turn-blocking assertion through last-city
-    -- elimination. AI empires still receive the full physical collapse below.
-    if EndHumanGame(playerID, killerPlayerID) then return end
 
     local capital = player:GetCapitalCity()
     local capitalID = capital ~= nil and capital:GetID() or -1
@@ -259,16 +199,25 @@ local function DestroyEmpire(playerID, killerPlayerID)
     end
 end
 
-function Dominion_ProcessPendingCollapses(force)
+local function IsCollapseTurnSafe(playerID)
+    local player = Players[playerID]
+    if player == nil or player.GetEndTurnBlockingType == nil then return true end
+
+    local ok, blockingType = pcall(function() return player:GetEndTurnBlockingType() end)
+    if not ok then return true end
+    if blockingType ~= -1 then
+        print("Dominion deferred collapse for player " .. tostring(playerID)
+            .. "; end-turn blocker " .. tostring(blockingType) .. " is still active")
+        return false
+    end
+    return true
+end
+
+function Dominion_ProcessPendingCollapses()
     local ready = {}
     for playerID, pending in pairs(pendingCollapses) do
-        if force then
+        if IsCollapseTurnSafe(playerID) then
             ready[#ready + 1] = { playerID = playerID, killer = pending.killer }
-        elseif pending.ready then
-            pending.settleTicks = math.max(0, (pending.settleTicks or 0) - 1)
-            if pending.settleTicks == 0 then
-                ready[#ready + 1] = { playerID = playerID, killer = pending.killer }
-            end
         end
     end
     for _, pending in ipairs(ready) do
@@ -278,9 +227,13 @@ function Dominion_ProcessPendingCollapses(force)
 end
 
 local function DoTurn(playerID)
-    Dominion_ProcessPendingCollapses(true)
+    -- A queued death is resolved only when the next civilization turn begins.
+    -- Combat, UI presentation, and the previous turn's blocker state have all
+    -- had a chance to settle by this point.
+    Dominion_ProcessPendingCollapses()
     local player = Players[playerID]
-    if not Dominion_IsPlayer(player) or collapsing[playerID] then return end
+    if not Dominion_IsPlayer(player) or collapsing[playerID]
+        or pendingCollapses[playerID] ~= nil then return end
     EnsureStartingTrent(playerID)
     Dominion_RefreshPlayer(playerID)
 end
@@ -344,15 +297,9 @@ if GameEvents.UnitPrekill ~= nil then
             end
         end
         if dominionID ~= nil and not collapsing[dominionID] and pendingCollapses[dominionID] == nil then
-            pendingCollapses[dominionID] = { killer = killerPlayerID, ready = false, settleTicks = 2 }
-            print("Dominion queued post-combat collapse for player " .. tostring(dominionID))
+            pendingCollapses[dominionID] = { killer = killerPlayerID }
+            print("Dominion queued next-turn collapse for player " .. tostring(dominionID))
         end
-    end)
-end
-
-if Events.EndCombatSim ~= nil then
-    Events.EndCombatSim.Add(function()
-        for _, pending in pairs(pendingCollapses) do pending.ready = true end
     end)
 end
 

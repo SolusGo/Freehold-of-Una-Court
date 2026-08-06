@@ -255,58 +255,6 @@ local function UnaCourt_EnforceCaps(player)
     end
 end
 
-local function UnaCourt_FindHumanDefeatWinner(playerID, killerPlayerID)
-    local player = Players[playerID]
-    local defeatedTeam = player ~= nil and player:GetTeam() or -1
-    local killer = killerPlayerID ~= nil and killerPlayerID >= 0 and Players[killerPlayerID] or nil
-    if killer ~= nil and killer:IsAlive() and killer:GetTeam() ~= defeatedTeam and not killer:IsBarbarian()
-        and (killer.IsMinorCiv == nil or not killer:IsMinorCiv()) then
-        return killer
-    end
-
-    for otherPlayerID = 0, (GameDefines.MAX_MAJOR_CIVS or 22) - 1 do
-        local other = Players[otherPlayerID]
-        if otherPlayerID ~= playerID and other ~= nil and other:IsAlive()
-            and other:GetTeam() ~= defeatedTeam
-            and not other:IsBarbarian()
-            and (other.IsMinorCiv == nil or not other:IsMinorCiv()) then
-            return other
-        end
-    end
-    return nil
-end
-
--- Removing the active human's final city while their UI still owns an
--- end-turn blocker makes VP assert inside CvPlayer::kill. A real victory for a
--- living opponent ends the game cleanly without changing cities mid-blocker.
-local function UnaCourt_EndHumanGame(playerID, killerPlayerID)
-    local player = Players[playerID]
-    if player == nil or not player:IsHuman() or Game.GetActivePlayer() ~= playerID then return false end
-
-    local winner = UnaCourt_FindHumanDefeatWinner(playerID, killerPlayerID)
-    local victoryID = GameInfoTypes.VICTORY_DOMINATION
-    if winner ~= nil and victoryID ~= nil and Game.SetWinner ~= nil then
-        local ok = pcall(function() Game.SetWinner(winner:GetTeam(), victoryID) end)
-        if ok then
-            print("Una Court ended the human game after Trentrouls fell; winner player "
-                .. tostring(winner:GetID()))
-            return true
-        end
-    end
-
-    if winner ~= nil and Events.EndGameShow ~= nil and EndGameTypes ~= nil
-        and EndGameTypes.Domination ~= nil then
-        local ok = pcall(function()
-            Events.EndGameShow(EndGameTypes.Domination, winner:GetID())
-        end)
-        if ok then
-            print("Una Court showed the human defeat screen after Trentrouls fell")
-            return true
-        end
-    end
-    return false
-end
-
 local function UnaCourt_DestroyRemainingEmpire(playerID, killerPlayerID)
     if collapsing[playerID] then return end
     collapsing[playerID] = true
@@ -322,8 +270,6 @@ local function UnaCourt_DestroyRemainingEmpire(playerID, killerPlayerID)
     if Events.GameplayAlertMessage ~= nil then
         Events.GameplayAlertMessage("Trentrouls has fallen. The Freehold of Una Court has collapsed.")
     end
-
-    if UnaCourt_EndHumanGame(playerID, killerPlayerID) then return end
 
     local capital = player:GetCapitalCity()
     local capitalID = capital ~= nil and capital:GetID() or -1
@@ -363,22 +309,28 @@ local function UnaCourt_DestroyRemainingEmpire(playerID, killerPlayerID)
 
 end
 
-local function UnaCourt_ProcessPendingCollapses(force)
+local function UnaCourt_IsCollapseTurnSafe(playerID)
+    local player = Players[playerID]
+    if player == nil or player.GetEndTurnBlockingType == nil then return true end
+
+    local ok, blockingType = pcall(function() return player:GetEndTurnBlockingType() end)
+    if not ok then return true end
+    if blockingType ~= -1 then
+        print("Una Court deferred collapse for player " .. tostring(playerID)
+            .. "; end-turn blocker " .. tostring(blockingType) .. " is still active")
+        return false
+    end
+    return true
+end
+
+local function UnaCourt_ProcessPendingCollapses()
     local ready = {}
     for playerID, pending in pairs(pendingCollapses) do
-        if force then
+        if UnaCourt_IsCollapseTurnSafe(playerID) then
             ready[#ready + 1] = {
                 playerID = playerID,
                 killerPlayerID = pending.killerPlayerID
             }
-        elseif pending.ready then
-            pending.settleTicks = math.max(0, (pending.settleTicks or 0) - 1)
-            if pending.settleTicks == 0 then
-                ready[#ready + 1] = {
-                    playerID = playerID,
-                    killerPlayerID = pending.killerPlayerID
-                }
-            end
         end
     end
 
@@ -389,12 +341,11 @@ local function UnaCourt_ProcessPendingCollapses(force)
 end
 
 local function UnaCourt_DoTurn(playerID)
-    -- Guaranteed safe fallback for scripted deaths or combat modes that do not
-    -- emit EndCombatSim. By the next player turn, no unit remains in combat.
-    UnaCourt_ProcessPendingCollapses(true)
+    UnaCourt_ProcessPendingCollapses()
 
     local player = Players[playerID]
-    if not UnaCourt_IsPlayer(player) or collapsing[playerID] then return end
+    if not UnaCourt_IsPlayer(player) or collapsing[playerID]
+        or pendingCollapses[playerID] ~= nil then return end
     UnaCourt_EnsureStartingTrentrouls(playerID)
     UnaCourt_EnforceCaps(player)
     UnaCourt_RefreshPlayer(playerID)
@@ -454,32 +405,21 @@ if GameEvents.UnitPrekill ~= nil then
                 -- Never destroy the empire from UnitPrekill itself. During a
                 -- combat kill, the DLL still marks Trentrouls and his opponent
                 -- as in combat; recursively killing units here triggers a
-                -- CvUnit assertion. EndCombatSim releases the queue safely.
+                -- CvUnit assertion. PlayerDoTurn releases the queue safely.
                 pendingCollapses[killedPlayerID] = {
-                    killerPlayerID = killerPlayerID,
-                    ready = false,
-                    settleTicks = 2
+                    killerPlayerID = killerPlayerID
                 }
-                print("Una Court queued post-combat collapse for player " .. tostring(killedPlayerID))
+                print("Una Court queued next-turn collapse for player " .. tostring(killedPlayerID))
             end
         end
     end)
 end
 
-if Events.EndCombatSim ~= nil then
-    Events.EndCombatSim.Add(function()
-        for _, pending in pairs(pendingCollapses) do
-            pending.ready = true
-        end
-    end)
-end
-
--- EndCombatSim is raised while the UI finishes the combat presentation. Give
--- the DLL two settled update frames before mutating city and unit ownership.
+-- Keep only borrowed-body returns on the per-frame path. Empire destruction is
+-- deliberately restricted to PlayerDoTurn so it cannot run during combat or a
+-- city/UI update.
 if ContextPtr ~= nil and ContextPtr.SetUpdate ~= nil then
     ContextPtr:SetUpdate(function()
-        UnaCourt_ProcessPendingCollapses(false)
-        if Dominion_ProcessPendingCollapses ~= nil then Dominion_ProcessPendingCollapses(false) end
         if Dominion_ProcessPendingReturns ~= nil then Dominion_ProcessPendingReturns(false) end
     end)
 end

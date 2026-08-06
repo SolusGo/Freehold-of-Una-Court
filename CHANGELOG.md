@@ -2,6 +2,16 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-07 - Next-turn empire collapse
+
+### Changed
+
+- Replaced the temporary opponent-victory workaround with normal Una Court player elimination.
+- Trentrouls' death now queues the Freehold or Dominion collapse until the next civilization turn begins instead of removing cities and units during combat/UI processing.
+- Added a Community Patch end-turn-blocker safety check; cleanup defers to another turn if any blocker is still active.
+- Removed empire destruction from the per-frame update path while retaining safe processing for borrowed-body returns.
+- Kept the mod at version 3 so deployment replaces the existing version 3 folder.
+
 ## 2026-08-07 - End-turn-safe human defeat
 
 ### Fixed
