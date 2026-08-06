@@ -66,7 +66,7 @@ SELECT
     'TXT_KEY_CIV_DOMINION_UNA_COURT_SHORT_DESC', 'TXT_KEY_CIV_DOMINION_UNA_COURT_ADJECTIVE',
     'PLAYERCOLOR_DOMINION_UNA', ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix,
     0, 'DOMINION_UNA_CIV_ATLAS', 'DOMINION_UNA_CIV_ALPHA_ATLAS', 'Art/DawnOfMan/UnaCourtMap.dds',
-    'TXT_KEY_CIV5_DOM_DOMINION_UNA_COURT_TEXT', 'Art/DawnOfMan/UnaCourtDawnOfMan.dds', '', SoundtrackTag
+    'TXT_KEY_CIV5_DOM_DOMINION_UNA_COURT_TEXT', 'Art/DominionDawnOfMan/DominionDawnOfMan.dds', '', SoundtrackTag
 FROM Civilizations WHERE Type = 'CIVILIZATION_AMERICA';
 
 INSERT INTO Civilization_Leaders (CivilizationType, LeaderheadType)

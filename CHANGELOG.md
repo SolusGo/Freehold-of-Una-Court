@@ -2,6 +2,20 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-06 - Dominion Dawn of Man throne scene
+
+### Added
+
+- Added a dedicated Dominion Dawn of Man painting inspired by the supplied Trent reference and the relaxed, commanding throne posture associated with Whiterun's jarls.
+- Depicted Supreme Possessor Trentrouls seated deep on an original dark-wood-and-iron throne in a crimson-black court, with restrained Body Swap energy around his resting hand.
+- Created the exact 1024x768 DXT1 texture required by Civ V while retaining the full-resolution generated painting in `Art/Source`.
+
+### Changed
+
+- The Dominion now uses `Art/DominionDawnOfMan/DominionDawnOfMan.dds`; the Freehold retains its existing fireplace Dawn of Man artwork.
+- Both Una Court civilizations deliberately continue to use the same styled Una Court location map.
+- Kept the Dawn of Man presentation silent and the mod at version 3 so deployment replaces the existing version 3 folder.
+
 ## 2026-08-06 - Dominion Trentrouls possession portrait
 
 ### Added

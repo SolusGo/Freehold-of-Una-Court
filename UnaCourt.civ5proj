@@ -82,6 +82,7 @@
     <Content Include="Art\DominionCivilization\DominionAlpha32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\DawnOfMan\UnaCourtDawnOfMan.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\DawnOfMan\UnaCourtMap.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\DominionDawnOfMan\DominionDawnOfMan.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\Buddy\BuddyIcon256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\Buddy\BuddyIcon128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\Buddy\BuddyIcon80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
@@ -133,6 +134,7 @@
     <Folder Include="Art\Civilization\" />
     <Folder Include="Art\DawnOfMan\" />
     <Folder Include="Art\DominionCivilization\" />
+    <Folder Include="Art\DominionDawnOfMan\" />
     <Folder Include="Art\DominionTrentrouls\" />
     <Folder Include="Art\TrentLeader\" />
     <Folder Include="Art\Trentrouls\" />
