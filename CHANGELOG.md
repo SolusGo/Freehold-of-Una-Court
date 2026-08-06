@@ -2,6 +2,23 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-07 - Persistent save-safe Body Swap
+
+### Changed
+
+- Replaced the one-way save cleanup with a transactional save/load system for both Dominion Body Swap and Freehold Body Possession.
+- Active transfers now temporarily restore ordinary ownership immediately before serialization, then automatically reconstruct the transfer after the save completes.
+- Saves record the normalized unit IDs, original owner, remaining duration, and cooldown in Civ V's embedded save database; loading reconstructs the active transfer after gameplay Lua initializes.
+- Preserved unit movement, damage, experience, custom names, and promotions through the save transaction.
+- Made save-only ownership transfers unattributed so they cannot award ordinary combat-kill credit during suspension or reconstruction.
+- Added a shared deferred gameplay-update dispatcher inside Una Court's existing loader so post-save restoration and combat-return safety coexist without replacing external TopPanel, UnitPanel, CityView, Community Patch, or EUI contexts.
+- Added validation and rollback paths that retain ordinary ownership if either temporary body cannot be reconstructed.
+- Updated the README and Civilopedia strategy text, and kept the mod at version 3.
+
+### Compatibility
+
+- Previously corrupted saves still cannot be repaired because they fail before gameplay Lua loads; this system protects newly written saves whose pre-save hook executes.
+
 ## 2026-08-07 - Save-safe possession ownership
 
 ### Fixed

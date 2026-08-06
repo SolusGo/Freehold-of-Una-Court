@@ -38,7 +38,7 @@ INSERT INTO Language_en_US (Tag, Text) VALUES
 
 ('TXT_KEY_UNIT_UNA_TRENTROULS', 'Trentrouls'),
 ('TXT_KEY_UNIT_UNA_TRENTROULS_HELP', 'Irreplaceable Una Court hero. His strength increases every Era and doubles while Buddy is adjacent. May use Body Possession on an eligible enemy unit within 2 tiles. If Trentrouls dies, Una Court is eliminated.'),
-('TXT_KEY_UNIT_UNA_TRENTROULS_STRATEGY', 'Keep Trentrouls behind the front line until Body Possession can decide the battle. Buddy doubles his strength, but concentrated ranged fire can still end your civilization immediately.'),
+('TXT_KEY_UNIT_UNA_TRENTROULS_STRATEGY', 'Keep Trentrouls behind the front line until Body Possession can decide the battle. Buddy doubles his strength, but concentrated ranged fire can still end your civilization immediately. Saving safely suspends and then restores an active possession, including after loading.'),
 ('TXT_KEY_UNIT_UNA_TRENTROULS_PEDIA', 'Trentrouls is not merely a unique unit. He is the continued existence of Una Court expressed on the map. He gains strength as the ages advance, keeps ordinary promotions, and can temporarily turn enemy bodies against their owners.'),
 
 ('TXT_KEY_UNIT_UNA_BUDDY', 'Buddy'),

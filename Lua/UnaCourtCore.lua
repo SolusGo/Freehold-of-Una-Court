@@ -418,10 +418,13 @@ end
 -- Keep only borrowed-body returns on the per-frame path. Empire destruction is
 -- deliberately restricted to PlayerDoTurn so it cannot run during combat or a
 -- city/UI update.
-if ContextPtr ~= nil and ContextPtr.SetUpdate ~= nil then
-    ContextPtr:SetUpdate(function()
-        if Dominion_ProcessPendingReturns ~= nil then Dominion_ProcessPendingReturns(false) end
-    end)
+local function ProcessFrameReturns()
+    if Dominion_ProcessPendingReturns ~= nil then Dominion_ProcessPendingReturns(false) end
+end
+if UnaCourt_RegisterUpdate ~= nil then
+    UnaCourt_RegisterUpdate(ProcessFrameReturns)
+elseif ContextPtr ~= nil and ContextPtr.SetUpdate ~= nil then
+    ContextPtr:SetUpdate(ProcessFrameReturns)
 end
 
 for playerID = 0, (GameDefines.MAX_MAJOR_CIVS or 22) - 1 do

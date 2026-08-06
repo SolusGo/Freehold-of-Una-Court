@@ -26,6 +26,13 @@ end
 local function SetNumber(playerID, suffix, value)
     SAVE.SetValue(Key(playerID, suffix), tonumber(value) or 0)
 end
+local function ClearSuspended(playerID)
+    SetNumber(playerID, "SAVE_SUSPENDED", 0)
+    SetNumber(playerID, "SAVE_TARGET_OWNER", -1)
+    SetNumber(playerID, "SAVE_TARGET_ID", -1)
+    SetNumber(playerID, "SAVE_TURNS", 0)
+    SetNumber(playerID, "SAVE_COOLDOWN", 0)
+end
 
 local function IsUnaPlayer(player)
     return player ~= nil and player:IsAlive() and CIV_UNA ~= nil and player:GetCivilizationType() == CIV_UNA
@@ -182,6 +189,7 @@ function UnaCourt_StartPossession(playerID, trentID, targetOwnerID, targetUnitID
     activeTransfer = false
     if possessed == nil then return false end
 
+    ClearSuspended(playerID)
     SetNumber(playerID, "ACTIVE", 1)
     SetNumber(playerID, "UNIT_ID", possessed:GetID())
     SetNumber(playerID, "ORIGINAL_OWNER", targetOwnerID)
@@ -196,7 +204,7 @@ function UnaCourt_StartPossession(playerID, trentID, targetOwnerID, targetUnitID
     return true
 end
 
-function UnaCourt_EndPossession(playerID, reason)
+function UnaCourt_EndPossession(playerID, reason, preserveMoves)
     local player = Players[playerID]
     if player == nil or GetNumber(playerID, "ACTIVE") ~= 1 then return false end
 
@@ -204,15 +212,16 @@ function UnaCourt_EndPossession(playerID, reason)
     local originalOwnerID = GetNumber(playerID, "ORIGINAL_OWNER")
     local possessed = player:GetUnitByID(unitID)
     local originalOwner = Players[originalOwnerID]
+    local returned = nil
 
     if possessed ~= nil then
         if originalOwner ~= nil and originalOwner:IsAlive() then
             local state = CaptureUnitState(possessed)
             activeTransfer = true
-            possessed:Kill(false, originalOwnerID)
-            local returned = CreateTransferredUnit(originalOwner, state, false)
+            possessed:Kill(false, preserveMoves and -1 or originalOwnerID)
+            returned = CreateTransferredUnit(originalOwner, state, false)
             activeTransfer = false
-            if returned ~= nil and returned.SetMoves ~= nil then returned:SetMoves(0) end
+            if not preserveMoves and returned ~= nil and returned.SetMoves ~= nil then returned:SetMoves(0) end
         else
             if PROMO_POSSESSED ~= nil then possessed:SetHasPromotion(PROMO_POSSESSED, false) end
         end
@@ -224,6 +233,64 @@ function UnaCourt_EndPossession(playerID, reason)
         Events.GameplayAlertMessage("Body Possession ended: " .. tostring(reason) .. ".")
     end
     if LuaEvents.UnaCourtPossessionChanged ~= nil then LuaEvents.UnaCourtPossessionChanged(playerID) end
+    return true, returned ~= nil and returned:GetID() or -1
+end
+
+local function ResumeSuspendedPossession(playerID)
+    if GetNumber(playerID, "SAVE_SUSPENDED") ~= 1 then return false end
+    local player = Players[playerID]
+    local targetOwnerID = GetNumber(playerID, "SAVE_TARGET_OWNER")
+    local targetOwner = Players[targetOwnerID]
+    local target = targetOwner ~= nil and targetOwner:GetUnitByID(GetNumber(playerID, "SAVE_TARGET_ID")) or nil
+    if not IsUnaPlayer(player) or targetOwner == nil or not targetOwner:IsAlive() or target == nil then
+        print("Una Court could not restore the save-suspended possession; leaving ownership normalized")
+        ClearSuspended(playerID)
+        return false
+    end
+
+    local state = CaptureUnitState(target)
+    activeTransfer = true
+    target:Kill(false, -1)
+    local possessed = CreateTransferredUnit(player, state, true)
+    activeTransfer = false
+    if possessed == nil then
+        activeTransfer = true
+        CreateTransferredUnit(targetOwner, state, false)
+        activeTransfer = false
+        ClearSuspended(playerID)
+        print("Una Court possession restore failed safely; ordinary ownership was retained")
+        return false
+    end
+
+    SetNumber(playerID, "ACTIVE", 1)
+    SetNumber(playerID, "UNIT_ID", possessed:GetID())
+    SetNumber(playerID, "ORIGINAL_OWNER", targetOwnerID)
+    SetNumber(playerID, "TURNS", GetNumber(playerID, "SAVE_TURNS"))
+    SetNumber(playerID, "COOLDOWN", GetNumber(playerID, "SAVE_COOLDOWN"))
+    ClearSuspended(playerID)
+    UpdateTrentPromotion(playerID)
+    if LuaEvents.UnaCourtPossessionChanged ~= nil then LuaEvents.UnaCourtPossessionChanged(playerID) end
+    print("Una Court save-suspended possession restored for player " .. tostring(playerID))
+    return true
+end
+
+local function SuspendPossessionForSave(playerID)
+    if GetNumber(playerID, "ACTIVE") ~= 1 then return false end
+    local targetOwnerID = GetNumber(playerID, "ORIGINAL_OWNER")
+    local turns = GetNumber(playerID, "TURNS")
+    local cooldown = GetNumber(playerID, "COOLDOWN")
+    local ended, targetID = UnaCourt_EndPossession(playerID, nil, true)
+    if not ended or targetID == nil or targetID < 0 then
+        ClearSuspended(playerID)
+        print("Una Court possession could not be suspended completely; ownership remains normalized")
+        return false
+    end
+
+    SetNumber(playerID, "SAVE_TARGET_OWNER", targetOwnerID)
+    SetNumber(playerID, "SAVE_TARGET_ID", targetID)
+    SetNumber(playerID, "SAVE_TURNS", turns)
+    SetNumber(playerID, "SAVE_COOLDOWN", cooldown)
+    SetNumber(playerID, "SAVE_SUSPENDED", 1)
     return true
 end
 
@@ -321,15 +388,19 @@ if LuaEvents.UnaCourtPossessRequest ~= nil then
     end)
 end
 
--- Apply the same pre-save normalization used by Dominion Body Swap. This keeps
--- the save's native unit ownership conventional and leaves the cooldown intact.
+-- Save only conventional ownership, while recording enough state in Civ V's
+-- embedded save database to rebuild possession after saving or loading.
 if GameEvents.GameSave ~= nil then
     GameEvents.GameSave.Add(function()
         for playerID = 0, (GameDefines.MAX_MAJOR_CIVS or 22) - 1 do
             if GetNumber(playerID, "ACTIVE") == 1 then
-                local ended = UnaCourt_EndPossession(playerID, "the game was saved safely")
-                print("Una Court pre-save possession cleanup for player " .. tostring(playerID)
-                    .. ": " .. tostring(ended))
+                local suspended = SuspendPossessionForSave(playerID)
+                print("Una Court pre-save possession suspension for player " .. tostring(playerID)
+                    .. ": " .. tostring(suspended))
+                if suspended and UnaCourt_QueueDeferredRestore ~= nil then
+                    local restorePlayerID = playerID
+                    UnaCourt_QueueDeferredRestore(function() ResumeSuspendedPossession(restorePlayerID) end)
+                end
             end
         end
     end)
@@ -337,5 +408,11 @@ else
     print("Una Court warning: Community Patch GameSave hook is unavailable")
 end
 
+for playerID = 0, (GameDefines.MAX_MAJOR_CIVS or 22) - 1 do
+    if GetNumber(playerID, "SAVE_SUSPENDED") == 1 and UnaCourt_QueueDeferredRestore ~= nil then
+        local restorePlayerID = playerID
+        UnaCourt_QueueDeferredRestore(function() ResumeSuspendedPossession(restorePlayerID) end)
+    end
+end
 for playerID = 0, (GameDefines.MAX_MAJOR_CIVS or 22) - 1 do UpdateTrentPromotion(playerID) end
 print("Una Court Body Possession initialized")

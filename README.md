@@ -42,7 +42,7 @@ Trentrouls can exchange bodies with an eligible enemy unit within two tiles whil
 - The enemy-controlled Trentrouls can move one tile or make one melee attack per turn, but cannot move and then attack.
 - Losing or expending the borrowed body returns Trentrouls. Killing his original body destroys the Dominion.
 - Air units, missiles, nuclear and suicide units, trade units, immune units, other Una Court heroes, and Barbarians are excluded for stability.
-- Saving or autosaving while Body Swap is active safely ends the swap first, returning both bodies to their normal owners while retaining the cooldown.
+- Saving or autosaving temporarily returns both bodies to their normal owners for safe serialization, then automatically restores the active Body Swap with the same remaining duration, cooldown, movement, damage, experience, name, and promotions. Loading that save restores the swap after gameplay initialization.
 
 | Game speed | Active duration | Full cooldown |
 | --- | ---: | ---: |
@@ -77,6 +77,6 @@ Open `UnaCourt.civ5proj`, choose **Build > Build Solution**, then enable **The F
 
 - `Art/` — custom icon atlases and retained source artwork
 - `SQL/` — both civilizations, units, the shared building, scaling data, and text
-- `Lua/` — Freehold possession, Dominion Body Swap, AI, collapse safety, and pre-save ownership normalization
+- `Lua/` — Freehold possession, Dominion Body Swap, AI, collapse safety, and save/load ownership transactions
 - `UI/` — shared Una Court command panel
 - `CHANGELOG.md` — player-facing and technical changes for each push

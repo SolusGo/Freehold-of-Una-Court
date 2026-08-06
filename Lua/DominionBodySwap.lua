@@ -27,6 +27,14 @@ end
 local function SetNumber(playerID, suffix, value)
     SAVE.SetValue(Key(playerID, suffix), tonumber(value) or 0)
 end
+local function ClearSuspended(playerID)
+    SetNumber(playerID, "SAVE_SUSPENDED", 0)
+    SetNumber(playerID, "SAVE_TARGET_OWNER", -1)
+    SetNumber(playerID, "SAVE_TARGET_ID", -1)
+    SetNumber(playerID, "SAVE_TRENT_ID", -1)
+    SetNumber(playerID, "SAVE_TURNS", 0)
+    SetNumber(playerID, "SAVE_COOLDOWN", 0)
+end
 local function IsDominion(player)
     return player ~= nil and player:IsAlive() and CIV_DOMINION ~= nil
         and player:GetCivilizationType() == CIV_DOMINION
@@ -167,6 +175,7 @@ function Dominion_StartBodySwap(playerID, trentID, targetOwnerID, targetUnitID)
     end
 
     if enemyTrent.SetMoves ~= nil then enemyTrent:SetMoves(0) end
+    ClearSuspended(playerID)
     SetNumber(playerID, "ACTIVE", 1)
     SetNumber(playerID, "BORROWED_ID", borrowed:GetID())
     SetNumber(playerID, "ORIGINAL_OWNER", targetOwnerID)
@@ -184,7 +193,7 @@ function Dominion_StartBodySwap(playerID, trentID, targetOwnerID, targetUnitID)
     return true
 end
 
-function Dominion_EndBodySwap(playerID, reason, restoreTrent, skipOriginalBodyKill)
+function Dominion_EndBodySwap(playerID, reason, restoreTrent, skipOriginalBodyKill, preserveMoves)
     local player = Players[playerID]
     if player == nil or GetNumber(playerID, "ACTIVE") ~= 1 then return false end
     if restoreTrent == nil then restoreTrent = true end
@@ -193,14 +202,15 @@ function Dominion_EndBodySwap(playerID, reason, restoreTrent, skipOriginalBodyKi
     local borrowed = player:GetUnitByID(GetNumber(playerID, "BORROWED_ID"))
     local trentOwner = Players[GetNumber(playerID, "TRENT_OWNER")]
     local enemyTrent = trentOwner ~= nil and trentOwner:GetUnitByID(GetNumber(playerID, "TRENT_UNIT_ID")) or nil
+    local returnedTarget, returnedTrent = nil, nil
 
     activeTransfer = true
     if borrowed ~= nil then
         local state = Capture(borrowed)
-        borrowed:Kill(false, originalOwnerID)
+        borrowed:Kill(false, preserveMoves and -1 or originalOwnerID)
         if originalOwner ~= nil and originalOwner:IsAlive() then
-            local returned = Create(originalOwner, state, "target")
-            if returned ~= nil and returned.SetMoves ~= nil then returned:SetMoves(0) end
+            returnedTarget = Create(originalOwner, state, "target")
+            if not preserveMoves and returnedTarget ~= nil and returnedTarget.SetMoves ~= nil then returnedTarget:SetMoves(0) end
         end
     end
     -- When the original body itself triggered the Dominion's collapse, the
@@ -208,10 +218,10 @@ function Dominion_EndBodySwap(playerID, reason, restoreTrent, skipOriginalBodyKi
     -- object again here produces CvUnit's isInCombat assertion.
     if enemyTrent ~= nil and not skipOriginalBodyKill then
         local state = Capture(enemyTrent)
-        enemyTrent:Kill(false, playerID)
+        enemyTrent:Kill(false, preserveMoves and -1 or playerID)
         if restoreTrent and player:IsAlive() then
-            local returned = Create(player, state, "trent")
-            if returned ~= nil and returned.SetMoves ~= nil then returned:SetMoves(0) end
+            returnedTrent = Create(player, state, "trent")
+            if not preserveMoves and returnedTrent ~= nil and returnedTrent.SetMoves ~= nil then returnedTrent:SetMoves(0) end
         end
     end
     activeTransfer = false
@@ -220,6 +230,79 @@ function Dominion_EndBodySwap(playerID, reason, restoreTrent, skipOriginalBodyKi
     if Dominion_RefreshPlayer ~= nil then Dominion_RefreshPlayer(playerID) end
     if reason ~= nil and Events.GameplayAlertMessage ~= nil then Events.GameplayAlertMessage("Body Swap ended: " .. tostring(reason) .. ".") end
     if LuaEvents.DominionBodySwapChanged ~= nil then LuaEvents.DominionBodySwapChanged(playerID) end
+    return true,
+        returnedTrent ~= nil and returnedTrent:GetID() or -1,
+        returnedTarget ~= nil and returnedTarget:GetID() or -1
+end
+
+local function ResumeSuspendedBodySwap(playerID)
+    if GetNumber(playerID, "SAVE_SUSPENDED") ~= 1 then return false end
+
+    local player = Players[playerID]
+    local targetOwnerID = GetNumber(playerID, "SAVE_TARGET_OWNER")
+    local targetOwner = Players[targetOwnerID]
+    local trent = player ~= nil and player:GetUnitByID(GetNumber(playerID, "SAVE_TRENT_ID")) or nil
+    local target = targetOwner ~= nil and targetOwner:GetUnitByID(GetNumber(playerID, "SAVE_TARGET_ID")) or nil
+    if not IsDominion(player) or targetOwner == nil or not targetOwner:IsAlive()
+        or trent == nil or trent:GetUnitType() ~= UNIT_TRENT or target == nil then
+        print("Dominion could not restore the save-suspended Body Swap; leaving ownership normalized")
+        ClearSuspended(playerID)
+        return false
+    end
+
+    local trentState, targetState = Capture(trent), Capture(target)
+    activeTransfer = true
+    target:Kill(false, -1)
+    trent:Kill(false, -1)
+    local borrowed = Create(player, targetState, "borrowed")
+    local enemyTrent = Create(targetOwner, trentState, "enemy_trent")
+    activeTransfer = false
+
+    if borrowed == nil or enemyTrent == nil then
+        activeTransfer = true
+        if borrowed ~= nil then borrowed:Kill(false, -1) end
+        if enemyTrent ~= nil then enemyTrent:Kill(false, -1) end
+        if Dominion_FindOwnedTrent ~= nil and Dominion_FindOwnedTrent(player) == nil then Create(player, trentState, "trent") end
+        if targetOwner:IsAlive() then Create(targetOwner, targetState, "target") end
+        activeTransfer = false
+        ClearSuspended(playerID)
+        print("Dominion Body Swap restore failed safely; ordinary ownership was retained")
+        return false
+    end
+
+    SetNumber(playerID, "ACTIVE", 1)
+    SetNumber(playerID, "BORROWED_ID", borrowed:GetID())
+    SetNumber(playerID, "ORIGINAL_OWNER", targetOwnerID)
+    SetNumber(playerID, "TRENT_OWNER", targetOwnerID)
+    SetNumber(playerID, "TRENT_UNIT_ID", enemyTrent:GetID())
+    SetNumber(playerID, "TURNS", GetNumber(playerID, "SAVE_TURNS"))
+    SetNumber(playerID, "COOLDOWN", GetNumber(playerID, "SAVE_COOLDOWN"))
+    ClearSuspended(playerID)
+    UpdateReadyPromotion(playerID)
+    if Dominion_RefreshPlayer ~= nil then Dominion_RefreshPlayer(playerID) end
+    if LuaEvents.DominionBodySwapChanged ~= nil then LuaEvents.DominionBodySwapChanged(playerID) end
+    print("Dominion save-suspended Body Swap restored for player " .. tostring(playerID))
+    return true
+end
+
+local function SuspendBodySwapForSave(playerID)
+    if GetNumber(playerID, "ACTIVE") ~= 1 then return false end
+    local targetOwnerID = GetNumber(playerID, "ORIGINAL_OWNER")
+    local turns = GetNumber(playerID, "TURNS")
+    local cooldown = GetNumber(playerID, "COOLDOWN")
+    local ended, trentID, targetID = Dominion_EndBodySwap(playerID, nil, true, false, true)
+    if not ended or trentID == nil or trentID < 0 or targetID == nil or targetID < 0 then
+        ClearSuspended(playerID)
+        print("Dominion Body Swap could not be suspended completely; ownership remains normalized")
+        return false
+    end
+
+    SetNumber(playerID, "SAVE_TARGET_OWNER", targetOwnerID)
+    SetNumber(playerID, "SAVE_TARGET_ID", targetID)
+    SetNumber(playerID, "SAVE_TRENT_ID", trentID)
+    SetNumber(playerID, "SAVE_TURNS", turns)
+    SetNumber(playerID, "SAVE_COOLDOWN", cooldown)
+    SetNumber(playerID, "SAVE_SUSPENDED", 1)
     return true
 end
 
@@ -368,17 +451,19 @@ if LuaEvents.DominionBodySwapRequest ~= nil then
     end)
 end
 
--- Civ V/VP serializes unit ownership before gameplay Lua is rebuilt on load.
--- A save containing both temporary bodies can therefore become unreadable.
--- Normalize ownership in the DLL's pre-save hook; the cooldown deliberately
--- remains, so saving cannot be used to bypass Body Swap's recovery time.
+-- Save only conventional ownership, while recording enough state in Civ V's
+-- embedded save database to rebuild the active swap after saving or loading.
 if GameEvents.GameSave ~= nil then
     GameEvents.GameSave.Add(function()
         for playerID = 0, (GameDefines.MAX_MAJOR_CIVS or 22) - 1 do
             if GetNumber(playerID, "ACTIVE") == 1 then
-                local ended = Dominion_EndBodySwap(playerID, "the game was saved safely", true)
-                print("Dominion pre-save Body Swap cleanup for player " .. tostring(playerID)
-                    .. ": " .. tostring(ended))
+                local suspended = SuspendBodySwapForSave(playerID)
+                print("Dominion pre-save Body Swap suspension for player " .. tostring(playerID)
+                    .. ": " .. tostring(suspended))
+                if suspended and UnaCourt_QueueDeferredRestore ~= nil then
+                    local restorePlayerID = playerID
+                    UnaCourt_QueueDeferredRestore(function() ResumeSuspendedBodySwap(restorePlayerID) end)
+                end
             end
         end
     end)
@@ -386,5 +471,11 @@ else
     print("Dominion warning: Community Patch GameSave hook is unavailable")
 end
 
+for playerID = 0, (GameDefines.MAX_MAJOR_CIVS or 22) - 1 do
+    if GetNumber(playerID, "SAVE_SUSPENDED") == 1 and UnaCourt_QueueDeferredRestore ~= nil then
+        local restorePlayerID = playerID
+        UnaCourt_QueueDeferredRestore(function() ResumeSuspendedBodySwap(restorePlayerID) end)
+    end
+end
 for playerID = 0, (GameDefines.MAX_MAJOR_CIVS or 22) - 1 do UpdateReadyPromotion(playerID) end
 print("Dominion Body Swap initialized")

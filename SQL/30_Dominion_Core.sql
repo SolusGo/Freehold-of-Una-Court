@@ -5,8 +5,8 @@
 -- ===========================================================================
 
 -- Ask the Community Patch DLL to raise GameEvents.GameSave before it writes
--- the native unit stream. The Lua gameplay layer uses this to return temporary
--- possession bodies to their ordinary owners before any save is serialized.
+-- the native unit stream and embedded save database. Lua temporarily restores
+-- ordinary ownership, records the swap, and reconstructs it after save/load.
 UPDATE CustomModOptions
 SET Value = 1
 WHERE Name = 'EVENTS_GAME_SAVE';
