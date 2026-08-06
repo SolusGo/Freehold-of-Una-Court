@@ -2,6 +2,17 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-07 - End-turn-safe human defeat
+
+### Fixed
+
+- Identified the latest Community Patch assertion as an unresolved end-turn blocker (`3`, production) being present when Trentrouls' collapse eliminated the active human player.
+- Changed both Freehold and Dominion human defeat handling to award a real Domination victory to a living opponent instead of deleting the active human's last city during the blocker update.
+- Retained full physical empire collapse for AI-controlled Una Court civilizations.
+- Added a compatible defeat-screen fallback for DLL builds that do not expose the winner-setting API.
+- Prevented Trentrouls setup and trait refresh from restarting if the player selects one-more-turn after the scripted defeat.
+- Kept the mod at version 3 so deployment replaces the existing version 3 folder.
+
 ## 2026-08-06 - Combat-safe Trentrouls collapse
 
 ### Fixed

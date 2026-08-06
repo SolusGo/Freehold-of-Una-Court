@@ -255,6 +255,58 @@ local function UnaCourt_EnforceCaps(player)
     end
 end
 
+local function UnaCourt_FindHumanDefeatWinner(playerID, killerPlayerID)
+    local player = Players[playerID]
+    local defeatedTeam = player ~= nil and player:GetTeam() or -1
+    local killer = killerPlayerID ~= nil and killerPlayerID >= 0 and Players[killerPlayerID] or nil
+    if killer ~= nil and killer:IsAlive() and killer:GetTeam() ~= defeatedTeam and not killer:IsBarbarian()
+        and (killer.IsMinorCiv == nil or not killer:IsMinorCiv()) then
+        return killer
+    end
+
+    for otherPlayerID = 0, (GameDefines.MAX_MAJOR_CIVS or 22) - 1 do
+        local other = Players[otherPlayerID]
+        if otherPlayerID ~= playerID and other ~= nil and other:IsAlive()
+            and other:GetTeam() ~= defeatedTeam
+            and not other:IsBarbarian()
+            and (other.IsMinorCiv == nil or not other:IsMinorCiv()) then
+            return other
+        end
+    end
+    return nil
+end
+
+-- Removing the active human's final city while their UI still owns an
+-- end-turn blocker makes VP assert inside CvPlayer::kill. A real victory for a
+-- living opponent ends the game cleanly without changing cities mid-blocker.
+local function UnaCourt_EndHumanGame(playerID, killerPlayerID)
+    local player = Players[playerID]
+    if player == nil or not player:IsHuman() or Game.GetActivePlayer() ~= playerID then return false end
+
+    local winner = UnaCourt_FindHumanDefeatWinner(playerID, killerPlayerID)
+    local victoryID = GameInfoTypes.VICTORY_DOMINATION
+    if winner ~= nil and victoryID ~= nil and Game.SetWinner ~= nil then
+        local ok = pcall(function() Game.SetWinner(winner:GetTeam(), victoryID) end)
+        if ok then
+            print("Una Court ended the human game after Trentrouls fell; winner player "
+                .. tostring(winner:GetID()))
+            return true
+        end
+    end
+
+    if winner ~= nil and Events.EndGameShow ~= nil and EndGameTypes ~= nil
+        and EndGameTypes.Domination ~= nil then
+        local ok = pcall(function()
+            Events.EndGameShow(EndGameTypes.Domination, winner:GetID())
+        end)
+        if ok then
+            print("Una Court showed the human defeat screen after Trentrouls fell")
+            return true
+        end
+    end
+    return false
+end
+
 local function UnaCourt_DestroyRemainingEmpire(playerID, killerPlayerID)
     if collapsing[playerID] then return end
     collapsing[playerID] = true
@@ -266,6 +318,12 @@ local function UnaCourt_DestroyRemainingEmpire(playerID, killerPlayerID)
     if UnaCourt_EndPossession ~= nil then
         pcall(function() UnaCourt_EndPossession(playerID, "Trentrouls has fallen") end)
     end
+
+    if Events.GameplayAlertMessage ~= nil then
+        Events.GameplayAlertMessage("Trentrouls has fallen. The Freehold of Una Court has collapsed.")
+    end
+
+    if UnaCourt_EndHumanGame(playerID, killerPlayerID) then return end
 
     local capital = player:GetCapitalCity()
     local capitalID = capital ~= nil and capital:GetID() or -1
@@ -303,9 +361,6 @@ local function UnaCourt_DestroyRemainingEmpire(playerID, killerPlayerID)
         if unit ~= nil then unit:Kill(false, killerPlayerID or -1) end
     end
 
-    if Events.GameplayAlertMessage ~= nil then
-        Events.GameplayAlertMessage("Trentrouls has fallen. The Freehold of Una Court has collapsed.")
-    end
 end
 
 local function UnaCourt_ProcessPendingCollapses(force)
@@ -339,7 +394,7 @@ local function UnaCourt_DoTurn(playerID)
     UnaCourt_ProcessPendingCollapses(true)
 
     local player = Players[playerID]
-    if not UnaCourt_IsPlayer(player) then return end
+    if not UnaCourt_IsPlayer(player) or collapsing[playerID] then return end
     UnaCourt_EnsureStartingTrentrouls(playerID)
     UnaCourt_EnforceCaps(player)
     UnaCourt_RefreshPlayer(playerID)
