@@ -2,6 +2,13 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-06 - Dominion leader portrait correction
+
+### Fixed
+
+- Rewired the Dominion leader record to use its dedicated red-violet "ready to possess" Trentrouls portrait instead of the Freehold Trentrouls leader portrait.
+- Reused the already validated Dominion Trentrouls atlas at every required Civ V icon size and kept the mod at version 3.
+
 ## 2026-08-06 - Dominion heraldic banners
 
 ### Changed
