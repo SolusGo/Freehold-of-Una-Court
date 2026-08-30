@@ -7,6 +7,7 @@ print("UltimatePossession.lua loaded")
 
 local SAVE = Modding.OpenSaveData()
 local CIV_ULTIMATE = GameInfoTypes.CIVILIZATION_ULTIMATE_POSSESSION
+local UNIT_WARRIOR = GameInfoTypes.UNIT_WARRIOR
 local UNIT_GOLDEN_RETRIEVER = GameInfoTypes.UNIT_ULTIMATE_GOLDEN_RETRIEVER
 local PROMO_GOOD_BOY = GameInfoTypes.PROMOTION_ULTIMATE_GOOD_BOY
 local PROMO_GOOD_BOY_AURA = GameInfoTypes.PROMOTION_ULTIMATE_GOOD_BOY_AURA
@@ -44,6 +45,37 @@ end
 local function IsUltimatePlayer(player)
     return player ~= nil and player:IsAlive() and CIV_ULTIMATE ~= nil
         and player:GetCivilizationType() == CIV_ULTIMATE
+end
+
+local function IsOpeningTurn()
+    if Game == nil or Game.GetElapsedGameTurns == nil then return false end
+    local ok, turns = pcall(function() return Game.GetElapsedGameTurns() end)
+    return ok and tonumber(turns) == 0
+end
+
+local function RemoveExtraStartingWarriors(playerID)
+    local player = Players[playerID]
+    if not IsUltimatePlayer(player) or not IsOpeningTurn() or UNIT_WARRIOR == nil then return end
+
+    local warriorIDs = {}
+    for unit in player:Units() do
+        if unit:GetUnitType() == UNIT_WARRIOR then
+            warriorIDs[#warriorIDs + 1] = unit:GetID()
+        end
+    end
+    table.sort(warriorIDs)
+
+    -- The civilization definition supplies the intended Warrior. Some VP
+    -- handicap and setup combinations add another opening package, so retain
+    -- one deterministic unit and remove only turn-zero duplicates.
+    for index = 2, #warriorIDs do
+        local duplicate = player:GetUnitByID(warriorIDs[index])
+        if duplicate ~= nil then duplicate:Kill(false, -1) end
+    end
+    if #warriorIDs > 1 then
+        print("Ultimate Possession removed " .. tostring(#warriorIDs - 1)
+            .. " duplicate opening Warrior(s) for player " .. tostring(playerID))
+    end
 end
 
 local function CurrentCapacity(player)
@@ -530,6 +562,7 @@ end
 local function DoTurn(playerID)
     local player = Players[playerID]
     if not IsUltimatePlayer(player) then return end
+    RemoveExtraStartingWarriors(playerID)
 
     local cooldown = GetNumber(playerID, "COOLDOWN")
     if cooldown > 0 then
@@ -662,6 +695,7 @@ for playerID = 0, (GameDefines.MAX_MAJOR_CIVS or 22) - 1 do
         local restorePlayerID = playerID
         UnaCourt_QueueDeferredRestore(function() ResumeSuspended(restorePlayerID) end)
     end
+    RemoveExtraStartingWarriors(playerID)
     RefreshGoodBoyAura(playerID)
 end
 

@@ -2,6 +2,14 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-31 - Ultimate Possession duplicate starting Warrior fix
+
+### Fixed
+
+- Ultimate Possession now retains exactly one ordinary Warrior when Vox Populi, a handicap, or another setup rule grants an overlapping opening-unit package.
+- Restricted the cleanup to turn zero and to duplicate base Warriors, so trained, captured, upgraded, possessed, and later-game units remain untouched.
+- Kept the intended normal Settler-and-Warrior opening and the mod's fixed version 3 deployment.
+
 ## 2026-08-30 - Ultimate Possession civilization-icon cleanup
 
 ### Changed
