@@ -62,6 +62,26 @@ def build_leader_icon(source: Image.Image, size: int) -> Image.Image:
     return canvas.resize((size, size), Image.Resampling.LANCZOS)
 
 
+def build_civilization_icon(source: Image.Image, size: int) -> Image.Image:
+    """Remove the source's square field and match Civ V's circular icon footprint."""
+    scale = 4
+    canvas_size = size * scale
+    diameter = round(canvas_size * 0.875)
+    offset = (canvas_size - diameter) // 2
+
+    # The generated source has a small black safety margin outside its medallion.
+    # Crop that away before sizing so the gold rim remains legible at 32 and 45 px.
+    trim = round(min(source.size) * 0.026)
+    medallion = source.crop((trim, trim, source.width - trim, source.height - trim))
+    medallion = ImageOps.fit(medallion, (diameter, diameter), Image.Resampling.LANCZOS).convert("RGBA")
+    mask = Image.new("L", (diameter, diameter), 0)
+    ImageDraw.Draw(mask).ellipse((0, 0, diameter - 1, diameter - 1), fill=255)
+
+    canvas = Image.new("RGBA", (canvas_size, canvas_size), (0, 0, 0, 0))
+    canvas.paste(medallion, (offset, offset), mask)
+    return canvas.resize((size, size), Image.Resampling.LANCZOS)
+
+
 def build() -> None:
     dawn = Image.open(SOURCE / "UltimatePossessorDawnOfMan.png").convert("RGB")
     emblem = Image.open(SOURCE / "UltimatePossessionEmblem.png").convert("RGB")
@@ -79,8 +99,8 @@ def build() -> None:
 
     emblem_master = ImageOps.fit(emblem, (1024, 1024), Image.Resampling.LANCZOS)
     for size in ICON_SIZES:
-        icon = emblem_master.resize((size, size), Image.Resampling.LANCZOS)
-        save_dds(icon, ROOT / "Art" / "UltimateCivilization" / f"UltimateIcon{size}.dds", "DXT1")
+        icon = build_civilization_icon(emblem_master, size)
+        save_dds(icon, ROOT / "Art" / "UltimateCivilization" / f"UltimateIcon{size}.dds", "DXT5")
 
     # Alpha atlases require a white symbol whose transparency carries the mask.
     # The luminance mapping extracts the gold emblem while dropping its purple

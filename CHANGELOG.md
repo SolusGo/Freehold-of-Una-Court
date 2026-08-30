@@ -2,6 +2,14 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-30 - Ultimate Possession civilization-icon cleanup
+
+### Changed
+
+- Removed the Ultimate Possession emblem's square black background and rebuilt all six civilization-icon atlases with proper transparency.
+- Reduced and centered the purple-gold medallion to match the visual footprint of the Freehold and Dominion civilization icons in selection lists and other UI.
+- Kept the mod fixed at version 3 and used DXT5 compression for clean transparent corners.
+
 ## 2026-08-30 - Ultimate Possessor leader-list polish
 
 ### Changed

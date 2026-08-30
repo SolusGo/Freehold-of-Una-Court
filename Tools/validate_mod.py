@@ -61,10 +61,14 @@ def validate_art() -> None:
         with Image.open(path) as image:
             assert image.size == size, f"Wrong dimensions for {path}: {image.size}"
     for size in (256, 128, 80, 64, 45, 32):
-        path = ROOT / "Art" / "UltimateTrentLeader" / f"UltimateTrentIcon{size}.dds"
-        with Image.open(path) as image:
-            alpha_min, alpha_max = image.convert("RGBA").getchannel("A").getextrema()
-            assert alpha_min == 0 and alpha_max == 255, f"Leader portrait lost transparency: {path}"
+        for directory, filename in (
+            ("UltimateTrentLeader", f"UltimateTrentIcon{size}.dds"),
+            ("UltimateCivilization", f"UltimateIcon{size}.dds"),
+        ):
+            path = ROOT / "Art" / directory / filename
+            with Image.open(path) as image:
+                alpha_min, alpha_max = image.convert("RGBA").getchannel("A").getextrema()
+                assert alpha_min == 0 and alpha_max == 255, f"UI icon lost transparency: {path}"
 
 
 def validate_database() -> None:
