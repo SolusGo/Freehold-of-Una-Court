@@ -60,6 +60,11 @@ def validate_art() -> None:
     for path, size in expected.items():
         with Image.open(path) as image:
             assert image.size == size, f"Wrong dimensions for {path}: {image.size}"
+    for size in (256, 128, 80, 64, 45, 32):
+        path = ROOT / "Art" / "UltimateTrentLeader" / f"UltimateTrentIcon{size}.dds"
+        with Image.open(path) as image:
+            alpha_min, alpha_max = image.convert("RGBA").getchannel("A").getextrema()
+            assert alpha_min == 0 and alpha_max == 255, f"Leader portrait lost transparency: {path}"
 
 
 def validate_database() -> None:

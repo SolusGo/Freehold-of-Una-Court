@@ -2,6 +2,14 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-30 - Ultimate Possessor leader-list polish
+
+### Changed
+
+- Rebuilt the Ultimate Possessor leader portrait at all six Civ V atlas sizes as a circular icon with transparent corners and layered gold framing.
+- Matched the established Dominion portrait footprint so the artwork no longer fills the square, intrudes into adjacent civilization rows, or breaks the leader-list rhythm.
+- Kept the mod fixed at version 3 and regenerated the portrait atlases with DXT5 transparency.
+
 ## 2026-08-30 - Ultimate Possession civilization
 
 ### Added
