@@ -2,6 +2,27 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-30 - Ultimate Possession civilization
+
+### Added
+
+- Added a third playable civilization, **Trentrouls - Ultimate Possession**, with a normal Settler and Warrior start.
+- Added **Two Possessions for the Price of One**, a multi-unit possession ability with Era-scaled capacity from 1 to 8 targets and a Standard-speed cooldown of 5 turns plus 3 per additional target.
+- Added a dedicated multi-select mode to the existing Una Court command panel, including selected-count, capacity, duration, prospective cooldown, active-unit, and network-range feedback.
+- Added Barbarian possession, strategic-resource validation, safe peace and eliminated-owner handling, AI target selection, and delete/gift/upgrade protection.
+- Added save/load-safe mass possession: temporary ownership is normalized before serialization and reconstructed after saving or loading with transactional rollback.
+- Added the **Golden Retriever** Scout replacement with 3 Movement and the non-stacking **Good Boy** aura: adjacent friendly units gain +10% Combat Strength and +5 HP healing per turn.
+- Added the unique National Wonder **3 Una Court**, providing +1 Happiness and +5% Gold in every city while unemployed Citizens produce +1 Culture.
+- Shared the existing **Centrelink** Bank replacement with the new civilization instead of duplicating its building definition.
+- Added dedicated generated artwork for the Ultimate Possessor Dawn of Man scene, purple-gold civilization emblem and alpha mask, Trentrouls leader atlas, and 3 Una Court wonder atlas at every required Civ V size.
+- Added reproducible art-build and project/database/art validation tools.
+
+### Compatibility
+
+- Kept the mod fixed at version 3 and deployed over only `The Freehold of Una Court (v 3)`.
+- Reused the existing isolated InGameUIAddin rather than replacing TopPanel, UnitPanel, CityView, Community Patch, or EUI files.
+- Retained the Freehold and Dominion rules, assets, UI modes, and save/load systems unchanged except for registering the shared third mode.
+
 ## 2026-08-07 - Persistent save-safe Body Swap
 
 ### Changed

@@ -1,8 +1,8 @@
 # Una Court Civilizations
 
-A version 3 Civilization V: Brave New World mod for the Community Patch / Vox Populi ruleset. It adds two selectable civilizations led by Trentrouls: the companion-focused **Freehold of Una Court** and the aggressive **Dominion of Una Court**.
+A version 3 Civilization V: Brave New World mod for the Community Patch / Vox Populi ruleset. It adds three selectable civilizations led by Trentrouls: the companion-focused **Freehold of Una Court**, the aggressive **Dominion of Una Court**, and the army-stealing **Ultimate Possession**.
 
-Both civilizations begin with a Settler and their own Trentrouls instead of an ordinary Warrior. In either realm, Trentrouls is irreplaceable: if his body dies, the civilization collapses.
+The Freehold and Dominion begin with a Settler and their own Trentrouls instead of an ordinary Warrior. In either realm, Trentrouls is irreplaceable: if his body dies, the civilization collapses. Ultimate Possession uses the normal Settler and Warrior start because Trentrouls acts through its civilization ability rather than appearing as a separate map unit.
 
 ## The Freehold of Una Court
 
@@ -51,17 +51,54 @@ Trentrouls can exchange bodies with an eligible enemy unit within two tiles whil
 | Epic | 3 turns | 18 turns |
 | Marathon | 6 turns | 36 turns |
 
+## Trentrouls - Ultimate Possession
+
+Ultimate Possession is the large-scale version of Trentrouls' power. Instead of risking a unique Trentrouls unit, it projects a possession network from every friendly city and military unit.
+
+### Two Possessions for the Price of One
+
+- Enemy and Barbarian units within two tiles of any friendly city or military unit can be selected in the Una Court panel.
+- Maximum simultaneous targets equal the current Era number: 1 in the Ancient Era, increasing to 8 in the Information Era.
+- All selected units are possessed together for 3 turns on Standard speed.
+- Cooldown depends on the size of the group: 5 turns for one unit, then +3 turns for every additional unit.
+- Possessed units retain their type, promotions, damage, experience, name, movement, and embarked state.
+- Possessed units cannot be deleted, gifted, or upgraded. Strategic-resource requirements are checked before activation.
+- Surviving units return to their original owner when the duration expires or peace is signed. Units killed or expended while possessed stay gone. If an original major civilization has been eliminated, its surviving borrowed unit is disbanded safely.
+- Saving and loading uses the same ownership-normalization transaction as the other Una Court possession systems: ordinary ownership is serialized, then the active group is rebuilt after the save or load finishes.
+- AI-controlled Ultimate Possession automatically selects the most valuable eligible targets.
+
+| Units selected | Standard cooldown |
+| ---: | ---: |
+| 1 | 5 turns |
+| 2 | 8 turns |
+| 3 | 11 turns |
+| 4 | 14 turns |
+| 5 | 17 turns |
+| 6 | 20 turns |
+| 7 | 23 turns |
+| 8 | 26 turns |
+
+Quick, Epic, and Marathon games scale these cooldowns to 67%, 150%, and 300%. Active duration is 2/3/5/9 turns on Quick/Standard/Epic/Marathon.
+
+### Golden Retriever
+
+The Golden Retriever replaces the Scout. It costs 45 Production, has 3 Movement, and costs one additional Gold per turn while retaining the Scout's ordinary abilities. Its non-stacking **Good Boy** promotion grants adjacent friendly units +10% Combat Strength and +5 HP healing per turn.
+
+### 3 Una Court
+
+This unique National Wonder becomes available at Civil Service and costs 250 Production. It provides +1 Happiness and +5% Gold in every city, while unemployed Citizens in every city produce +1 Culture.
+
 ## Shared unique building: Centrelink
 
-Both civilizations replace the Bank with the same single **Centrelink** building definition. Centrelink retains the Bank's normal benefits and adds +1 local Happiness.
+All three civilizations replace the Bank with the same single **Centrelink** building definition. Centrelink retains the Bank's normal benefits and adds +1 local Happiness.
 
 ## Interface and compatibility
 
-The existing right-side command panel automatically switches between Freehold Body Possession and Dominion Body Swap. It includes preview-and-confirm targeting, current and next-era strength, ability timing, and unit-finding controls. The panel hides in city view and does not replace the TopPanel, UnitPanel, CityView, Community Patch, or EUI contexts.
+The existing right-side command panel automatically switches between Freehold Body Possession, Dominion Body Swap, and Ultimate Mass Possession. Ultimate mode provides toggleable multi-selection, capacity and cooldown previews, active-unit tracking, and capital/retriever/possessed-unit finders. The panel hides in city view and does not replace the TopPanel, UnitPanel, CityView, Community Patch, or EUI contexts.
 
 ## Current alpha limitations
 
-- The two civilizations share Una Court's location map, leader portrait, and base-game unit models; each now has its own emblem, flag alpha, Trentrouls unit portrait, and Dawn of Man artwork.
+- The three civilizations share Una Court's location map and base-game unit models. Each has dedicated emblem and leader art; Ultimate Possession also has custom Dawn of Man and 3 Una Court artwork.
 - Highly specialized modded units may contain internal state that Civ V Lua cannot perfectly preserve through an ownership transfer.
 - Multiplayer and hotseat are intentionally disabled while the scripted transfer systems are stabilized.
 
@@ -76,7 +113,8 @@ Open `UnaCourt.civ5proj`, choose **Build > Build Solution**, then enable **The F
 ## Source layout
 
 - `Art/` — custom icon atlases and retained source artwork
-- `SQL/` — both civilizations, units, the shared building, scaling data, and text
-- `Lua/` — Freehold possession, Dominion Body Swap, AI, collapse safety, and save/load ownership transactions
+- `SQL/` — all three civilizations, units, shared and unique buildings, scaling data, and text
+- `Lua/` — Freehold possession, Dominion Body Swap, Ultimate Mass Possession, AI, aura support, collapse safety, and save/load ownership transactions
 - `UI/` — shared Una Court command panel
+- `Tools/` — reproducible art building and validation scripts
 - `CHANGELOG.md` — player-facing and technical changes for each push

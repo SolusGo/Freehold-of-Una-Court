@@ -6,8 +6,8 @@
     <Name>The Freehold of Una Court</Name>
     <SafeName>The Freehold of Una Court</SafeName>
     <Guid>7ec83c11-5853-453c-9ca7-0b2cf85a2a48</Guid>
-    <Teaser>Choose the Freehold or Dominion of Una Court and turn enemy units against their masters.</Teaser>
-    <Description>Two Community Patch civilizations led by Trentrouls: the Buddy-supported Freehold and the aggressive body-swapping Dominion. Both share Centrelink.</Description>
+    <Teaser>Choose one of three Una Court civilizations and turn enemy units against their masters.</Teaser>
+    <Description>Three Community Patch civilizations led by Trentrouls: the Buddy-supported Freehold, the aggressive body-swapping Dominion, and the army-stealing Ultimate Possession. All three share Centrelink.</Description>
     <Authors>ThatOneYi</Authors>
     <AssemblyName>UnaCourt</AssemblyName>
     <RootNamespace>UnaCourt</RootNamespace>
@@ -27,11 +27,14 @@
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>Art/UnaCourt_IconAtlases.xml</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>Art/UnaCourt_TrentIconAtlases.xml</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>Art/UnaCourt_CivilizationIconAtlases.xml</FileName></Action>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>Art/Ultimate_IconAtlases.xml</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/00_UnaCourt_Core.sql</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/10_UnaCourt_Scaling.sql</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/20_UnaCourt_Text.sql</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/30_Dominion_Core.sql</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/40_Dominion_Text.sql</FileName></Action>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/50_Ultimate_Core.sql</FileName></Action>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/60_Ultimate_Text.sql</FileName></Action>
     </ModActions>
     <ModContent>
       <Content>
@@ -43,7 +46,7 @@
       <Content>
         <Type>InGameUIAddin</Type>
         <Name>Una Court Command Panel</Name>
-        <Description>Displays Freehold Body Possession and Dominion Body Swap controls.</Description>
+        <Description>Displays Freehold, Dominion, and Ultimate Possession controls.</Description>
         <FileName>UI/UnaCourtPanel.xml</FileName>
       </Content>
     </ModContent>
@@ -58,6 +61,7 @@
     <Content Include="Art\UnaCourt_IconAtlases.xml"><SubType>XML</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="Art\UnaCourt_TrentIconAtlases.xml"><SubType>XML</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="Art\UnaCourt_CivilizationIconAtlases.xml"><SubType>XML</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="Art\Ultimate_IconAtlases.xml"><SubType>XML</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="Art\Civilization\UnaCourtIcon256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\Civilization\UnaCourtIcon128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\Civilization\UnaCourtIcon80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
@@ -83,6 +87,30 @@
     <Content Include="Art\DawnOfMan\UnaCourtDawnOfMan.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\DawnOfMan\UnaCourtMap.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\DominionDawnOfMan\DominionDawnOfMan.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateDawnOfMan\UltimateDawnOfMan.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateCivilization\UltimateIcon256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateCivilization\UltimateIcon128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateCivilization\UltimateIcon80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateCivilization\UltimateIcon64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateCivilization\UltimateIcon45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateCivilization\UltimateIcon32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateCivilization\UltimateAlpha128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateCivilization\UltimateAlpha80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateCivilization\UltimateAlpha64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateCivilization\UltimateAlpha45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateCivilization\UltimateAlpha32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateTrentLeader\UltimateTrentIcon256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateTrentLeader\UltimateTrentIcon128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateTrentLeader\UltimateTrentIcon80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateTrentLeader\UltimateTrentIcon64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateTrentLeader\UltimateTrentIcon45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\UltimateTrentLeader\UltimateTrentIcon32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Ultimate3UnaCourt\ThreeUnaCourtIcon256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Ultimate3UnaCourt\ThreeUnaCourtIcon128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Ultimate3UnaCourt\ThreeUnaCourtIcon80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Ultimate3UnaCourt\ThreeUnaCourtIcon64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Ultimate3UnaCourt\ThreeUnaCourtIcon45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\Ultimate3UnaCourt\ThreeUnaCourtIcon32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\Buddy\BuddyIcon256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\Buddy\BuddyIcon128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\Buddy\BuddyIcon80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
@@ -118,14 +146,18 @@
     <Content Include="SQL\20_UnaCourt_Text.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="SQL\30_Dominion_Core.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="SQL\40_Dominion_Text.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="SQL\50_Ultimate_Core.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="SQL\60_Ultimate_Text.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="Lua\UnaCourtLoader.lua"><SubType>Lua</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="Lua\UnaCourtCore.lua"><SubType>Lua</SubType><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Lua\UnaCourtPossession.lua"><SubType>Lua</SubType><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Lua\DominionCore.lua"><SubType>Lua</SubType><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Lua\DominionBodySwap.lua"><SubType>Lua</SubType><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Lua\UltimatePossession.lua"><SubType>Lua</SubType><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="UI\UnaCourtPanel.xml"><SubType>Lua</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="UI\UnaCourtPanel.lua"><SubType>Lua</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
     <Content Include="README.md"><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="CHANGELOG.md"><ImportIntoVFS>False</ImportIntoVFS></Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Art\" />
@@ -136,11 +168,17 @@
     <Folder Include="Art\DominionCivilization\" />
     <Folder Include="Art\DominionDawnOfMan\" />
     <Folder Include="Art\DominionTrentrouls\" />
+    <Folder Include="Art\Source\" />
+    <Folder Include="Art\Ultimate3UnaCourt\" />
+    <Folder Include="Art\UltimateCivilization\" />
+    <Folder Include="Art\UltimateDawnOfMan\" />
+    <Folder Include="Art\UltimateTrentLeader\" />
     <Folder Include="Art\TrentLeader\" />
     <Folder Include="Art\Trentrouls\" />
     <Folder Include="SQL\" />
     <Folder Include="Lua\" />
     <Folder Include="UI\" />
+    <Folder Include="Tools\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Firaxis\ModBuddy\Civ5Mod.targets" />
 </Project>

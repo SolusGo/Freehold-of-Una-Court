@@ -10,6 +10,8 @@ Packages/
 
 # Local validation and editor files
 .codex-doc-read/
+__pycache__/
+*.pyc
 *.log
 Thumbs.db
 .DS_Store
