@@ -82,6 +82,41 @@ def build_civilization_icon(source: Image.Image, size: int) -> Image.Image:
     return canvas.resize((size, size), Image.Resampling.LANCZOS)
 
 
+def build_building_icon(source: Image.Image, size: int) -> Image.Image:
+    """Turn the 3 Una Court scene into a compact Civ V building medallion."""
+    scale = 4
+    canvas_size = size * scale
+    canvas = Image.new("RGBA", (canvas_size, canvas_size), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(canvas)
+
+    def circle(inset: float, fill: tuple[int, int, int, int]) -> None:
+        edge = round(canvas_size * inset)
+        draw.ellipse((edge, edge, canvas_size - edge - 1, canvas_size - edge - 1), fill=fill)
+
+    circle(0.0625, (32, 20, 7, 255))
+    circle(0.0750, (132, 83, 16, 255))
+    circle(0.0875, (243, 199, 79, 255))
+    circle(0.1125, (69, 41, 8, 255))
+    circle(0.1250, (255, 224, 124, 255))
+
+    portrait_inset = round(canvas_size * 0.145)
+    portrait_size = canvas_size - portrait_inset * 2
+    # Trim foreground and side vegetation so the dome and front entrance remain
+    # identifiable in the 45 px Civilopedia and production-list versions.
+    trim = round(min(source.size) * 0.05)
+    focus = source.crop((trim, 0, source.width - trim, source.height - trim * 2))
+    portrait = ImageOps.fit(
+        focus,
+        (portrait_size, portrait_size),
+        method=Image.Resampling.LANCZOS,
+        centering=(0.5, 0.43),
+    ).convert("RGBA")
+    mask = Image.new("L", (portrait_size, portrait_size), 0)
+    ImageDraw.Draw(mask).ellipse((0, 0, portrait_size - 1, portrait_size - 1), fill=255)
+    canvas.paste(portrait, (portrait_inset, portrait_inset), mask)
+    return canvas.resize((size, size), Image.Resampling.LANCZOS)
+
+
 def build() -> None:
     dawn = Image.open(SOURCE / "UltimatePossessorDawnOfMan.png").convert("RGB")
     emblem = Image.open(SOURCE / "UltimatePossessionEmblem.png").convert("RGB")
@@ -115,8 +150,8 @@ def build() -> None:
 
     mansion_master = ImageOps.fit(mansion, (1024, 1024), Image.Resampling.LANCZOS)
     for size in ICON_SIZES:
-        icon = mansion_master.resize((size, size), Image.Resampling.LANCZOS)
-        save_dds(icon, ROOT / "Art" / "Ultimate3UnaCourt" / f"ThreeUnaCourtIcon{size}.dds", "DXT1")
+        icon = build_building_icon(mansion_master, size)
+        save_dds(icon, ROOT / "Art" / "Ultimate3UnaCourt" / f"ThreeUnaCourtIcon{size}.dds", "DXT5")
 
 
 if __name__ == "__main__":

@@ -64,6 +64,7 @@ def validate_art() -> None:
         for directory, filename in (
             ("UltimateTrentLeader", f"UltimateTrentIcon{size}.dds"),
             ("UltimateCivilization", f"UltimateIcon{size}.dds"),
+            ("Ultimate3UnaCourt", f"ThreeUnaCourtIcon{size}.dds"),
         ):
             path = ROOT / "Art" / directory / filename
             with Image.open(path) as image:
@@ -140,6 +141,20 @@ def validate_localization() -> None:
     tags = set(re.findall(r"\('(TXT_KEY_[A-Z0-9_]+)'", text))
     missing = sorted(references - tags)
     assert not missing, "Missing Ultimate localization tags: " + ", ".join(missing)
+    pedia_tags = {
+        *(f"TXT_KEY_CIV5_ULTIMATE_POSSESSION_HEADING_{index}" for index in range(1, 6)),
+        *(f"TXT_KEY_CIV5_ULTIMATE_POSSESSION_TEXT_{index}" for index in range(1, 6)),
+        "TXT_KEY_CIV5_ULTIMATE_POSSESSION_FACTOID_HEADING",
+        "TXT_KEY_CIV5_ULTIMATE_POSSESSION_FACTOID_TEXT",
+        "TXT_KEY_CIVILOPEDIA_LEADERS_ULTIMATE_TRENTROULS_NAME",
+        "TXT_KEY_CIVILOPEDIA_LEADERS_ULTIMATE_TRENTROULS_SUBTITLE",
+        "TXT_KEY_CIVILOPEDIA_LEADERS_ULTIMATE_TRENTROULS_LIVED",
+        "TXT_KEY_CIVILOPEDIA_LEADERS_ULTIMATE_TRENTROULS_TITLES_1",
+        *(f"TXT_KEY_CIVILOPEDIA_LEADERS_ULTIMATE_TRENTROULS_HEADING_{index}" for index in range(1, 5)),
+        *(f"TXT_KEY_CIVILOPEDIA_LEADERS_ULTIMATE_TRENTROULS_TEXT_{index}" for index in range(1, 5)),
+    }
+    missing_pedia = sorted(pedia_tags - tags)
+    assert not missing_pedia, "Missing structured Civilopedia tags: " + ", ".join(missing_pedia)
 
 
 if __name__ == "__main__":

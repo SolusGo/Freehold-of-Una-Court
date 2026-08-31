@@ -2,6 +2,16 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-08-31 - Ultimate Possession Civilopedia and wonder-art polish
+
+### Changed
+
+- Filled the previously blank Ultimate Possession Civilopedia overview with native sections for its rules, possession scaling, Golden Retriever, shared Centrelink, 3 Una Court, strategy, and faction lore.
+- Added a structured Trentrouls leader biography with title, era, four readable history sections, and gameplay factoids.
+- Expanded the Golden Retriever and 3 Una Court individual Civilopedia articles with practical usage guidance.
+- Rebuilt all six 3 Una Court icon sizes as a focused circular mansion portrait with transparent corners and layered Civ V-style gold framing.
+- Kept the mod fixed at version 3 and added validation for the structured Civilopedia keys and wonder-icon transparency.
+
 ## 2026-08-31 - Ultimate Possession duplicate starting Warrior fix
 
 ### Fixed
