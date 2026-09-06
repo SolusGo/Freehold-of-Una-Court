@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GameData><IconTextureAtlases>
+<Row><Atlas>SOFT_KITTY_ATLAS</Atlas><IconSize>256</IconSize><Filename>Art/SoftKitty/Atlas256.dds</Filename><IconsPerRow>3</IconsPerRow><IconsPerColumn>2</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_CIV_ATLAS</Atlas><IconSize>256</IconSize><Filename>Art/SoftKitty/Civ256.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_ATLAS</Atlas><IconSize>128</IconSize><Filename>Art/SoftKitty/Atlas128.dds</Filename><IconsPerRow>3</IconsPerRow><IconsPerColumn>2</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_CIV_ATLAS</Atlas><IconSize>128</IconSize><Filename>Art/SoftKitty/Civ128.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_ATLAS</Atlas><IconSize>80</IconSize><Filename>Art/SoftKitty/Atlas80.dds</Filename><IconsPerRow>3</IconsPerRow><IconsPerColumn>2</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_CIV_ATLAS</Atlas><IconSize>80</IconSize><Filename>Art/SoftKitty/Civ80.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_ATLAS</Atlas><IconSize>64</IconSize><Filename>Art/SoftKitty/Atlas64.dds</Filename><IconsPerRow>3</IconsPerRow><IconsPerColumn>2</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_CIV_ATLAS</Atlas><IconSize>64</IconSize><Filename>Art/SoftKitty/Civ64.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_ATLAS</Atlas><IconSize>45</IconSize><Filename>Art/SoftKitty/Atlas45.dds</Filename><IconsPerRow>3</IconsPerRow><IconsPerColumn>2</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_CIV_ATLAS</Atlas><IconSize>45</IconSize><Filename>Art/SoftKitty/Civ45.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_ATLAS</Atlas><IconSize>32</IconSize><Filename>Art/SoftKitty/Atlas32.dds</Filename><IconsPerRow>3</IconsPerRow><IconsPerColumn>2</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_CIV_ATLAS</Atlas><IconSize>32</IconSize><Filename>Art/SoftKitty/Civ32.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_ALPHA_ATLAS</Atlas><IconSize>128</IconSize><Filename>Art/SoftKitty/Alpha128.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_ALPHA_ATLAS</Atlas><IconSize>80</IconSize><Filename>Art/SoftKitty/Alpha80.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_ALPHA_ATLAS</Atlas><IconSize>64</IconSize><Filename>Art/SoftKitty/Alpha64.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_ALPHA_ATLAS</Atlas><IconSize>45</IconSize><Filename>Art/SoftKitty/Alpha45.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_ALPHA_ATLAS</Atlas><IconSize>32</IconSize><Filename>Art/SoftKitty/Alpha32.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_ALPHA_ATLAS</Atlas><IconSize>24</IconSize><Filename>Art/SoftKitty/Alpha24.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>
+<Row><Atlas>SOFT_KITTY_ALPHA_ATLAS</Atlas><IconSize>16</IconSize><Filename>Art/SoftKitty/Alpha16.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>
+</IconTextureAtlases></GameData>

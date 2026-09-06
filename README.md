@@ -1,6 +1,6 @@
 # Una Court Civilizations
 
-A version 3 Civilization V: Brave New World mod for the Community Patch / Vox Populi ruleset. It adds three selectable civilizations led by Trentrouls: the companion-focused **Freehold of Una Court**, the aggressive **Dominion of Una Court**, and the army-stealing **Ultimate Possession**.
+A version 3 Civilization V: Brave New World mod for the Community Patch ruleset. It adds four selectable civilizations led by Trent: the companion-focused **Freehold of Una Court**, the aggressive **Dominion of Una Court**, the army-stealing **Ultimate Possession**, and the musical **Soft Kitty Serenader**.
 
 The Freehold and Dominion begin with a Settler and their own Trentrouls instead of an ordinary Warrior. In either realm, Trentrouls is irreplaceable: if his body dies, the civilization collapses. Ultimate Possession uses the normal Settler and Warrior start because Trentrouls acts through its civilization ability rather than appearing as a separate map unit.
 
@@ -88,17 +88,33 @@ The Golden Retriever replaces the Scout. It costs 45 Production, has 3 Movement,
 
 This unique National Wonder becomes available at Civil Service and costs 250 Production. It provides +1 Happiness and +5% Gold in every city, while unemployed Citizens in every city produce +1 Culture.
 
+## Trent - The Soft Kitty Serenader
+
+A navy-and-gold Una Court focused on Culture, Tourism and diplomacy. It uses a normal starting army, with no irreplaceable Trent unit or collapse mechanic.
+
+- **Soft Kitty, Warm Kitty:** use the independent **Sing Soft Kitty** button to select a met, peaceful major civilization. Standard-speed cooldown is 15 turns. Successful songs award 30 Culture and 20 targeted Tourism per era number, plus 5 influence with each city-state allied to the audience.
+- Friendly audiences or Declarations of Friendship double rewards and normally cannot fail. Neutral/afraid audiences have 10% backlash risk; guarded/deceptive audiences receive 75% rewards with 25% risk; hostile audiences receive 50% rewards with 50% risk. The confirmation displays the current rewards and risk.
+- **Repercussions:** a failed song gives no rewards and causes five Standard-speed turns of -15% Production, -10% military Combat Strength and -20% Great Person generation. Military land/naval units trained during recovery also lose one Movement until recovery ends; purchases are exempt. Further backlash refreshes the duration without stacking the penalties.
+- The first civilization to cause backlash becomes the permanent **Ex**: subsequent songs give +25% rewards but have at least 15% backlash risk. Cooldown, Ex and recovery survive saving and loading.
+- **Hopeless Romantic:** replaces the active ruleset's Great Musician, retaining Great Work creation. Its custom **Serenade** action requires adjacency to a peaceful foreign major city and consumes the unit for 125% of its normal concert Tourism, 100 Culture and the allied city-state influence bonus. The Ex receives a further 20% Tourism. Hostile audiences have a 25% backlash risk, but the concert still awards its rewards. The native concert mission is replaced by this action.
+- **Comfort Room:** replaces and inherits the active Opera House, adding 1 Culture, 1 local Happiness, 1 Culture per local Great Work of Music and 10% local Great Musician generation. Each Comfort Room reduces the empire's recovery Production penalty by one percentage point, capped at zero, and produces 3 extra Culture locally during recovery.
+
+Cooldown and recovery durations scale with game speed; ordinary song yields and concert Tourism also scale. The fixed concert Culture award is 100. This civ has custom circular portraits, a static diplomacy scene, silent Dawn of Man art, and native Civilopedia articles. Its AI can select audiences and use adjacent concerts; the existing three civs remain player-only, as configured previously.
+
 ## Shared unique building: Centrelink
 
-All three civilizations replace the Bank with the same single **Centrelink** building definition. Centrelink retains the Bank's normal benefits and adds +1 local Happiness.
+The original three civilizations replace the Bank with the same single **Centrelink** building definition. Centrelink retains the Bank's normal benefits and adds +1 local Happiness. Soft Kitty uses its own Comfort Room instead.
 
 ## Interface and compatibility
 
 The existing right-side command panel automatically switches between Freehold Body Possession, Dominion Body Swap, and Ultimate Mass Possession. Ultimate mode provides toggleable multi-selection, capacity and cooldown previews, active-unit tracking, and capital/retriever/possessed-unit finders. The panel hides in city view and does not replace the TopPanel, UnitPanel, CityView, Community Patch, or EUI contexts.
 
+Soft Kitty has a separate, civ-only audience window with reward/risk previews, recovery status and confirmation. It hides during city view and does not replace any core or existing Una Court UI files.
+
 ## Current alpha limitations
 
-- The three civilizations share Una Court's location map and base-game unit models. Each has dedicated emblem and leader art; Ultimate Possession also has custom Dawn of Man and 3 Una Court artwork.
+- The four civilizations share Una Court's location map and base-game unit models. Each has dedicated emblem and leader art.
+- Soft Kitty is validated against Community Patch 5.4.2's loaded database and mocked Lua 5.1 gameplay. Actual in-game layout, AI pathfinding and interactions with additional mods still require playtesting; full Vox Populi compatibility is not yet verified.
 - Highly specialized modded units may contain internal state that Civ V Lua cannot perfectly preserve through an ownership transfer.
 - Multiplayer and hotseat are intentionally disabled while the scripted transfer systems are stabilized.
 
@@ -113,8 +129,14 @@ Open `UnaCourt.civ5proj`, choose **Build > Build Solution**, then enable **The F
 ## Source layout
 
 - `Art/` — custom icon atlases and retained source artwork
-- `SQL/` — all three civilizations, units, shared and unique buildings, scaling data, and text
+- `SQL/` — all four civilizations, units, shared and unique buildings, scaling data, and text
 - `Lua/` — Freehold possession, Dominion Body Swap, Ultimate Mass Possession, AI, aura support, collapse safety, and save/load ownership transactions
-- `UI/` — shared Una Court command panel
+- `UI/` — shared possession command panel and isolated Soft Kitty audience panel
 - `Tools/` — reproducible art building and validation scripts
 - `CHANGELOG.md` — player-facing and technical changes for each push
+
+### Soft Kitty verification
+
+Run `Tools/validate_soft_kitty.py` with Python/Pillow against a pre-Soft-Kitty Community Patch debug database. Run `Tools/test_soft_kitty.py` with Lupa installed in `.modbuddy/test-deps` for the twelve Lua 5.1 gameplay scenarios. Art can be rebuilt using `Tools/build_soft_kitty_art.py`; retained source art and generation prompts are in `Art/Source/SoftKitty/`.
+
+For a new-game smoke test: check civilization selection and Civilopedia icons, meet another major civ, inspect and confirm a song, save/reload through cooldown and recovery, and test an adjacent Hopeless Romantic. Open and close the city screen to check panel isolation. Confirm Great Work creation and Comfort Room bonuses; check Lua.log and Database.log for errors. Do not add the new civilization to an existing campaign.

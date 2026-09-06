@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context ID="TrentSoftKittyUI">
+  <Instance Name="SoftKittyAudience">
+    <GridButton ID="AudienceButton" Size="446,72" Style="BaseButton">
+      <Label ID="AudienceName" Anchor="L,T" Offset="12,8" WrapWidth="420" Font="TwCenMT18" ColorSet="Beige_Black_Alpha" />
+      <Label ID="AudienceDetails" Anchor="L,T" Offset="12,30" WrapWidth="420" Font="TwCenMT14" ColorSet="Beige_Black_Alpha" />
+    </GridButton>
+  </Instance>
+  <GridButton ID="SingButton" Anchor="R,T" Offset="24,146" Size="224,42" Style="BaseButton" String="[ICON_GREAT_WORK_MUSIC] Sing Soft Kitty" Hidden="1" />
+  <GridButton ID="RomanticButton" Anchor="R,T" Offset="24,192" Size="224,36" Style="BaseButton" String="Hopeless Romantic: Serenade" Hidden="1" />
+  <Grid ID="Panel" Anchor="C,C" Size="510,584" Style="Grid9DetailFive140" Hidden="1" ConsumeMouse="1">
+    <Box Style="MenuLeftSideTreatment" />
+    <Box Style="MenuRightSideTreatment" />
+    <Image ID="AbilityIcon" Anchor="L,T" Offset="20,16" Size="64,64" />
+    <Label ID="Title" Anchor="L,T" Offset="92,20" WrapWidth="390" Font="TwCenMT24" ColorSet="Beige_Black_Alpha" String="SING SOFT KITTY" />
+    <Label ID="Subtitle" Anchor="L,T" Offset="92,51" WrapWidth="390" Font="TwCenMT16" ColorSet="Beige_Black_Alpha" String="Choose your audience" />
+    <Grid Anchor="C,T" Offset="0,90" Size="466,72" Style="GridBlackIndent8">
+      <Label ID="Status" Anchor="L,T" Offset="12,8" WrapWidth="440" Font="TwCenMT16" ColorSet="Beige_Black_Alpha" />
+    </Grid>
+    <Grid Anchor="C,T" Offset="0,174" Size="466,236" Style="GridBlackIndent8">
+      <ScrollPanel ID="AudienceScroll" Anchor="C,C" Size="456,226" Vertical="1">
+        <Stack ID="AudienceStack" Anchor="L,T" Offset="2,2" Size="446,0" StackGrowth="Bottom" Padding="4" />
+      </ScrollPanel>
+      <Label ID="Empty" Anchor="C,C" WrapWidth="410" Font="TwCenMT18" ColorSet="Beige_Black_Alpha" Hidden="1" />
+    </Grid>
+    <Grid Anchor="C,T" Offset="0,422" Size="466,98" Style="GridBlackIndent8">
+      <Label ID="Confirmation" Anchor="L,T" Offset="12,10" WrapWidth="440" Font="TwCenMT16" ColorSet="Beige_Black_Alpha" String="Select an audience to preview the performance." />
+    </Grid>
+    <GridButton ID="Confirm" Anchor="L,B" Offset="24,16" Size="224,38" Style="BaseButton" String="Sing" Disabled="1" />
+    <GridButton ID="Cancel" Anchor="R,B" Offset="24,16" Size="224,38" Style="BaseButton" String="Cancel" />
+  </Grid>
+</Context>

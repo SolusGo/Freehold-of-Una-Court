@@ -2,6 +2,16 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-09-07 - Soft Kitty Serenader civilization
+
+- Added a fourth, culture-focused Trent civilization with era-scaled songs, audience-based rewards and backlash risks, persistent Ex tracking, and AI support.
+- Added Hopeless Romantic concerts and Comfort Rooms, inheriting the installed Community Patch Great Musician and Opera House definitions rather than replacing their baseline mechanics.
+- Implemented temporary Repercussions, trained-unit movement penalties, recovery notices, capped Comfort Room mitigation, and save/load-safe cooldowns.
+- Added an isolated audience/confirmation UI that hides in city view without replacing existing panels.
+- Added navy/gold circular icon atlases, leader and Dawn artwork, static diplomacy art, dialogue, and structured Civilopedia entries. Retained artwork sources and prompts.
+- Added database/atlas/UI validation and twelve mocked Lua 5.1 gameplay scenarios covering rewards, recovery, save/load, consumption, ownership changes, speed scaling and AI.
+- Kept package version 3 and the previous three civilizations' player-only selection settings. New civ AI is enabled per its design brief. In-game playtesting remains necessary.
+
 ## 2026-08-31 - Ultimate Possession Civilopedia and wonder-art polish
 
 ### Changed
