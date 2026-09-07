@@ -6,8 +6,8 @@
     <Name>The Freehold of Una Court</Name>
     <SafeName>The Freehold of Una Court</SafeName>
     <Guid>7ec83c11-5853-453c-9ca7-0b2cf85a2a48</Guid>
-    <Teaser>Four Una Court civilizations: possession, loyal companions, and cultural serenades.</Teaser>
-    <Description>Four Community Patch civilizations: Freehold, Dominion, Ultimate Possession, and Trent the Soft Kitty Serenader. The first three share Centrelink; Soft Kitty adds the Hopeless Romantic and Comfort Room.</Description>
+    <Teaser>Five Trent civilizations: possession, loyal companions, serenades, and library exile.</Teaser>
+    <Description>Five Community Patch civilizations: Freehold, Dominion, Ultimate Possession, Soft Kitty Serenader, and the science-and-culture focused Library Exile.</Description>
     <Authors>ThatOneYi</Authors>
     <AssemblyName>UnaCourt</AssemblyName>
     <RootNamespace>UnaCourt</RootNamespace>
@@ -39,6 +39,10 @@
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/70_SoftKitty_Inherit.sql</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/71_SoftKitty_Core.sql</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/72_SoftKitty_Text.sql</FileName></Action>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>Art/LibraryExile_IconAtlases.xml</FileName></Action>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/80_LibraryExile_Inherit.sql</FileName></Action>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/81_LibraryExile_Core.sql</FileName></Action>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/82_LibraryExile_Text.sql</FileName></Action>
     </ModActions>
     <ModContent>
       <Content>
@@ -203,6 +207,35 @@
     <Content Include="Art\SoftKitty\Alpha32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\SoftKitty\Alpha24.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\SoftKitty\Alpha16.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="SQL\80_LibraryExile_Inherit.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="SQL\81_LibraryExile_Core.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="SQL\82_LibraryExile_Text.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="Lua\TrentLibraryExile_Gameplay.lua"><SubType>Lua</SubType><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile_IconAtlases.xml"><SubType>XML</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\LeaderScene.xml"><SubType>XML</SubType><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\LeaderScene.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\DawnOfMan.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\MapImage.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Atlas256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Atlas128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Atlas80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Atlas64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Atlas45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Atlas32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Civ256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Civ128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Civ80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Civ64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Civ45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Civ32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Alpha128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Alpha80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Alpha64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Alpha48.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Alpha45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Alpha32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Alpha24.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\Alpha16.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Art\" />
@@ -210,6 +243,7 @@
     <Folder Include="Art\Centrelink\" />
     <Folder Include="Art\Civilization\" />
     <Folder Include="Art\DawnOfMan\" />
+    <Folder Include="Art\LibraryExile\" />
     <Folder Include="Art\DominionCivilization\" />
     <Folder Include="Art\DominionDawnOfMan\" />
     <Folder Include="Art\DominionTrentrouls\" />

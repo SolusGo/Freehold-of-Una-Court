@@ -1,8 +1,8 @@
 # Una Court Civilizations
 
-A version 3 Civilization V: Brave New World mod for the Community Patch ruleset. It adds four selectable civilizations led by Trent: the companion-focused **Freehold of Una Court**, the aggressive **Dominion of Una Court**, the army-stealing **Ultimate Possession**, and the musical **Soft Kitty Serenader**.
+A version 3 Civilization V: Brave New World mod for the Community Patch ruleset. It adds five selectable civilizations led by Trent: the companion-focused **Freehold of Una Court**, the aggressive **Dominion of Una Court**, the army-stealing **Ultimate Possession**, the musical **Soft Kitty Serenader**, and the science-and-culture focused **Library Exile**.
 
-The Freehold and Dominion begin with a Settler and their own Trentrouls instead of an ordinary Warrior. In either realm, Trentrouls is irreplaceable: if his body dies, the civilization collapses. Ultimate Possession uses the normal Settler and Warrior start because Trentrouls acts through its civilization ability rather than appearing as a separate map unit.
+The Freehold and Dominion begin with a Settler and their own Trentrouls instead of an ordinary Warrior. In either realm, Trentrouls is irreplaceable: if his body dies, the civilization collapses. Ultimate Possession, Soft Kitty, and Library Exile use normal starting units because Trent acts through their civilization mechanics rather than appearing as a separate map unit.
 
 ## The Freehold of Una Court
 
@@ -101,6 +101,18 @@ A navy-and-gold Una Court focused on Culture, Tourism and diplomacy. It uses a n
 
 Cooldown and recovery durations scale with game speed; ordinary song yields and concert Tourism also scale. The fixed concert Culture award is 100. This civ has custom circular portraits, a static diplomacy scene, silent Dawn of Man art, and native Civilopedia articles. Its AI can select audiences and use adjacent concerts; the existing three civs remain player-only, as configured previously.
 
+## Trent - The Library Exile
+
+The Library Exile is a defensive, tall-leaning civilization that turns diplomatic isolation into Science and Culture.
+
+- **Banished to the Library:** every living major civilization denouncing or at war with Trent supplies one Exile Stack, even when both conditions apply. Each stack gives School Library cities +3% Science and +3% Culture, capped at three stacks and +9%.
+- **The Visitor:** the first civilization to share a Declaration of Friendship with Trent is recorded permanently. While friendship with that same Visitor is active, all cities gain +15% Great Writer generation, the empire gains +2 Happiness, and School Libraries produce +1 Culture. Another friend cannot replace the Visitor.
+- **School Library:** replaces and inherits the installed Community Patch Library. It additionally produces +1 Culture and +1 Great Writer Point and contains one Great Work of Writing slot.
+- **iPad Reader:** replaces and inherits the Great Writer, retaining Great Works and Political Treatises. A Reader stationed in a School Library city at the start of a turn gives that city +2 Science and +2 Culture; multiple Readers do not stack. Expending one through a Great Person action grants 25 Science per Era number, from 25 to 200.
+- The civilization has a normal Settler-and-Warrior opening, quiet defensive AI priorities, custom library-themed artwork and map, a silent Dawn of Man screen, complete diplomacy lines, and structured Civilopedia entries.
+
+Exile and Visitor state are refreshed through an isolated gameplay script and persistent save data. The implementation adds no top-left, city-view, unit-panel, or other core UI replacement.
+
 ## Shared unique building: Centrelink
 
 The original three civilizations replace the Bank with the same single **Centrelink** building definition. Centrelink retains the Bank's normal benefits and adds +1 local Happiness. Soft Kitty uses its own Comfort Room instead.
@@ -113,7 +125,7 @@ Soft Kitty has a separate, civ-only audience window with reward/risk previews, r
 
 ## Current alpha limitations
 
-- The four civilizations share Una Court's location map and base-game unit models. Each has dedicated emblem and leader art.
+- The first four civilizations share Una Court's location map; Library Exile has its own School Library map art. All five use base-game unit models and dedicated emblems and leader art.
 - Soft Kitty is validated against Community Patch 5.4.2's loaded database and mocked Lua 5.1 gameplay. Actual in-game layout, AI pathfinding and interactions with additional mods still require playtesting; full Vox Populi compatibility is not yet verified.
 - Highly specialized modded units may contain internal state that Civ V Lua cannot perfectly preserve through an ownership transfer.
 - Multiplayer and hotseat are intentionally disabled while the scripted transfer systems are stabilized.
@@ -129,8 +141,8 @@ Open `UnaCourt.civ5proj`, choose **Build > Build Solution**, then enable **The F
 ## Source layout
 
 - `Art/` — custom icon atlases and retained source artwork
-- `SQL/` — all four civilizations, units, shared and unique buildings, scaling data, and text
-- `Lua/` — Freehold possession, Dominion Body Swap, Ultimate Mass Possession, AI, aura support, collapse safety, and save/load ownership transactions
+- `SQL/` — all five civilizations, units, shared and unique buildings, scaling data, and text
+- `Lua/` — possession systems, Soft Kitty audiences, Library Exile diplomacy polling, AI, aura support, collapse safety, and save/load state
 - `UI/` — shared possession command panel and isolated Soft Kitty audience panel
 - `Tools/` — reproducible art building and validation scripts
 - `CHANGELOG.md` — player-facing and technical changes for each push
@@ -140,3 +152,9 @@ Open `UnaCourt.civ5proj`, choose **Build > Build Solution**, then enable **The F
 Run `Tools/validate_soft_kitty.py` with Python/Pillow against a pre-Soft-Kitty Community Patch debug database. Run `Tools/test_soft_kitty.py` with Lupa installed in `.modbuddy/test-deps` for the twelve Lua 5.1 gameplay scenarios. Art can be rebuilt using `Tools/build_soft_kitty_art.py`; retained source art and generation prompts are in `Art/Source/SoftKitty/`.
 
 For a new-game smoke test: check civilization selection and Civilopedia icons, meet another major civ, inspect and confirm a song, save/reload through cooldown and recovery, and test an adjacent Hopeless Romantic. Open and close the city screen to check panel isolation. Confirm Great Work creation and Comfort Room bonuses; check Lua.log and Database.log for errors. Do not add the new civilization to an existing campaign.
+
+### Library Exile verification
+
+Run `Tools/validate_library_exile.py` against the active Community Patch debug database and `Tools/test_library_exile.py` with the local Lua 5.1 test runtime. Art is reproducible through `Tools/build_library_exile_art.py`; the generated PNG sources and exact built-in generation prompts are retained in `Art/Source/`.
+
+For an in-game smoke test: begin a new Library Exile game, confirm exactly one ordinary Warrior, inspect all Civilopedia and selection icons, build a School Library, and station an iPad Reader inside. Verify one enemy at war and denouncing Trent produces only one stack; test three simultaneous hostile civilizations and reconciliation. Establish the first friendship, let it expire, befriend someone else, then renew the original friendship to confirm permanent Visitor identity. Create both a Great Work and Political Treatise with Readers and check Lua.log and Database.log.

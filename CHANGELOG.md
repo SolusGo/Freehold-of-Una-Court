@@ -2,6 +2,16 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-09-07 - Library Exile civilization
+
+- Added the fifth Trent civilization, a defensive Science/Culture faction whose School Library cities gain up to three +3% Exile Stacks from civilizations denouncing or at war with Trent.
+- Added a permanent, save-safe Visitor identity: the first friend provides +15% Great Writer generation, +2 Happiness, and extra School Library Culture whenever that friendship is active.
+- Added the School Library and iPad Reader by cloning the installed Community Patch Library and Great Writer definitions, preserving population Science, Great Works, Political Treatises, names, AI data, and future baseline fields.
+- Added non-stacking stationed Reader yields and 25 Science per Era when an iPad Reader is expended through a Great Person action.
+- Added library-themed civilization, leader, unit and building icons; a custom map; silent Dawn of Man and static diplomacy art; dialogue; twenty cities; and structured Civilopedia articles.
+- Added ten Lua 5.1 gameplay scenarios plus baseline, full activation-order, localization, project and art validation.
+- Preserved every existing UI context, fixed the package at version 3, and enabled the new civilization's defensive AI profile. In-game playtesting remains necessary.
+
 ## 2026-09-07 - Soft Kitty Serenader civilization
 
 - Added a fourth, culture-focused Trent civilization with era-scaled songs, audience-based rewards and backlash risks, persistent Ex tracking, and AI support.
