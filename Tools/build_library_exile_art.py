@@ -55,7 +55,7 @@ def build():
         full.paste(mask, ((size - mask.width) // 2, (size - mask.height) // 2))
         glyph.putalpha(full)
         glyph.save(OUT / f"Alpha{size}.dds", pixel_format="DXT5")
-        rows.append(f'<Row><Atlas>LIBRARY_EXILE_ALPHA_ATLAS</Atlas><IconSize>{size}</IconSize><Filename>Art/LibraryExile/Alpha{size}.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>')
+        rows.append(f'<Row><Atlas>LIBRARY_EXILE_ALPHA_ATLAS_V3</Atlas><IconSize>{size}</IconSize><Filename>Art/LibraryExile/Alpha{size}.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>')
     ImageOps.fit(dawn, (1024, 768), Image.Resampling.LANCZOS).save(OUT / "DawnOfMan.dds", pixel_format="DXT1")
     ImageOps.fit(dawn, (1600, 900), Image.Resampling.LANCZOS).save(OUT / "LeaderScene.dds", pixel_format="DXT1")
     ImageOps.fit(library, (360, 412), Image.Resampling.LANCZOS).save(OUT / "MapImage.dds", pixel_format="DXT1")
