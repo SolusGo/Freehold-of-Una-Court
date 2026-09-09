@@ -59,8 +59,8 @@ Ultimate Possession is the large-scale version of Trentrouls' power. Instead of 
 
 - Enemy and Barbarian units within two tiles of any friendly city or military unit can be selected in the Una Court panel.
 - Maximum simultaneous targets equal the current Era number: 1 in the Ancient Era, increasing to 8 in the Information Era.
-- All selected units are possessed together for 3 turns on Standard speed.
-- Cooldown depends on the size of the group: 5 turns for one unit, then +3 turns for every additional unit.
+- On Standard speed, groups of 1–4 units are possessed for 2 turns; groups of 5–8 units are possessed for 1 turn.
+- Cooldown depends on the size of the group: 8 turns for one unit, then +5 turns for every additional unit.
 - Possessed units retain their type, promotions, damage, experience, name, movement, and embarked state.
 - Possessed units cannot be deleted, gifted, or upgraded. Strategic-resource requirements are checked before activation.
 - Surviving units return to their original owner when the duration expires or peace is signed. Units killed or expended while possessed stay gone. If an original major civilization has been eliminated, its surviving borrowed unit is disbanded safely.
@@ -69,16 +69,16 @@ Ultimate Possession is the large-scale version of Trentrouls' power. Instead of 
 
 | Units selected | Standard cooldown |
 | ---: | ---: |
-| 1 | 5 turns |
-| 2 | 8 turns |
-| 3 | 11 turns |
-| 4 | 14 turns |
-| 5 | 17 turns |
-| 6 | 20 turns |
-| 7 | 23 turns |
-| 8 | 26 turns |
+| 1 | 8 turns |
+| 2 | 13 turns |
+| 3 | 18 turns |
+| 4 | 23 turns |
+| 5 | 28 turns |
+| 6 | 33 turns |
+| 7 | 38 turns |
+| 8 | 43 turns |
 
-Quick, Epic, and Marathon games scale these cooldowns to 67%, 150%, and 300%. Active duration is 2/3/5/9 turns on Quick/Standard/Epic/Marathon.
+Quick, Epic, and Marathon games retain the existing 67%, 150%, and 300% timing scaling for both duration and cooldown.
 
 ### Golden Retriever
 

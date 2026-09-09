@@ -146,11 +146,12 @@ local function Timing(mode, selectedCount)
     local info = GameInfo.GameSpeeds[Game.GetGameSpeedType()]
     local speed = info ~= nil and info.Type or "GAMESPEED_STANDARD"
     if mode == "ultimate" then
-        local duration = speed == "GAMESPEED_QUICK" and 2 or speed == "GAMESPEED_EPIC" and 5
-            or speed == "GAMESPEED_MARATHON" and 9 or 3
         local percent = speed == "GAMESPEED_QUICK" and 67 or speed == "GAMESPEED_EPIC" and 150
             or speed == "GAMESPEED_MARATHON" and 300 or 100
-        local cooldown = math.max(1, math.floor(((5 + 3 * math.max(0, (selectedCount or 1) - 1)) * percent + 50) / 100))
+        local count = math.max(1, selectedCount or 1)
+        local standardDuration = count >= 5 and 1 or 2
+        local duration = math.max(1, math.floor((standardDuration * percent + 50) / 100))
+        local cooldown = math.max(1, math.floor(((8 + 5 * (count - 1)) * percent + 50) / 100))
         return cooldown, duration
     end
     if mode == "dominion" then

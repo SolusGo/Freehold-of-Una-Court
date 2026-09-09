@@ -96,16 +96,13 @@ local function ScaleTurns(standardTurns)
     return math.max(1, math.floor((standardTurns * SpeedPercent() + 50) / 100))
 end
 
-local function PossessionDuration()
-    local speed = SpeedPercent()
-    if speed == 67 then return 2 end
-    if speed == 150 then return 5 end
-    if speed == 300 then return 9 end
-    return 3
+local function PossessionDuration(count)
+    local standardTurns = (tonumber(count) or 1) >= 5 and 1 or 2
+    return ScaleTurns(standardTurns)
 end
 
 local function CooldownForCount(count)
-    return ScaleTurns(5 + 3 * math.max(0, (tonumber(count) or 1) - 1))
+    return ScaleTurns(8 + 5 * math.max(0, (tonumber(count) or 1) - 1))
 end
 
 local function ClearSlot(playerID, slot)
@@ -369,11 +366,11 @@ function Ultimate_StartPossession(playerID, requestedTargets)
     end
     SetNumber(playerID, "ACTIVE", 1)
     SetNumber(playerID, "COUNT", #created)
-    SetNumber(playerID, "TURNS", PossessionDuration())
+    SetNumber(playerID, "TURNS", PossessionDuration(#created))
     SetNumber(playerID, "COOLDOWN", CooldownForCount(#created))
 
     Alert(player, "Mass Possession", "Trentrouls has possessed " .. tostring(#created)
-        .. " unit" .. (#created == 1 and "" or "s") .. " for " .. tostring(PossessionDuration()) .. " turns.")
+        .. " unit" .. (#created == 1 and "" or "s") .. " for " .. tostring(PossessionDuration(#created)) .. " turns.")
     NotifyChanged(playerID)
     return true
 end

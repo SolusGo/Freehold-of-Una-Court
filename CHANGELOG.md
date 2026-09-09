@@ -2,6 +2,13 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-09-09 - Ultimate Possessor balance nerf
+
+- Kept Ultimate Possession's Era capacity, targeting, range, temporary ownership, unit preservation, UI, Golden Retriever, Centrelink, 3 Una Court, and all other mechanics unchanged.
+- Reduced Standard-speed possession duration to 2 turns for groups of 1–4 units and 1 turn for groups of 5–8 units.
+- Increased Standard-speed cooldown to 8 turns for one unit plus 5 turns per additional possessed unit: 8/13/18/23/28/33/38/43 turns.
+- Preserved the existing Quick, Epic, and Marathon game-speed timing scaling and updated the command-panel previews and Civilopedia text to match.
+
 ## 2026-09-07 - Library Exile civilization
 
 - Added the fifth Trent civilization, a defensive Science/Culture faction whose School Library cities gain up to three +3% Exile Stacks from civilizations denouncing or at war with Trent.
