@@ -28,7 +28,7 @@ def build():
                 icon.save(OUT / f"Civ{size}.dds", pixel_format="DXT5")
         sheet.save(OUT / f"Atlas{size}.dds", pixel_format="DXT5")
         rows += [f'<Row><Atlas>LIBRARY_EXILE_ATLAS</Atlas><IconSize>{size}</IconSize><Filename>Art/LibraryExile/Atlas{size}.dds</Filename><IconsPerRow>2</IconsPerRow><IconsPerColumn>2</IconsPerColumn></Row>',
-                 f'<Row><Atlas>LIBRARY_EXILE_CIV_ATLAS</Atlas><IconSize>{size}</IconSize><Filename>Art/LibraryExile/Civ{size}.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>']
+                 f'<Row><Atlas>LIBRARY_EXILE_CIV_ATLAS_V2</Atlas><IconSize>{size}</IconSize><Filename>Art/LibraryExile/Civ{size}.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>']
         if size == 128:
             sheet.save(OUT / "PortraitPreview.png")
     master = ImageOps.fit(emblem, (512, 512), Image.Resampling.LANCZOS)

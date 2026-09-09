@@ -2,6 +2,11 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-09-09 - Library Exile civilization icon correction
+
+- Moved the Library Exile's tablet-and-open-book emblem onto a fresh, dedicated civilization atlas identity so the civilization-selection screen cannot reuse the Ultimate Possessor emblem from a stale atlas binding.
+- Kept the existing icon art, gameplay and fixed mod version unchanged.
+
 ## 2026-09-09 - Ultimate Possessor balance nerf
 
 - Kept Ultimate Possession's Era capacity, targeting, range, temporary ownership, unit preservation, UI, Golden Retriever, Centrelink, 3 Una Court, and all other mechanics unchanged.
