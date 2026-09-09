@@ -246,6 +246,12 @@
     <Content Include="Art\LibraryExile\Civ64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\LibraryExile\Civ45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\LibraryExile\Civ32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\LibraryExileCiv256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\LibraryExileCiv128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\LibraryExileCiv80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\LibraryExileCiv64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\LibraryExileCiv45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\LibraryExile\LibraryExileCiv32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\LibraryExile\Alpha128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\LibraryExile\Alpha80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\LibraryExile\Alpha64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>

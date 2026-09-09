@@ -12,7 +12,7 @@ INSERT INTO Traits (Type,Description,ShortDescription) VALUES
 UPDATE Civilizations SET Description='TXT_KEY_LIBRARY_EXILE_CIV',ShortDescription='TXT_KEY_LIBRARY_EXILE_SHORT',
 Adjective='TXT_KEY_LIBRARY_EXILE_ADJECTIVE',Civilopedia='TXT_KEY_LIBRARY_EXILE_PEDIA',
 CivilopediaTag='TXT_KEY_CIV5_LIBRARY_EXILE',Strategy='TXT_KEY_LIBRARY_EXILE_STRATEGY',Playable=1,AIPlayable=1,
-DefaultPlayerColor='PLAYERCOLOR_TRENT_LIBRARY_EXILE',PortraitIndex=0,IconAtlas='LIBRARY_EXILE_CIV_ATLAS_V2',
+DefaultPlayerColor='PLAYERCOLOR_TRENT_LIBRARY_EXILE',PortraitIndex=0,IconAtlas='LIBRARY_EXILE_CIV_ATLAS_V4',
 AlphaIconAtlas='LIBRARY_EXILE_ALPHA_ATLAS_V3',MapImage='Art/LibraryExile/MapImage.dds',
 DawnOfManImage='Art/LibraryExile/DawnOfMan.dds',DawnOfManQuote='TXT_KEY_LIBRARY_EXILE_DAWN',DawnOfManAudio=''
 WHERE Type='CIVILIZATION_TRENT_LIBRARY_EXILE';

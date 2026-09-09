@@ -100,6 +100,8 @@ def art_and_project():
     atlas = ET.parse(ROOT / "Art/LibraryExile_IconAtlases.xml")
     for row in atlas.findall(".//Row"):
         size = int(row.findtext("IconSize"))
+        if row.findtext("Atlas") == "LIBRARY_EXILE_CIV_ATLAS_V4":
+            assert Path(row.findtext("Filename")).name == f"LibraryExileCiv{size}.dds"
         with Image.open(ROOT / row.findtext("Filename")) as image:
             assert image.size == (size * int(row.findtext("IconsPerRow")), size * int(row.findtext("IconsPerColumn")))
             extrema = image.convert("RGBA").getchannel("A").getextrema()

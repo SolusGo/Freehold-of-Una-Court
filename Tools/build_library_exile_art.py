@@ -25,7 +25,11 @@ def build():
             icon = build_leader_icon(portrait, size)
             sheet.paste(icon, ((index % 2) * size, (index // 2) * size))
             if index == 0:
-                icon.save(OUT / f"Civ{size}.dds", pixel_format="DXT5")
+                # Civ V's texture cache can collide on identical leaf names even
+                # when mods/database rows include different directories. Keep the
+                # civilization emblem globally named instead of the generic
+                # Civ64.dds-style names also used by Soft Kitty.
+                icon.save(OUT / f"LibraryExileCiv{size}.dds", pixel_format="DXT5")
             elif index == 1:
                 icon.save(OUT / f"Leader{size}.dds", pixel_format="DXT5")
             elif index == 2:
@@ -37,7 +41,7 @@ def build():
                  f'<Row><Atlas>LIBRARY_EXILE_LEADER_ATLAS_V3</Atlas><IconSize>{size}</IconSize><Filename>Art/LibraryExile/Leader{size}.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>',
                  f'<Row><Atlas>LIBRARY_EXILE_READER_ATLAS_V3</Atlas><IconSize>{size}</IconSize><Filename>Art/LibraryExile/Reader{size}.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>',
                  f'<Row><Atlas>LIBRARY_EXILE_SCHOOL_ATLAS_V3</Atlas><IconSize>{size}</IconSize><Filename>Art/LibraryExile/SchoolLibrary{size}.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>',
-                 f'<Row><Atlas>LIBRARY_EXILE_CIV_ATLAS_V2</Atlas><IconSize>{size}</IconSize><Filename>Art/LibraryExile/Civ{size}.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>']
+                 f'<Row><Atlas>LIBRARY_EXILE_CIV_ATLAS_V4</Atlas><IconSize>{size}</IconSize><Filename>Art/LibraryExile/LibraryExileCiv{size}.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>']
         if size == 128:
             sheet.save(OUT / "PortraitPreview.png")
     master = ImageOps.fit(emblem, (512, 512), Image.Resampling.LANCZOS)

@@ -2,6 +2,11 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-09-09 - Library Exile emblem filename collision fix
+
+- Gave every Library Exile civilization-emblem texture a globally unique filename, preventing Civ V's texture cache from substituting Soft Kitty's crowned-cat emblem in the civilization-selection list.
+- Added validation covering the collision-safe filenames at all six supported icon sizes; gameplay and fixed version 3 remain unchanged.
+
 ## 2026-09-09 - Standalone Library Exile leader portrait
 
 - Replaced the shared-sheet Library Exile leader lookup with dedicated 1×1 DDS textures at portrait index 0 for every supported size.
