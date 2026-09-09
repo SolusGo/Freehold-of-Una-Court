@@ -6,6 +6,7 @@ This file records the main player-facing and technical changes included in each 
 
 - Replaced the shared-sheet Library Exile leader lookup with dedicated 1×1 DDS textures at portrait index 0 for every supported size.
 - This prevents Civ V's setup UI from substituting the Soft Kitty leader portrait while retaining the intended school-blazer, tablet-holding Trent artwork.
+- Audited the remaining Trent icon mappings and also isolated the visible iPad Reader and School Library onto standalone 1×1 atlases, preventing the same shared-sheet substitution from affecting the unique badges.
 
 ## 2026-09-09 - Library Exile leader icon correction
 

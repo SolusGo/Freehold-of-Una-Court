@@ -28,9 +28,15 @@ def build():
                 icon.save(OUT / f"Civ{size}.dds", pixel_format="DXT5")
             elif index == 1:
                 icon.save(OUT / f"Leader{size}.dds", pixel_format="DXT5")
+            elif index == 2:
+                icon.save(OUT / f"Reader{size}.dds", pixel_format="DXT5")
+            elif index == 3:
+                icon.save(OUT / f"SchoolLibrary{size}.dds", pixel_format="DXT5")
         sheet.save(OUT / f"Atlas{size}.dds", pixel_format="DXT5")
         rows += [f'<Row><Atlas>LIBRARY_EXILE_ATLAS</Atlas><IconSize>{size}</IconSize><Filename>Art/LibraryExile/Atlas{size}.dds</Filename><IconsPerRow>2</IconsPerRow><IconsPerColumn>2</IconsPerColumn></Row>',
                  f'<Row><Atlas>LIBRARY_EXILE_LEADER_ATLAS_V3</Atlas><IconSize>{size}</IconSize><Filename>Art/LibraryExile/Leader{size}.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>',
+                 f'<Row><Atlas>LIBRARY_EXILE_READER_ATLAS_V3</Atlas><IconSize>{size}</IconSize><Filename>Art/LibraryExile/Reader{size}.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>',
+                 f'<Row><Atlas>LIBRARY_EXILE_SCHOOL_ATLAS_V3</Atlas><IconSize>{size}</IconSize><Filename>Art/LibraryExile/SchoolLibrary{size}.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>',
                  f'<Row><Atlas>LIBRARY_EXILE_CIV_ATLAS_V2</Atlas><IconSize>{size}</IconSize><Filename>Art/LibraryExile/Civ{size}.dds</Filename><IconsPerRow>1</IconsPerRow><IconsPerColumn>1</IconsPerColumn></Row>']
         if size == 128:
             sheet.save(OUT / "PortraitPreview.png")
