@@ -2,6 +2,11 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-09-09 - Standalone Library Exile leader portrait
+
+- Replaced the shared-sheet Library Exile leader lookup with dedicated 1×1 DDS textures at portrait index 0 for every supported size.
+- This prevents Civ V's setup UI from substituting the Soft Kitty leader portrait while retaining the intended school-blazer, tablet-holding Trent artwork.
+
 ## 2026-09-09 - Library Exile leader icon correction
 
 - Assigned the intended school-blazer, tablet-holding Library Exile portrait to a fresh leader-only atlas identity, preventing the setup screen from reusing another Trent civilization's cached portrait.

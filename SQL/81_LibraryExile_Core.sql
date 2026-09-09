@@ -23,7 +23,7 @@ PrimaryVictoryPursuit='VICTORY_PURSUIT_SCIENCE',SecondaryVictoryPursuit='VICTORY
 VictoryCompetitiveness=6,WonderCompetitiveness=6,MinorCivCompetitiveness=5,
 Boldness=3,DiploBalance=8,WarmongerHate=8,DoFWillingness=8,DenounceWillingness=3,
 WorkWithWillingness=7,WorkAgainstWillingness=3,Loyalty=9,Forgiveness=5,Neediness=4,
-Meanness=3,Chattiness=3,PortraitIndex=1,IconAtlas='LIBRARY_EXILE_LEADER_ATLAS_V2'
+Meanness=3,Chattiness=3,PortraitIndex=0,IconAtlas='LIBRARY_EXILE_LEADER_ATLAS_V3'
 WHERE Type='LEADER_TRENT_LIBRARY_EXILE';
 INSERT INTO Leader_Traits VALUES ('LEADER_TRENT_LIBRARY_EXILE','TRAIT_TRENT_LIBRARY_EXILE');
 INSERT INTO Civilization_Leaders VALUES ('CIVILIZATION_TRENT_LIBRARY_EXILE','LEADER_TRENT_LIBRARY_EXILE');
