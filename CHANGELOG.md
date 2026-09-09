@@ -2,6 +2,11 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-09-09 - Library Exile leader icon correction
+
+- Assigned the intended school-blazer, tablet-holding Library Exile portrait to a fresh leader-only atlas identity, preventing the setup screen from reusing another Trent civilization's cached portrait.
+- Left the leader art, gameplay and fixed version 3 unchanged.
+
 ## 2026-09-09 - Library Exile civilization icon correction
 
 - Moved the Library Exile's tablet-and-open-book emblem onto a fresh, dedicated civilization atlas identity so the civilization-selection screen cannot reuse the Ultimate Possessor emblem from a stale atlas binding.
