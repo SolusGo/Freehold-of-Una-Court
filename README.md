@@ -1,8 +1,8 @@
 # Una Court Civilizations
 
-A version 3 Civilization V: Brave New World mod for the Community Patch ruleset. It adds five selectable civilizations led by Trent: the companion-focused **Freehold of Una Court**, the aggressive **Dominion of Una Court**, the army-stealing **Ultimate Possession**, the musical **Soft Kitty Serenader**, and the science-and-culture focused **Library Exile**.
+A version 3 Civilization V: Brave New World mod for the Community Patch ruleset. It adds six selectable civilizations led by Trent: the companion-focused **Freehold of Una Court**, the aggressive **Dominion of Una Court**, the army-stealing **Ultimate Possession**, the musical **Soft Kitty Serenader**, the science-and-culture focused **Library Exile**, and the espionage-driven **Phone Stealer**.
 
-The Freehold and Dominion begin with a Settler and their own Trentrouls instead of an ordinary Warrior. In either realm, Trentrouls is irreplaceable: if his body dies, the civilization collapses. Ultimate Possession, Soft Kitty, and Library Exile use normal starting units because Trent acts through their civilization mechanics rather than appearing as a separate map unit.
+The Freehold and Dominion begin with a Settler and their own Trentrouls instead of an ordinary Warrior. In either realm, Trentrouls is irreplaceable: if his body dies, the civilization collapses. Ultimate Possession, Soft Kitty, Library Exile, and Phone Stealer use normal starting units because Trent acts through their civilization mechanics rather than appearing as a separate map unit.
 
 ## The Freehold of Una Court
 
@@ -115,7 +115,19 @@ Exile and Visitor state are refreshed through an isolated gameplay script and pe
 
 ## Shared unique building: Centrelink
 
-The original three civilizations replace the Bank with the same single **Centrelink** building definition. Centrelink retains the Bank's normal benefits and adds +1 local Happiness. Soft Kitty uses its own Comfort Room instead.
+The original three civilizations and Phone Stealer replace the Bank with the same single **Centrelink** building definition and unchanged existing icon art. Centrelink retains the Bank's normal benefits and adds +1 local Happiness. Soft Kitty and Library Exile use their own unique buildings instead.
+
+## Trent — The Phone Stealer
+
+The Phone Stealer is a tall economic and espionage civilization that grows stronger by collecting one unique Phone from every rival.
+
+- **The Red-Headed Phone Snatcher:** an established Spy in a foreign Capital can begin an eight-turn Snatch Phone mission on Standard Speed. Moving the Spy away cancels the attempt.
+- Each Phone in the Stash gives the Capital +2 Science, +2 Gold and +1 Culture; every three Phones provide +1 Happiness.
+- A victim receives the strong **He Stole My Phone!** opinion penalty for exactly as long as Trent possesses its Phone. Phones from eliminated civilizations remain in the Stash.
+- The Phone Stash panel lists every civilization, mission progress, accumulated yields, return protection, and whether its Phone is currently held. Returning a Phone removes its yields and grievance and protects it from another theft for 30 Standard-Speed turns.
+- **Una Court Butler:** replaces the Worker, costs 20% more Production and works 25% faster. A capture attempt sends it back to Trent's Capital or the nearest valid tile instead of transferring it permanently.
+- **Centrelink:** reuses the collection's existing Bank replacement and art unchanged, retaining the Bank plus +1 local Happiness.
+- AI Trent aggressively begins missions against established non-friendly targets and avoids close friends unless relations deteriorate.
 
 ## Interface and compatibility
 
@@ -123,9 +135,11 @@ The existing right-side command panel automatically switches between Freehold Bo
 
 Soft Kitty has a separate, civ-only audience window with reward/risk previews, recovery status and confirmation. It hides during city view and does not replace any core or existing Una Court UI files.
 
+Phone Stealer has its own civ-only Stash window for beginning missions, tracking every Phone and voluntarily returning devices. It also hides during city view and does not replace the espionage overview or any core UI context.
+
 ## Current alpha limitations
 
-- The first four civilizations share Una Court's location map; Library Exile has its own School Library map art. All five use base-game unit models and dedicated emblems and leader art.
+- The first four civilizations share Una Court's location map; Library Exile and Phone Stealer have dedicated map art. All six use base-game unit models and dedicated emblems and leader art.
 - Soft Kitty is validated against Community Patch 5.4.2's loaded database and mocked Lua 5.1 gameplay. Actual in-game layout, AI pathfinding and interactions with additional mods still require playtesting; full Vox Populi compatibility is not yet verified.
 - Highly specialized modded units may contain internal state that Civ V Lua cannot perfectly preserve through an ownership transfer.
 - Multiplayer and hotseat are intentionally disabled while the scripted transfer systems are stabilized.
@@ -141,9 +155,9 @@ Open `UnaCourt.civ5proj`, choose **Build > Build Solution**, then enable **The F
 ## Source layout
 
 - `Art/` — custom icon atlases and retained source artwork
-- `SQL/` — all five civilizations, units, shared and unique buildings, scaling data, and text
-- `Lua/` — possession systems, Soft Kitty audiences, Library Exile diplomacy polling, AI, aura support, collapse safety, and save/load state
-- `UI/` — shared possession command panel and isolated Soft Kitty audience panel
+- `SQL/` — all six civilizations, units, shared and unique buildings, scaling data, and text
+- `Lua/` — possession systems, Soft Kitty audiences, Library Exile diplomacy polling, Phone missions and Stash state, AI, aura support, collapse safety, and save/load state
+- `UI/` — shared possession command panel plus isolated Soft Kitty and Phone Stash panels
 - `Tools/` — reproducible art building and validation scripts
 - `CHANGELOG.md` — player-facing and technical changes for each push
 
@@ -158,3 +172,9 @@ For a new-game smoke test: check civilization selection and Civilopedia icons, m
 Run `Tools/validate_library_exile.py` against the active Community Patch debug database and `Tools/test_library_exile.py` with the local Lua 5.1 test runtime. Art is reproducible through `Tools/build_library_exile_art.py`; the generated PNG sources and exact built-in generation prompts are retained in `Art/Source/`.
 
 For an in-game smoke test: begin a new Library Exile game, confirm exactly one ordinary Warrior, inspect all Civilopedia and selection icons, build a School Library, and station an iPad Reader inside. Verify one enemy at war and denouncing Trent produces only one stack; test three simultaneous hostile civilizations and reconciliation. Establish the first friendship, let it expire, befriend someone else, then renew the original friendship to confirm permanent Visitor identity. Create both a Great Work and Political Treatise with Readers and check Lua.log and Database.log.
+
+### Phone Stealer verification
+
+Run `Tools/validate_phone_stealer.py` against the active Community Patch debug database and `Tools/test_phone_stealer.py` with Python 3.12 and the local Lua 5.1 test runtime. Art is reproducible with `Tools/build_phone_stealer_art.py`; Worker inheritance is reproducible with `Tools/build_phone_stealer_inheritance.py`. The concept sheet, generated PNG sources, and exact built-in generation prompts are retained in `Art/Source/PhoneStealer/`.
+
+For an in-game smoke test: start a new Phone Stealer game, confirm a normal Warrior and Settler opening, inspect the civ/leader/Butler/Centrelink icons, establish a Spy in another Capital, begin Snatch Phone, and verify completion after the scaled duration. Confirm Capital yields and the victim's opinion entry, save and reload with a Phone and mission in progress, return the Phone and test the protection period, then allow a rival and Barbarians to capture Butlers. Check `Lua.log` and `Database.log` throughout.

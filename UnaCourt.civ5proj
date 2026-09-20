@@ -6,8 +6,8 @@
     <Name>The Freehold of Una Court</Name>
     <SafeName>The Freehold of Una Court</SafeName>
     <Guid>7ec83c11-5853-453c-9ca7-0b2cf85a2a48</Guid>
-    <Teaser>Five Trent civilizations: possession, loyal companions, serenades, and library exile.</Teaser>
-    <Description>Five Community Patch civilizations: Freehold, Dominion, Ultimate Possession, Soft Kitty Serenader, and the science-and-culture focused Library Exile.</Description>
+    <Teaser>Six Trent civilizations: possession, loyal companions, serenades, library exile, and phone theft.</Teaser>
+    <Description>Six Community Patch civilizations: Freehold, Dominion, Ultimate Possession, Soft Kitty Serenader, Library Exile, and the espionage-focused Phone Stealer.</Description>
     <Authors>ThatOneYi</Authors>
     <AssemblyName>UnaCourt</AssemblyName>
     <RootNamespace>UnaCourt</RootNamespace>
@@ -43,6 +43,10 @@
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/80_LibraryExile_Inherit.sql</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/81_LibraryExile_Core.sql</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/82_LibraryExile_Text.sql</FileName></Action>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>Art/PhoneStealer_IconAtlases.xml</FileName></Action>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/90_PhoneStealer_Inherit.sql</FileName></Action>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/91_PhoneStealer_Core.sql</FileName></Action>
+      <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/92_PhoneStealer_Text.sql</FileName></Action>
     </ModActions>
     <ModContent>
       <Content>
@@ -62,6 +66,12 @@
         <Name>Soft Kitty Serenade Panel</Name>
         <Description>Audience selection, reward and risk previews, and Hopeless Romantic actions.</Description>
         <FileName>UI/TrentSoftKitty_UI.xml</FileName>
+      </Content>
+      <Content>
+        <Type>InGameUIAddin</Type>
+        <Name>Phone Stash Panel</Name>
+        <Description>Foreign-capital Phone missions, Stash yields, cooldowns, and returns.</Description>
+        <FileName>UI/TrentPhoneStealer_UI.xml</FileName>
       </Content>
     </ModContent>
     <ModVersion>3</ModVersion>
@@ -260,6 +270,55 @@
     <Content Include="Art\LibraryExile\Alpha32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\LibraryExile\Alpha24.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\LibraryExile\Alpha16.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="SQL\90_PhoneStealer_Inherit.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="SQL\91_PhoneStealer_Core.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="SQL\92_PhoneStealer_Text.sql"><SubType>SQL</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="Lua\TrentPhoneStealer_Gameplay.lua"><SubType>Lua</SubType><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="UI\TrentPhoneStealer_UI.xml"><SubType>XML</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="UI\TrentPhoneStealer_UI.lua"><SubType>Lua</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer_IconAtlases.xml"><SubType>XML</SubType><ImportIntoVFS>False</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\LeaderScene.xml"><SubType>XML</SubType><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\LeaderScene.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\DawnOfMan.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\MapImage.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Atlas256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Atlas128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Atlas80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Atlas64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Atlas45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Atlas32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\PhoneStealerCiv256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\PhoneStealerCiv128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\PhoneStealerCiv80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\PhoneStealerCiv64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\PhoneStealerCiv45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\PhoneStealerCiv32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Leader256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Leader128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Leader80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Leader64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Leader45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Leader32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Ability256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Ability128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Ability80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Ability64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Ability45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Ability32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Butler256.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Butler128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Butler80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Butler64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Butler45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Butler32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Alpha128.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Alpha80.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Alpha64.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Alpha48.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Alpha45.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Alpha32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Alpha24.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Art\PhoneStealer\Alpha16.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Art\" />
@@ -268,6 +327,7 @@
     <Folder Include="Art\Civilization\" />
     <Folder Include="Art\DawnOfMan\" />
     <Folder Include="Art\LibraryExile\" />
+    <Folder Include="Art\PhoneStealer\" />
     <Folder Include="Art\DominionCivilization\" />
     <Folder Include="Art\DominionDawnOfMan\" />
     <Folder Include="Art\DominionTrentrouls\" />

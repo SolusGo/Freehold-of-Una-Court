@@ -2,6 +2,18 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-09-21 - Trent the Phone Stealer civilization
+
+- Added the sixth Trent civilization, the **Princedom of Una Court**, led by Trent — The Phone Stealer.
+- Added the save-persistent **Phone Stash** and explicit **Snatch Phone** missions for Spies established in foreign Capitals: 8 Standard-Speed turns per theft and one unique Phone per civilization.
+- Added exact per-Phone Capital rewards of +2 Science, +2 Gold and +1 Culture, plus +1 Happiness per three Phones, represented through twenty-one validated hidden-building tiers.
+- Added the dynamic **He Stole My Phone!** -50 opinion modifier while a victim's Phone is held; Phones can be returned, removing the grievance and yields and applying 30 Standard-Speed turns of global theft protection.
+- Added AI mission selection that prioritizes non-friendly established targets, persistent ownership through target elimination, completion/cancellation notifications, and an isolated Phone Stash interface with mission progress and return controls.
+- Added the **Una Court Butler**, a Community Patch Worker clone costing 20% more Production with +25% Work Rate and capture-safe return to the Capital.
+- Reused the existing Centrelink definition and artwork unchanged.
+- Added concept-derived standalone leader, Dawn of Man, map, civilization, ability and Butler art at native Civ V dimensions, while retaining the supplied concept sheet and exact prompts.
+- Added eleven Lua 5.1 gameplay scenarios and database, localization, art, project and UI validation. The mod remains fixed at version 3.
+
 ## 2026-09-09 - Library Exile emblem filename collision fix
 
 - Gave every Library Exile civilization-emblem texture a globally unique filename, preventing Civ V's texture cache from substituting Soft Kitty's crowned-cat emblem in the civilization-selection list.

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context ID="TrentPhoneStealerUI">
+  <Instance Name="PhoneStashEntry">
+    <GridButton ID="PhoneButton" Size="466,62" Style="BaseButton">
+      <Label ID="CivilizationName" Anchor="L,T" Offset="12,7" WrapWidth="440" Font="TwCenMT18" ColorSet="Beige_Black_Alpha" />
+      <Label ID="PhoneStatus" Anchor="L,T" Offset="12,30" WrapWidth="440" Font="TwCenMT14" ColorSet="Beige_Black_Alpha" />
+    </GridButton>
+  </Instance>
+  <GridButton ID="StashButton" Anchor="R,T" Offset="24,146" Size="224,42" Style="BaseButton" String="[ICON_SPY] Phone Stash" Hidden="1" />
+  <Grid ID="Panel" Anchor="C,C" Size="530,640" Style="Grid9DetailFive140" Hidden="1" ConsumeMouse="1">
+    <Box Style="MenuLeftSideTreatment" />
+    <Box Style="MenuRightSideTreatment" />
+    <Image ID="AbilityIcon" Anchor="L,T" Offset="20,16" Size="64,64" />
+    <Label ID="Title" Anchor="L,T" Offset="92,20" WrapWidth="410" Font="TwCenMT24" ColorSet="Beige_Black_Alpha" String="PHONE STASH" />
+    <Label ID="Subtitle" Anchor="L,T" Offset="92,51" WrapWidth="410" Font="TwCenMT16" ColorSet="Beige_Black_Alpha" String="Yours today. His tomorrow." />
+    <Grid Anchor="C,T" Offset="0,90" Size="486,78" Style="GridBlackIndent8">
+      <Label ID="Summary" Anchor="L,T" Offset="12,8" WrapWidth="460" Font="TwCenMT16" ColorSet="Beige_Black_Alpha" />
+    </Grid>
+    <Grid Anchor="C,T" Offset="0,180" Size="486,320" Style="GridBlackIndent8">
+      <ScrollPanel ID="PhoneScroll" Anchor="C,C" Size="476,310" Vertical="1">
+        <Stack ID="PhoneStack" Anchor="L,T" Offset="2,2" Size="466,0" StackGrowth="Bottom" Padding="4" />
+      </ScrollPanel>
+      <Label ID="Empty" Anchor="C,C" WrapWidth="440" Font="TwCenMT18" ColorSet="Beige_Black_Alpha" String="No other major civilizations have entered the world." Hidden="1" />
+    </Grid>
+    <Grid Anchor="C,T" Offset="0,512" Size="486,70" Style="GridBlackIndent8">
+      <Label ID="Confirmation" Anchor="L,T" Offset="12,9" WrapWidth="460" Font="TwCenMT16" ColorSet="Beige_Black_Alpha" String="Select a civilization to inspect its Phone." />
+    </Grid>
+    <GridButton ID="Confirm" Anchor="L,B" Offset="24,16" Size="234,38" Style="BaseButton" String="Confirm" Disabled="1" />
+    <GridButton ID="Cancel" Anchor="R,B" Offset="24,16" Size="234,38" Style="BaseButton" String="Close" />
+  </Grid>
+</Context>
