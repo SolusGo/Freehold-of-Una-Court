@@ -8,11 +8,24 @@ print("UnaCourtPossession.lua loaded")
 local SAVE = Modding.OpenSaveData()
 local CIV_UNA = GameInfoTypes.CIVILIZATION_UNA_COURT
 local UNIT_TRENT = GameInfoTypes.UNIT_UNA_TRENTROULS
-local UNIT_BUDDY = GameInfoTypes.UNIT_UNA_BUDDY
 local PROMO_POSSESSED = GameInfoTypes.PROMOTION_UNA_POSSESSED
 local PROMO_READY = GameInfoTypes.PROMOTION_UNA_POSSESSION_READY
 local PROMO_COOLDOWN = GameInfoTypes.PROMOTION_UNA_POSSESSION_COOLDOWN
 local DOMAIN_AIR = GameInfoTypes.DOMAIN_AIR
+local TRENT_UNIQUE_TYPES = {}
+for _, typeName in ipairs({
+    "UNIT_UNA_TRENTROULS",
+    "UNIT_UNA_BUDDY",
+    "UNIT_DOMINION_TRENTROULS",
+    "UNIT_ULTIMATE_GOLDEN_RETRIEVER",
+    "UNIT_TRENT_HOPELESS_ROMANTIC",
+    "UNIT_TRENT_IPAD_READER",
+    "UNIT_TRENT_UNA_COURT_BUTLER",
+    "UNIT_PPB_PATREON_REGULAR"
+}) do
+    local unitType = GameInfoTypes[typeName]
+    if unitType ~= nil then TRENT_UNIQUE_TYPES[unitType] = true end
+end
 local activeTransfer = false
 
 local function Key(playerID, suffix)
@@ -63,7 +76,7 @@ end
 function UnaCourt_IsEligiblePossessionTarget(playerID, trent, target)
     if trent == nil or target == nil or target:IsDead() then return false end
     if target:GetOwner() == playerID then return false end
-    if target:GetUnitType() == UNIT_TRENT or target:GetUnitType() == UNIT_BUDDY then return false end
+    if TRENT_UNIQUE_TYPES[target:GetUnitType()] then return false end
     if target:GetDomainType() == DOMAIN_AIR or UnitIsTrade(target) then return false end
     if PROMO_POSSESSED ~= nil and target:IsHasPromotion(PROMO_POSSESSED) then return false end
 
