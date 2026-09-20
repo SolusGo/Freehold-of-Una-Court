@@ -8,7 +8,7 @@ from lupa.lua51 import LuaRuntime
 
 
 MOCK = r'''
-save, notices, gameTurn = {}, {}, 0
+save, notices, alerts, gameTurn, initFailures = {}, {}, {}, 0, 0
 local rawTypes={CIVILIZATION_TRENT_PHONE_STEALER=100,UNIT_TRENT_UNA_COURT_BUTLER=200,
  DIPLOMODIFIER_TRENT_STOLE_PHONE=300}
 GameInfoTypes=setmetatable(rawTypes,{__index=function(t,k)
@@ -20,7 +20,23 @@ GameDefines={MAX_MAJOR_CIVS=4}
 GameInfo={GameSpeeds={[0]={TrainPercent=100}}}
 Game={GetGameTurn=function()return gameTurn end,GetGameSpeedType=function()return 0 end}
 NotificationTypes={NOTIFICATION_GENERIC=1}
-Locale={ConvertTextKey=function(key,...)return key end}
+local localeText={
+ TXT_KEY_PHONE_STEALER_NOTIFICATION_TITLE='Phone Snatched',
+ TXT_KEY_PHONE_STEALER_NOTIFICATION_BODY='{1_LeaderName} completed the mission in {2_CityName} and stole {3_CivName}\'s Phone.',
+ TXT_KEY_PHONE_STEALER_VICTIM_TITLE='He Stole My Phone!',
+ TXT_KEY_PHONE_STEALER_VICTIM_BODY='Trent stole your Phone.',
+ TXT_KEY_PHONE_STEALER_RETURN_TITLE='Phone Returned',
+ TXT_KEY_PHONE_STEALER_RETURN_BODY='Trent returned {1_CivName}\'s Phone. It cannot be stolen again for {2_Num} turns.',
+ TXT_KEY_PHONE_STEALER_ESCAPE_TITLE='A Loyal Butler Returns',
+ TXT_KEY_PHONE_STEALER_ESCAPE_BODY='The captured Butler returned.'}
+Locale={ConvertTextKey=function(key,...)
+ local text=localeText[key] or key
+ for i=1,select('#',...) do
+  local value=tostring(select(i,...))
+  text=string.gsub(text,'{'..i..'_[^}]+}',value)
+ end
+ return text
+end}
 MapModData={}
 Modding={OpenSaveData=function()return {
  GetValue=function(k)return save[k] end,
@@ -37,6 +53,7 @@ function Event()
 end
 function EventsTable()return setmetatable({},{__index=function(t,k)local e=Event();rawset(t,k,e);return e end})end
 GameEvents,Events,LuaEvents=EventsTable(),EventsTable(),EventsTable()
+Events.GameplayAlertMessage=function(message)alerts[#alerts+1]=message end
 function Iter(items)local i=0;return function()i=i+1;return items[i] end end
 function City(id,x,y,name)
  local city={id=id,x=x,y=y,name=name or ('City '..id),buildings={}}
@@ -72,7 +89,10 @@ for id=0,3 do
  function p:IsDoF(other)return self.friend[other] or false end
  function p:IsDenouncingPlayer(other)return self.denouncing[other] or false end
  function p:AddNotification(kind,body,title,x,y)notices[#notices+1]={body=body,title=title,x=x,y=y} end
- function p:InitUnit(kind,x,y)local u=Unit(kind,x,y);self.units[#self.units+1]=u;return u end
+ function p:InitUnit(kind,x,y)
+  if initFailures>0 then initFailures=initFailures-1 return nil end
+  local u=Unit(kind,x,y);self.units[#self.units+1]=u;return u
+ end
  Players[id]=p
  local team={war={},met={}}
  function team:IsAtWar(other)return self.war[other] or false end
@@ -80,7 +100,8 @@ for id=0,3 do
  Teams[id]=team
 end
 function ResetWorld()
- save,notices,gameTurn={}, {}, 0
+ save,notices,alerts,gameTurn,initFailures={}, {}, {}, 0, 0
+ GameInfo.GameSpeeds[0].TrainPercent=100
  for id=0,3 do
   local p=Players[id]
   p.alive,p.ever,p.civ,p.human=true,true,id==0 and 100 or 99,id==0
@@ -154,4 +175,49 @@ scenario(
     "MapModData.TrentPhoneStealer.SetPhoneOwner(1,0);EstablishSpy(0,2);local s={};MapModData.TrentPhoneStealer.Query(0,s);assert(s.enabled and s.count==1 and s.science==2 and s.gold==2 and s.culture==1 and s.happiness==0 and s.total==3);local found=false;for _,r in ipairs(s.targets)do if r.id==2 and r.action=='snatch' then found=true end end;assert(found)",
 )
 
-print("11 Phone Stealer gameplay scenarios passed (actual Lua 5.1 module)")
+scenario(
+    "Epic speed scales both mission and return protection",
+    "GameInfo.GameSpeeds[0].TrainPercent=150;EstablishSpy(0,1);assert(MapModData.TrentPhoneStealer.StartMission(0,1));gameTurn=11;MapModData.TrentPhoneStealer.ProcessMissions(0);assert(MapModData.TrentPhoneStealer.PhoneOwner(1)==-1);gameTurn=12;MapModData.TrentPhoneStealer.ProcessMissions(0);assert(MapModData.TrentPhoneStealer.PhoneOwner(1)==0);assert(MapModData.TrentPhoneStealer.ReturnPhone(0,1));gameTurn=56;assert(not MapModData.TrentPhoneStealer.StartMission(0,1));gameTurn=57;assert(MapModData.TrentPhoneStealer.StartMission(0,1))",
+)
+scenario(
+    "two Trents cannot both claim the same Phone",
+    "Players[1].civ=100;EstablishSpy(0,2);EstablishSpy(1,2);assert(MapModData.TrentPhoneStealer.StartMission(0,2));assert(MapModData.TrentPhoneStealer.StartMission(1,2));gameTurn=8;MapModData.TrentPhoneStealer.ProcessMissions(1);MapModData.TrentPhoneStealer.ProcessMissions(0);assert(MapModData.TrentPhoneStealer.PhoneOwner(2)==1 and save['TRENT_PHONE_V1_MISSION_0_2']==-1)",
+)
+scenario(
+    "target elimination cancels an unfinished mission",
+    "EstablishSpy(0,1);assert(MapModData.TrentPhoneStealer.StartMission(0,1));Players[1].alive=false;gameTurn=3;MapModData.TrentPhoneStealer.ProcessMissions(0);assert(save['TRENT_PHONE_V1_MISSION_0_1']==-1 and MapModData.TrentPhoneStealer.PhoneOwner(1)==-1)",
+)
+scenario(
+    "eliminating the owning Trent releases held Phones",
+    "MapModData.TrentPhoneStealer.SetPhoneOwner(1,0);Players[0].alive=false;GameEvents.PlayerDoTurn(1);assert(MapModData.TrentPhoneStealer.PhoneOwner(1)==-1)",
+)
+scenario(
+    "moving the Capital transfers the exact Stash tier",
+    "local old=Players[0].cities[1];MapModData.TrentPhoneStealer.SetPhoneOwner(1,0);MapModData.TrentPhoneStealer.SetPhoneOwner(2,0);MapModData.TrentPhoneStealer.ProcessMissions(0);assert(old:GetNumRealBuilding(402)==1);local replacement=City(99,20,21,'New Capital');Players[0].cities={replacement,old};MapModData.TrentPhoneStealer.ProcessMissions(0);assert(replacement:GetNumRealBuilding(402)==1 and old:GetNumRealBuilding(402)==0)",
+)
+scenario(
+    "three Phones select only tier three",
+    "MapModData.TrentPhoneStealer.SetPhoneOwner(1,0);MapModData.TrentPhoneStealer.SetPhoneOwner(2,0);MapModData.TrentPhoneStealer.SetPhoneOwner(3,0);MapModData.TrentPhoneStealer.ProcessMissions(0);assert(Players[0].cities[1]:GetNumRealBuilding(401)==0 and Players[0].cities[1]:GetNumRealBuilding(402)==0 and Players[0].cities[1]:GetNumRealBuilding(403)==1)",
+)
+scenario(
+    "Butler escape waits safely until a city exists",
+    "Players[0].cities={};MapModData.TrentPhoneStealer.QueueButlerEscape(0,77);MapModData.TrentPhoneStealer.ProcessButlerEscapes(0);assert(#Players[0].units==0 and save['TRENT_PHONE_V1_ESCAPES_0']==1);Players[0].cities={City(1,4,5,'Refounded Capital')};MapModData.TrentPhoneStealer.ProcessButlerEscapes(0);assert(#Players[0].units==1 and save['TRENT_PHONE_V1_ESCAPES_0']==0)",
+)
+scenario(
+    "failed Butler creation is retried instead of lost",
+    "MapModData.TrentPhoneStealer.QueueButlerEscape(0,77);initFailures=1;MapModData.TrentPhoneStealer.ProcessButlerEscapes(0);assert(#Players[0].units==0 and save['TRENT_PHONE_V1_ESCAPES_0']==1);MapModData.TrentPhoneStealer.ProcessButlerEscapes(0);assert(#Players[0].units==1 and save['TRENT_PHONE_V1_ESCAPES_0']==0)",
+)
+scenario(
+    "same-turn Butler ID reuse is not suppressed after recovery",
+    "MapModData.TrentPhoneStealer.QueueButlerEscape(0,77);MapModData.TrentPhoneStealer.ProcessButlerEscapes(0);MapModData.TrentPhoneStealer.QueueButlerEscape(0,77);MapModData.TrentPhoneStealer.ProcessButlerEscapes(0);assert(#Players[0].units==2)",
+)
+scenario(
+    "invalid UI requests fail without a Lua error",
+    "assert(MapModData.TrentPhoneStealer.Request(0,'bad','snatch')==false);assert(MapModData.TrentPhoneStealer.Request(0,-1,'snatch')==false);assert(MapModData.TrentPhoneStealer.Request(99,1,'snatch')==false)",
+)
+scenario(
+    "notification localization substitutes names and turn counts",
+    "EstablishSpy(0,1);assert(MapModData.TrentPhoneStealer.StartMission(0,1));gameTurn=8;MapModData.TrentPhoneStealer.ProcessMissions(0);assert(#notices==1 and string.find(notices[1].body,'Leader 0',1,true) and not string.find(notices[1].body,'{',1,true));assert(MapModData.TrentPhoneStealer.ReturnPhone(0,1));assert(#notices==2 and string.find(notices[2].body,'30 turns',1,true) and not string.find(notices[2].body,'{',1,true))",
+)
+
+print("22 Phone Stealer gameplay scenarios passed (actual Lua 5.1 module)")

@@ -1,5 +1,6 @@
 """Validate Phone Stealer SQL, CP inheritance, art, UI and project wiring."""
 from pathlib import Path
+from collections import Counter
 import re
 import sqlite3
 import xml.etree.ElementTree as ET
@@ -26,6 +27,7 @@ def database():
     centrelink_before = tuple(db.execute(
         "SELECT * FROM Buildings WHERE Type='BUILDING_UNA_CENTRELINK'"
     ).fetchone() or ())
+    assert centrelink_before, "The shared Centrelink definition must load before Phone Stealer SQL"
     for name in SCRIPTS:
         db.executescript((ROOT / "SQL" / name).read_text(encoding="utf-8"))
 
@@ -41,6 +43,9 @@ def database():
     ).fetchone()
     assert tuple(promotion) == (25, 1)
     assert db.execute(
+        "SELECT Happiness FROM Buildings WHERE Type='BUILDING_UNA_CENTRELINK'"
+    ).fetchone()[0] == 1
+    assert db.execute(
         "SELECT COUNT(*) FROM Civilization_UnitClassOverrides WHERE CivilizationType='CIVILIZATION_TRENT_PHONE_STEALER' AND UnitClassType='UNITCLASS_WORKER' AND UnitType='UNIT_TRENT_UNA_COURT_BUTLER'"
     ).fetchone()[0] == 1
     assert db.execute(
@@ -51,13 +56,36 @@ def database():
     ).fetchone() or ())
     assert centrelink_after == centrelink_before
 
+    # Every related Worker row in the active CP database must also be present
+    # for the Butler. Extra Butler-only rows (its Loyalty promotion) are fine.
+    tables = {row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+    for table in sorted(tables):
+        columns = [row[1] for row in db.execute(f'PRAGMA table_info("{table}")')]
+        if not ((table.startswith("Unit_") or table == "UnitGameplay2DScripts") and "UnitType" in columns):
+            continue
+        compared = [column for column in columns if column not in {"ID", "UnitType"}]
+        worker_rows = Counter(
+            tuple(row[column] for column in compared)
+            for row in db.execute(f'SELECT * FROM "{table}" WHERE UnitType=?', ("UNIT_WORKER",))
+        )
+        butler_rows = Counter(
+            tuple(row[column] for column in compared)
+            for row in db.execute(
+                f'SELECT * FROM "{table}" WHERE UnitType=?', ("UNIT_TRENT_UNA_COURT_BUTLER",)
+            )
+        )
+        assert not (worker_rows - butler_rows), f"Butler did not inherit all Worker rows from {table}"
+
     assert db.execute(
         "SELECT COUNT(*) FROM Buildings WHERE Type LIKE 'BUILDING_TRENT_PHONE_STASH_%'"
     ).fetchone()[0] == 21
     for count in range(1, 22):
         building = f"BUILDING_TRENT_PHONE_STASH_{count}"
-        row = db.execute("SELECT Happiness FROM Buildings WHERE Type=?", (building,)).fetchone()
-        assert row[0] == count // 3
+        row = db.execute(
+            "SELECT Happiness,IsDummy,ShowInPedia,NeverCapture,Cost FROM Buildings WHERE Type=?",
+            (building,),
+        ).fetchone()
+        assert tuple(row) == (count // 3, 1, 0, 1, -1)
         yields = dict(db.execute(
             "SELECT YieldType,Yield FROM Building_YieldChanges WHERE BuildingType=?", (building,)
         ).fetchall())
@@ -74,6 +102,28 @@ def database():
     ).fetchone()[0] == 10
 
     tags = {row[0] for row in db.execute("SELECT Tag FROM Language_en_US")}
+    city_names = [row[0] for row in db.execute(
+        "SELECT CityName FROM Civilization_CityNames WHERE CivilizationType='CIVILIZATION_TRENT_PHONE_STEALER'"
+    )]
+    assert all(name.startswith("TXT_KEY_PHONE_STEALER_CITY_") and name in tags for name in city_names)
+    notification = db.execute(
+        "SELECT Text FROM Language_en_US WHERE Tag='TXT_KEY_PHONE_STEALER_NOTIFICATION_BODY'"
+    ).fetchone()[0]
+    returned = db.execute(
+        "SELECT Text FROM Language_en_US WHERE Tag='TXT_KEY_PHONE_STEALER_RETURN_BODY'"
+    ).fetchone()[0]
+    assert "%s" not in notification + returned
+    assert all(token in notification for token in ("{1_LeaderName}", "{2_CityName}", "{3_CivName}"))
+    assert all(token in returned for token in ("{1_CivName}", "{2_Num}"))
+
+    expected_options = {
+        "EVENTS_DIPLO_MODIFIERS", "EVENTS_PLAYER_TURN", "EVENTS_UNIT_CAPTURE", "EVENTS_UNIT_PREKILL"
+    }
+    options = dict(db.execute(
+        "SELECT Name,Value FROM CustomModOptions WHERE Name IN "
+        "('EVENTS_DIPLO_MODIFIERS','EVENTS_PLAYER_TURN','EVENTS_UNIT_CAPTURE','EVENTS_UNIT_PREKILL')"
+    ))
+    assert set(options) == expected_options and all(value == 1 for value in options.values())
     referenced = set()
     for name in ("91_PhoneStealer_Core.sql", "92_PhoneStealer_Text.sql"):
         referenced |= set(re.findall(r"'(TXT_KEY_[A-Z0-9_]+)'", (ROOT / "SQL" / name).read_text(encoding="utf-8")))
@@ -92,6 +142,19 @@ def art_ui_and_project():
     assert {"Art/PhoneStealer_IconAtlases.xml", *[f"SQL/{name}" for name in SCRIPTS]} <= actions
     addins = {node.text for node in project.findall(".//m:ModContent/m:Content/m:FileName", ns)}
     assert "UI/TrentPhoneStealer_UI.xml" in addins
+    included = {node.get("Include") for node in project.findall(".//m:Content", ns) if node.get("Include")}
+    required = {
+        "Lua\\TrentPhoneStealer_Gameplay.lua",
+        "UI\\TrentPhoneStealer_UI.xml",
+        "UI\\TrentPhoneStealer_UI.lua",
+        "Art\\PhoneStealer_IconAtlases.xml",
+        "Art\\PhoneStealer\\LeaderScene.xml",
+        "Art\\PhoneStealer\\LeaderScene.dds",
+        "Art\\PhoneStealer\\DawnOfMan.dds",
+        "Art\\PhoneStealer\\MapImage.dds",
+        *(f"SQL\\{name}" for name in SCRIPTS),
+    }
+    assert required <= included, sorted(required - included)
     assert 'UnaInclude("TrentPhoneStealer_Gameplay.lua")' in (ROOT / "Lua/UnaCourtLoader.lua").read_text(encoding="utf-8")
 
     atlas = ET.parse(ROOT / "Art/PhoneStealer_IconAtlases.xml")

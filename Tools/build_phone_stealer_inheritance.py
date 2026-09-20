@@ -32,6 +32,9 @@ def build():
     db_path = GAME_USER_ROOT / "cache/Civ5DebugDatabase.db"
     db = sqlite3.connect(f"file:{db_path.as_posix()}?mode=ro", uri=True)
     tables = {row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+    # This base-game table is created outside the XML table definitions scanned
+    # above, but its Worker row is still part of the unit's baseline behavior.
+    known.add("UnitGameplay2DScripts")
     rows = [
         ("Units", "Type", "UNIT_WORKER", "UNIT_TRENT_UNA_COURT_BUTLER"),
         ("Civilizations", "Type", "CIVILIZATION_AMERICA", "CIVILIZATION_TRENT_PHONE_STEALER"),
@@ -55,7 +58,7 @@ def build():
             "DROP TABLE PhoneStealerClone;",
             "",
         ]
-    (ROOT / "SQL/90_PhoneStealer_Inherit.sql").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (ROOT / "SQL/90_PhoneStealer_Inherit.sql").write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
     print(f"Generated {len(rows)} Phone Stealer baseline clones")
 
 

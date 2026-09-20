@@ -12,7 +12,9 @@ This file records the main player-facing and technical changes included in each 
 - Added the **Una Court Butler**, a Community Patch Worker clone costing 20% more Production with +25% Work Rate and capture-safe return to the Capital.
 - Reused the existing Centrelink definition and artwork unchanged.
 - Added concept-derived standalone leader, Dawn of Man, map, civilization, ability and Butler art at native Civ V dimensions, while retaining the supplied concept sheet and exact prompts.
-- Added eleven Lua 5.1 gameplay scenarios and database, localization, art, project and UI validation. The mod remains fixed at version 3.
+- Corrected Civ V localization tokens in theft/return notifications and moved all city names onto proper localized tags.
+- Hardened mission races, invalid requests, dead-owner cleanup and Butler recovery retries, including same-turn unit-ID reuse.
+- Added twenty-two Lua 5.1 gameplay scenarios and deeper Worker-inheritance, localization, packaging, art, project and UI validation. The mod remains fixed at version 3.
 
 ## 2026-09-09 - Library Exile emblem filename collision fix
 

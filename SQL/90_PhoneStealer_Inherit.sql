@@ -15,6 +15,11 @@ UPDATE PhoneStealerClone SET Type='LEADER_TRENT_PHONE_STEALER', ID=NULL;
 INSERT INTO "Leaders" SELECT * FROM PhoneStealerClone;
 DROP TABLE PhoneStealerClone;
 
+CREATE TEMP TABLE PhoneStealerClone AS SELECT * FROM "UnitGameplay2DScripts" WHERE UnitType='UNIT_WORKER';
+UPDATE PhoneStealerClone SET UnitType='UNIT_TRENT_UNA_COURT_BUTLER';
+INSERT INTO "UnitGameplay2DScripts" SELECT * FROM PhoneStealerClone;
+DROP TABLE PhoneStealerClone;
+
 CREATE TEMP TABLE PhoneStealerClone AS SELECT * FROM "Unit_AITypes" WHERE UnitType='UNIT_WORKER';
 UPDATE PhoneStealerClone SET UnitType='UNIT_TRENT_UNA_COURT_BUTLER';
 INSERT INTO "Unit_AITypes" SELECT * FROM PhoneStealerClone;

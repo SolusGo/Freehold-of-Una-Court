@@ -16,6 +16,9 @@ local queuedButlers = {}
 
 local function Truth(value) return value == true or value == 1 end
 local function Turn() return Game.GetGameTurn() end
+local function IsMajorID(value)
+    return type(value) == "number" and value >= 0 and value < GameDefines.MAX_MAJOR_CIVS
+end
 local function IsTrent(player)
     if type(player) == "number" then player = Players[player] end
     return player ~= nil and CIV ~= nil and player:GetCivilizationType() == CIV
@@ -106,9 +109,10 @@ local function RefreshStash(playerID)
 end
 
 local function ValidTarget(playerID, targetID)
-    if playerID == targetID or not IsTrent(Players[playerID]) then return false end
+    if not IsMajorID(playerID) or not IsMajorID(targetID) or playerID == targetID
+        or not IsTrent(Players[playerID]) then return false end
     local target = Players[targetID]
-    return targetID >= 0 and targetID < GameDefines.MAX_MAJOR_CIVS and target ~= nil and target:IsAlive()
+    return target ~= nil and target:IsAlive()
 end
 
 local function StartMission(playerID, targetID)
@@ -116,7 +120,6 @@ local function StartMission(playerID, targetID)
         or MissionStart(playerID, targetID) >= 0 or not EstablishedSpy(playerID, targetID) then return false end
     SetMissionStart(playerID, targetID, Turn())
     local target = Players[targetID]
-    local capital = target:GetCapitalCity()
     if Players[playerID]:IsHuman() and Events and Events.GameplayAlertMessage then
         Events.GameplayAlertMessage("Snatch Phone begun in " .. target:GetCivilizationShortDescription()
             .. ". Keep the Spy established in the Capital for " .. Scale(MISSION_TURNS) .. " turns.")
@@ -174,10 +177,18 @@ local function ProcessMissions(playerID)
         if targetID ~= playerID then
             local start = MissionStart(playerID, targetID)
             if start >= 0 then
-                if PhoneOwner(targetID) >= 0 or not EstablishedSpy(playerID, targetID) then
+                local cancellation = nil
+                if PhoneOwner(targetID) >= 0 then
+                    cancellation = "Snatch Phone was cancelled because that Phone is no longer available."
+                elseif not ValidTarget(playerID, targetID) then
+                    cancellation = "Snatch Phone was cancelled because the target civilization is no longer active."
+                elseif not EstablishedSpy(playerID, targetID) then
+                    cancellation = "Snatch Phone was cancelled because no Spy remains established in the target Capital."
+                end
+                if cancellation ~= nil then
                     SetMissionStart(playerID, targetID, -1)
                     if player:IsHuman() and Events and Events.GameplayAlertMessage then
-                        Events.GameplayAlertMessage("Snatch Phone was cancelled because no Spy remains established in the target Capital.")
+                        Events.GameplayAlertMessage(cancellation)
                     end
                     Changed()
                 elseif Turn() - start >= duration then
@@ -194,9 +205,14 @@ local function ProcessMissions(playerID)
 end
 
 local function QueueButlerEscape(ownerID, unitID)
-    local marker = tostring(ownerID) .. ":" .. tostring(unitID or -1) .. ":" .. tostring(Turn())
-    if queuedButlers[marker] then return end
-    queuedButlers[marker] = true
+    local ownerQueue = queuedButlers[ownerID]
+    if ownerQueue == nil then
+        ownerQueue = {}
+        queuedButlers[ownerID] = ownerQueue
+    end
+    local marker = tostring(unitID or -1) .. ":" .. tostring(Turn())
+    if ownerQueue[marker] then return end
+    ownerQueue[marker] = true
     Write("ESCAPES", ownerID, nil, Read("ESCAPES", ownerID) + 1)
 end
 
@@ -220,30 +236,46 @@ local function ProcessButlerEscapes(ownerID)
     local pending = Read("ESCAPES", ownerID)
     if pending <= 0 then return end
     local player = Players[ownerID]
-    if not IsTrent(player) or not player:IsAlive() then Write("ESCAPES", ownerID, nil, 0) return end
+    if not IsTrent(player) or not player:IsAlive() then
+        Write("ESCAPES", ownerID, nil, 0)
+        queuedButlers[ownerID] = nil
+        return
+    end
     local city = player:GetCapitalCity()
     if city == nil then
         for candidate in player:Cities() do city = candidate break end
     end
     if city == nil then return end
-    Write("ESCAPES", ownerID, nil, 0)
+    local created, retry = 0, 0
     for _ = 1, pending do
         local unit = player:InitUnit(BUTLER, city:GetX(), city:GetY())
-        if unit and unit.JumpToNearestValidPlot then pcall(function() unit:JumpToNearestValidPlot() end) end
-        if unit and unit.SetMoves then unit:SetMoves(0) end
+        if unit then
+            if unit.JumpToNearestValidPlot then pcall(function() unit:JumpToNearestValidPlot() end) end
+            if unit.SetMoves then unit:SetMoves(0) end
+            created = created + 1
+        else
+            retry = retry + 1
+        end
     end
-    Notify(ownerID, "TXT_KEY_PHONE_STEALER_ESCAPE_TITLE", "TXT_KEY_PHONE_STEALER_ESCAPE_BODY",
-        city:GetX(), city:GetY())
-    Changed()
+    Write("ESCAPES", ownerID, nil, retry)
+    queuedButlers[ownerID] = nil
+    if created > 0 then
+        Notify(ownerID, "TXT_KEY_PHONE_STEALER_ESCAPE_TITLE", "TXT_KEY_PHONE_STEALER_ESCAPE_BODY",
+            city:GetX(), city:GetY())
+        Changed()
+    end
 end
 
 local function CleanupDeadOwners()
+    local released = false
     for targetID = 0, GameDefines.MAX_MAJOR_CIVS - 1 do
         local ownerID = PhoneOwner(targetID)
         if ownerID >= 0 and (Players[ownerID] == nil or not Players[ownerID]:IsAlive()) then
             SetPhoneOwner(targetID, -1)
+            released = true
         end
     end
+    if released then Changed() end
 end
 
 local function OnPlayerDoTurn(playerID)
