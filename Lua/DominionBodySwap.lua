@@ -7,26 +7,14 @@ print("DominionBodySwap.lua loaded")
 local SAVE = Modding.OpenSaveData()
 local CIV_DOMINION = GameInfoTypes.CIVILIZATION_DOMINION_UNA_COURT
 local UNIT_TRENT = GameInfoTypes.UNIT_DOMINION_TRENTROULS
+local UNIT_FREEHOLD_TRENT = GameInfoTypes.UNIT_UNA_TRENTROULS
+local UNIT_BUDDY = GameInfoTypes.UNIT_UNA_BUDDY
 local PROMO_BORROWED = GameInfoTypes.PROMOTION_DOMINION_BORROWED_BODY
 local PROMO_ENEMY_TRENT = GameInfoTypes.PROMOTION_DOMINION_ENEMY_IN_TRENT
 local PROMO_READY = GameInfoTypes.PROMOTION_DOMINION_SWAP_READY
 local PROMO_COOLDOWN = GameInfoTypes.PROMOTION_DOMINION_SWAP_COOLDOWN
 local PROMO_IMMUNE = GameInfoTypes.PROMOTION_DOMINION_SWAP_IMMUNE
 local DOMAIN_AIR = GameInfoTypes.DOMAIN_AIR
-local TRENT_UNIQUE_TYPES = {}
-for _, typeName in ipairs({
-    "UNIT_UNA_TRENTROULS",
-    "UNIT_UNA_BUDDY",
-    "UNIT_DOMINION_TRENTROULS",
-    "UNIT_ULTIMATE_GOLDEN_RETRIEVER",
-    "UNIT_TRENT_HOPELESS_ROMANTIC",
-    "UNIT_TRENT_IPAD_READER",
-    "UNIT_TRENT_UNA_COURT_BUTLER",
-    "UNIT_PPB_PATREON_REGULAR"
-}) do
-    local unitType = GameInfoTypes[typeName]
-    if unitType ~= nil then TRENT_UNIQUE_TYPES[unitType] = true end
-end
 local activeTransfer = false
 local pendingReturns = {}
 
@@ -79,7 +67,7 @@ end
 function Dominion_IsEligibleBodySwapTarget(playerID, trent, target)
     if trent == nil or target == nil or target:IsDead() or target:GetOwner() == playerID then return false end
     local unitType = target:GetUnitType()
-    if TRENT_UNIQUE_TYPES[unitType] then return false end
+    if unitType == UNIT_TRENT or unitType == UNIT_FREEHOLD_TRENT or unitType == UNIT_BUDDY then return false end
     if target:GetDomainType() == DOMAIN_AIR then return false end
     if PROMO_BORROWED ~= nil and target:IsHasPromotion(PROMO_BORROWED) then return false end
     if PROMO_ENEMY_TRENT ~= nil and target:IsHasPromotion(PROMO_ENEMY_TRENT) then return false end

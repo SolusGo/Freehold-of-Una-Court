@@ -19,12 +19,7 @@ local activeTransfer = false
 local EXCLUDED_TYPES = {
     [GameInfoTypes.UNIT_UNA_TRENTROULS or -1001] = true,
     [GameInfoTypes.UNIT_UNA_BUDDY or -1002] = true,
-    [GameInfoTypes.UNIT_DOMINION_TRENTROULS or -1003] = true,
-    [GameInfoTypes.UNIT_ULTIMATE_GOLDEN_RETRIEVER or -1004] = true,
-    [GameInfoTypes.UNIT_TRENT_HOPELESS_ROMANTIC or -1005] = true,
-    [GameInfoTypes.UNIT_TRENT_IPAD_READER or -1006] = true,
-    [GameInfoTypes.UNIT_TRENT_UNA_COURT_BUTLER or -1007] = true,
-    [GameInfoTypes.UNIT_PPB_PATREON_REGULAR or -1008] = true
+    [GameInfoTypes.UNIT_DOMINION_TRENTROULS or -1003] = true
 }
 
 local function Key(playerID, suffix)

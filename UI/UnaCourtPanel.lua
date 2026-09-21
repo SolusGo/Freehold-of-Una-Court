@@ -43,12 +43,7 @@ local DOMINION_ERA = {
 local EXCLUDED_TYPES = {
     [UNIT_FREEHOLD_TRENT or -1001] = true,
     [UNIT_DOMINION_TRENT or -1002] = true,
-    [UNIT_BUDDY or -1003] = true,
-    [UNIT_GOLDEN_RETRIEVER or -1004] = true,
-    [GameInfoTypes.UNIT_TRENT_HOPELESS_ROMANTIC or -1005] = true,
-    [GameInfoTypes.UNIT_TRENT_IPAD_READER or -1006] = true,
-    [GameInfoTypes.UNIT_TRENT_UNA_COURT_BUTLER or -1007] = true,
-    [GameInfoTypes.UNIT_PPB_PATREON_REGULAR or -1008] = true
+    [UNIT_BUDDY or -1003] = true
 }
 
 local function Mode(player)
