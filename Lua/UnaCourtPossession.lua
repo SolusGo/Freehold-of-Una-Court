@@ -16,6 +16,17 @@ local PROMO_COOLDOWN = GameInfoTypes.PROMOTION_UNA_POSSESSION_COOLDOWN
 local DOMAIN_AIR = GameInfoTypes.DOMAIN_AIR
 local activeTransfer = false
 
+local function RunTransfer(label, callback)
+    activeTransfer = true
+    local ok, first, second = pcall(callback)
+    activeTransfer = false
+    if not ok then
+        print("Una Court " .. tostring(label) .. " transfer failed: " .. tostring(first))
+        return false, nil, nil
+    end
+    return true, first, second
+end
+
 local function Key(playerID, suffix)
     return "UNA_POSSESSION_" .. tostring(playerID) .. "_" .. suffix
 end
@@ -88,6 +99,9 @@ local function CaptureUnitState(unit)
         experience = unit:GetExperience(),
         level = unit:GetLevel(),
         moves = unit:GetMoves(),
+        direction = unit.GetFacingDirection ~= nil and unit:GetFacingDirection() or nil,
+        embarked = unit.IsEmbarked ~= nil and unit:IsEmbarked() or false,
+        fortifyTurns = unit.GetFortifyTurns ~= nil and unit:GetFortifyTurns() or nil,
         promotions = {}
     }
 
@@ -101,7 +115,9 @@ end
 local function RestoreUnitState(unit, state, isPossessed)
     if unit == nil then return end
     if state.damage ~= nil then unit:SetDamage(state.damage) end
-    if state.experience ~= nil and state.experience > 0 then unit:ChangeExperience(state.experience) end
+    if state.experience ~= nil and unit.SetExperience ~= nil then unit:SetExperience(state.experience)
+    elseif state.experience ~= nil and state.experience > 0 then unit:ChangeExperience(state.experience) end
+    if state.level ~= nil and unit.SetLevel ~= nil then unit:SetLevel(math.max(1, state.level)) end
     if state.name ~= nil and state.name ~= "" then unit:SetName(state.name) end
 
     for _, promotionID in ipairs(state.promotions or {}) do
@@ -109,10 +125,12 @@ local function RestoreUnitState(unit, state, isPossessed)
     end
     if PROMO_POSSESSED ~= nil then unit:SetHasPromotion(PROMO_POSSESSED, isPossessed == true) end
     if state.moves ~= nil and unit.SetMoves ~= nil then unit:SetMoves(state.moves) end
+    if state.fortifyTurns ~= nil and unit.SetFortifyTurns ~= nil then unit:SetFortifyTurns(state.fortifyTurns) end
+    if state.embarked and unit.SetEmbarked ~= nil then pcall(function() unit:SetEmbarked(true) end) end
 end
 
 local function CreateTransferredUnit(newOwner, state, possessed)
-    local newUnit = newOwner:InitUnit(state.unitType, state.x, state.y, state.unitAI)
+    local newUnit = newOwner:InitUnit(state.unitType, state.x, state.y, state.unitAI, state.direction)
     if newUnit == nil then return nil end
     RestoreUnitState(newUnit, state, possessed)
     if newUnit.JumpToNearestValidPlot ~= nil then pcall(function() newUnit:JumpToNearestValidPlot() end) end
@@ -185,11 +203,20 @@ function UnaCourt_StartPossession(playerID, trentID, targetOwnerID, targetUnitID
     local state = CaptureUnitState(target)
     local cooldown, duration = GameSpeedValues()
 
-    activeTransfer = true
-    target:Kill(false, playerID)
-    local possessed = CreateTransferredUnit(player, state, true)
-    activeTransfer = false
-    if possessed == nil then return false end
+    local targetRemoved = false
+    local transferOK, possessed = RunTransfer("activation", function()
+        target:Kill(false, playerID)
+        targetRemoved = true
+        return CreateTransferredUnit(player, state, true)
+    end)
+    if not transferOK or possessed == nil then
+        if targetRemoved and targetOwner:IsAlive() then
+            RunTransfer("activation rollback", function()
+                return CreateTransferredUnit(targetOwner, state, false)
+            end)
+        end
+        return false
+    end
 
     ClearSuspended(playerID)
     SetNumber(playerID, "ACTIVE", 1)
@@ -219,10 +246,35 @@ function UnaCourt_EndPossession(playerID, reason, preserveMoves)
     if possessed ~= nil then
         if originalOwner ~= nil and originalOwner:IsAlive() then
             local state = CaptureUnitState(possessed)
-            activeTransfer = true
-            possessed:Kill(false, preserveMoves and -1 or originalOwnerID)
-            returned = CreateTransferredUnit(originalOwner, state, false)
-            activeTransfer = false
+            local removed = false
+            local transferOK
+            transferOK, returned = RunTransfer("return", function()
+                possessed:Kill(false, preserveMoves and -1 or originalOwnerID)
+                removed = true
+                return CreateTransferredUnit(originalOwner, state, false)
+            end)
+            if not transferOK or returned == nil then
+                if not removed and not possessed:IsDead() then
+                    -- The transfer failed before the tracked body was removed.
+                    -- Keep the possession active so it can be retried safely.
+                    UpdateTrentPromotion(playerID)
+                    return false
+                end
+                local rollback = nil
+                if removed then
+                    _, rollback = RunTransfer("return rollback", function()
+                        return CreateTransferredUnit(player, state, true)
+                    end)
+                end
+                if rollback ~= nil then
+                    SetNumber(playerID, "UNIT_ID", rollback:GetID())
+                    UpdateTrentPromotion(playerID)
+                    return false
+                end
+                ClearActive(playerID)
+                UpdateTrentPromotion(playerID)
+                return false
+            end
             if not preserveMoves and returned ~= nil and returned.SetMoves ~= nil then returned:SetMoves(0) end
         else
             if PROMO_POSSESSED ~= nil then possessed:SetHasPromotion(PROMO_POSSESSED, false) end
@@ -251,14 +303,18 @@ local function ResumeSuspendedPossession(playerID)
     end
 
     local state = CaptureUnitState(target)
-    activeTransfer = true
-    target:Kill(false, -1)
-    local possessed = CreateTransferredUnit(player, state, true)
-    activeTransfer = false
-    if possessed == nil then
-        activeTransfer = true
-        CreateTransferredUnit(targetOwner, state, false)
-        activeTransfer = false
+    local targetRemoved = false
+    local transferOK, possessed = RunTransfer("save restore", function()
+        target:Kill(false, -1)
+        targetRemoved = true
+        return CreateTransferredUnit(player, state, true)
+    end)
+    if not transferOK or possessed == nil then
+        if targetRemoved then
+            RunTransfer("save restore rollback", function()
+                return CreateTransferredUnit(targetOwner, state, false)
+            end)
+        end
         ClearSuspended(playerID)
         print("Una Court possession restore failed safely; ordinary ownership was retained")
         return false
@@ -381,6 +437,34 @@ if GameEvents.UnitPrekill ~= nil then
             ClearActive(killedPlayerID)
             UpdateTrentPromotion(killedPlayerID)
         end
+    end)
+end
+
+local function IsProtectedPossessedUnit(playerID, unitID)
+    local player = Players[playerID]
+    local unit = player ~= nil and player:GetUnitByID(unitID) or nil
+    return unit ~= nil and PROMO_POSSESSED ~= nil and unit:IsHasPromotion(PROMO_POSSESSED)
+end
+
+if GameEvents.PlayerCanGiftUnit ~= nil then
+    GameEvents.PlayerCanGiftUnit.Add(function(playerID, _, unitID)
+        return not IsProtectedPossessedUnit(playerID, unitID)
+    end)
+end
+
+if GameEvents.PlayerCanDoCommand ~= nil then
+    GameEvents.PlayerCanDoCommand.Add(function(playerID, unitID, commandID)
+        if not IsProtectedPossessedUnit(playerID, unitID) then return true end
+        if CommandTypes ~= nil and (commandID == CommandTypes.COMMAND_DELETE
+            or commandID == CommandTypes.COMMAND_UPGRADE
+            or commandID == CommandTypes.COMMAND_GIFT) then return false end
+        return true
+    end)
+end
+
+if GameEvents.CanHaveAnyUpgrade ~= nil then
+    GameEvents.CanHaveAnyUpgrade.Add(function(playerID, unitID)
+        return not IsProtectedPossessedUnit(playerID, unitID)
     end)
 end
 

@@ -42,6 +42,18 @@ end
 
 local collapsing = {}
 local pendingCollapses = {}
+local scriptedTrentRemovals = 0
+
+local function UnaCourt_RemoveTrentWithoutCollapse(unit)
+    if unit == nil then return false end
+    scriptedTrentRemovals = scriptedTrentRemovals + 1
+    local ok, err = pcall(function() unit:Kill(false, -1) end)
+    scriptedTrentRemovals = math.max(0, scriptedTrentRemovals - 1)
+    if not ok then
+        print("Una Court scripted Trentrouls removal failed: " .. tostring(err))
+    end
+    return ok
+end
 
 function UnaCourt_IsPlayer(player)
     return player ~= nil
@@ -251,7 +263,11 @@ local function UnaCourt_EnforceCaps(player)
 
     for _, unitID in ipairs(remove) do
         local unit = player:GetUnitByID(unitID)
-        if unit ~= nil then unit:Kill(false, -1) end
+        if unit ~= nil and unit:GetUnitType() == UNIT_TRENT then
+            UnaCourt_RemoveTrentWithoutCollapse(unit)
+        elseif unit ~= nil then
+            unit:Kill(false, -1)
+        end
     end
 end
 
@@ -400,6 +416,7 @@ end
 if GameEvents.UnitPrekill ~= nil then
     GameEvents.UnitPrekill.Add(function(killedPlayerID, _, killedUnitType, _, _, _, killerPlayerID)
         if killedUnitType == UNIT_TRENT then
+            if scriptedTrentRemovals > 0 then return end
             local player = Players[killedPlayerID]
             if UnaCourt_IsPlayer(player) and not collapsing[killedPlayerID] and pendingCollapses[killedPlayerID] == nil then
                 -- Never destroy the empire from UnitPrekill itself. During a

@@ -27,6 +27,16 @@ end
 
 local collapsing = {}
 local pendingCollapses = {}
+local scriptedTrentRemovals = 0
+
+local function RemoveTrentWithoutCollapse(unit)
+    if unit == nil then return false end
+    scriptedTrentRemovals = scriptedTrentRemovals + 1
+    local ok, err = pcall(function() unit:Kill(false, -1) end)
+    scriptedTrentRemovals = math.max(0, scriptedTrentRemovals - 1)
+    if not ok then print("Dominion scripted Trentrouls removal failed: " .. tostring(err)) end
+    return ok
+end
 
 local function Key(playerID, suffix)
     return "DOMINION_SWAP_" .. tostring(playerID) .. "_" .. suffix
@@ -90,7 +100,7 @@ local function EnsureStartingTrent(playerID)
         end
         for index = 2, #trents do
             local duplicate = player:GetUnitByID(trents[index])
-            if duplicate ~= nil then duplicate:Kill(false, -1) end
+            if duplicate ~= nil then RemoveTrentWithoutCollapse(duplicate) end
         end
     end
 
@@ -280,6 +290,7 @@ end
 if GameEvents.UnitPrekill ~= nil then
     GameEvents.UnitPrekill.Add(function(killedPlayerID, killedUnitID, killedUnitType, _, _, _, killerPlayerID)
         if killedUnitType ~= UNIT_TRENT then return end
+        if scriptedTrentRemovals > 0 then return end
         if Dominion_IsBodySwapTransfer ~= nil and Dominion_IsBodySwapTransfer() then return end
 
         local dominionID = nil

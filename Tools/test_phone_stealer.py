@@ -188,6 +188,14 @@ scenario(
     "EstablishSpy(0,1);assert(MapModData.TrentPhoneStealer.StartMission(0,1));Players[1].alive=false;gameTurn=3;MapModData.TrentPhoneStealer.ProcessMissions(0);assert(save['TRENT_PHONE_V1_MISSION_0_1']==-1 and MapModData.TrentPhoneStealer.PhoneOwner(1)==-1)",
 )
 scenario(
+    "target losing its Capital cancels an unfinished mission",
+    "EstablishSpy(0,1);assert(MapModData.TrentPhoneStealer.StartMission(0,1));Players[1].cities={};gameTurn=3;MapModData.TrentPhoneStealer.ProcessMissions(0);assert(save['TRENT_PHONE_V1_MISSION_0_1']==-1 and MapModData.TrentPhoneStealer.PhoneOwner(1)==-1)",
+)
+scenario(
+    "a moved Capital requires the Spy to re-establish",
+    "EstablishSpy(0,1);assert(MapModData.TrentPhoneStealer.StartMission(0,1));Players[1].cities={City(99,20,21,'New Capital')};gameTurn=3;MapModData.TrentPhoneStealer.ProcessMissions(0);assert(save['TRENT_PHONE_V1_MISSION_0_1']==-1 and MapModData.TrentPhoneStealer.PhoneOwner(1)==-1)",
+)
+scenario(
     "eliminating the owning Trent releases held Phones",
     "MapModData.TrentPhoneStealer.SetPhoneOwner(1,0);Players[0].alive=false;GameEvents.PlayerDoTurn(1);assert(MapModData.TrentPhoneStealer.PhoneOwner(1)==-1)",
 )
@@ -220,4 +228,4 @@ scenario(
     "EstablishSpy(0,1);assert(MapModData.TrentPhoneStealer.StartMission(0,1));gameTurn=8;MapModData.TrentPhoneStealer.ProcessMissions(0);assert(#notices==1 and string.find(notices[1].body,'Leader 0',1,true) and not string.find(notices[1].body,'{',1,true));assert(MapModData.TrentPhoneStealer.ReturnPhone(0,1));assert(#notices==2 and string.find(notices[2].body,'30 turns',1,true) and not string.find(notices[2].body,'{',1,true))",
 )
 
-print("22 Phone Stealer gameplay scenarios passed (actual Lua 5.1 module)")
+print("24 Phone Stealer gameplay scenarios passed (actual Lua 5.1 module)")

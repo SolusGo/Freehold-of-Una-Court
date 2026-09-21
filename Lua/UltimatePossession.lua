@@ -16,6 +16,17 @@ local DOMAIN_AIR = GameInfoTypes.DOMAIN_AIR
 local MAX_SLOTS = 8
 local activeTransfer = false
 
+local function RunTransfer(label, callback)
+    activeTransfer = true
+    local ok, first, second = pcall(callback)
+    activeTransfer = false
+    if not ok then
+        print("Ultimate " .. tostring(label) .. " transfer failed: " .. tostring(first))
+        return false, nil, nil
+    end
+    return true, first, second
+end
+
 local EXCLUDED_TYPES = {
     [GameInfoTypes.UNIT_UNA_TRENTROULS or -1001] = true,
     [GameInfoTypes.UNIT_UNA_BUDDY or -1002] = true,
@@ -248,8 +259,10 @@ local function CaptureUnitState(unit)
     local state = {
         unitType = unit:GetUnitType(), unitAI = unit:GetUnitAIType(),
         x = unit:GetX(), y = unit:GetY(), damage = unit:GetDamage(),
-        experience = unit:GetExperience(), moves = unit:GetMoves(),
+        experience = unit:GetExperience(), level = unit:GetLevel(), moves = unit:GetMoves(),
+        direction = unit.GetFacingDirection ~= nil and unit:GetFacingDirection() or nil,
         embarked = unit.IsEmbarked ~= nil and unit:IsEmbarked() or false,
+        fortifyTurns = unit.GetFortifyTurns ~= nil and unit:GetFortifyTurns() or nil,
         promotions = {}
     }
     if unit.HasName ~= nil and unit:HasName() then state.name = unit:GetNameNoDesc() end
@@ -264,7 +277,9 @@ end
 local function RestoreUnitState(unit, state, possessed)
     if unit == nil or state == nil then return end
     if state.damage ~= nil then unit:SetDamage(state.damage) end
-    if state.experience ~= nil and state.experience > 0 then unit:ChangeExperience(state.experience) end
+    if state.experience ~= nil and unit.SetExperience ~= nil then unit:SetExperience(state.experience)
+    elseif state.experience ~= nil and state.experience > 0 then unit:ChangeExperience(state.experience) end
+    if state.level ~= nil and unit.SetLevel ~= nil then unit:SetLevel(math.max(1, state.level)) end
     if state.name ~= nil and state.name ~= "" then unit:SetName(state.name) end
     for _, promotionID in ipairs(state.promotions or {}) do
         if promotionID ~= PROMO_POSSESSED then unit:SetHasPromotion(promotionID, true) end
@@ -272,11 +287,12 @@ local function RestoreUnitState(unit, state, possessed)
     if PROMO_POSSESSED ~= nil then unit:SetHasPromotion(PROMO_POSSESSED, possessed == true) end
     if state.embarked and unit.SetEmbarked ~= nil then pcall(function() unit:SetEmbarked(true) end) end
     if state.moves ~= nil and unit.SetMoves ~= nil then unit:SetMoves(state.moves) end
+    if state.fortifyTurns ~= nil and unit.SetFortifyTurns ~= nil then unit:SetFortifyTurns(state.fortifyTurns) end
 end
 
 local function CreateTransferredUnit(owner, state, possessed)
     if owner == nil or state == nil then return nil end
-    local unit = owner:InitUnit(state.unitType, state.x, state.y, state.unitAI)
+    local unit = owner:InitUnit(state.unitType, state.x, state.y, state.unitAI, state.direction)
     if unit == nil then return nil end
     RestoreUnitState(unit, state, possessed)
     if unit.JumpToNearestValidPlot ~= nil then pcall(function() unit:JumpToNearestValidPlot() end) end
@@ -321,13 +337,18 @@ function Ultimate_StartPossession(playerID, requestedTargets)
     local capacity = CurrentCapacity(player)
     if #request < 1 or #request > capacity then return false end
 
-    local targets = {}
+    local targets, seen = {}, {}
     for _, record in ipairs(request) do
-        local owner = Players[record.ownerID]
-        local unit = owner ~= nil and owner:GetUnitByID(record.unitID) or nil
+        local ownerID, unitID = tonumber(record.ownerID), tonumber(record.unitID)
+        if ownerID == nil or unitID == nil then return false end
+        local key = tostring(ownerID) .. ":" .. tostring(unitID)
+        if seen[key] then return false end
+        seen[key] = true
+        local owner = Players[ownerID]
+        local unit = owner ~= nil and owner:GetUnitByID(unitID) or nil
         if not Ultimate_IsEligibleTarget(playerID, unit) then return false end
         targets[#targets + 1] = {
-            originalOwner = record.ownerID,
+            originalOwner = ownerID,
             originalUnit = unit,
             state = CaptureUnitState(unit)
         }
@@ -337,26 +358,32 @@ function Ultimate_StartPossession(playerID, requestedTargets)
         return false
     end
 
-    local created = {}
-    activeTransfer = true
-    for index, record in ipairs(targets) do
-        record.originalUnit:Kill(false, -1)
-        local possessed = CreateTransferredUnit(player, record.state, true)
-        if possessed == nil then
-            -- Roll the entire activation back to conventional ownership.
-            CreateTransferredUnit(Players[record.originalOwner], record.state, false)
-            for _, earlier in ipairs(created) do
-                local restoredState = CaptureUnitState(earlier.unit)
-                earlier.unit:Kill(false, -1)
-                CreateTransferredUnit(Players[earlier.originalOwner], restoredState, false)
+    local created, removed = {}, {}
+    local transferOK, completed, failedSlot = RunTransfer("activation", function()
+        for index, record in ipairs(targets) do
+            record.originalUnit:Kill(false, -1)
+            removed[#removed + 1] = record
+            local possessed = CreateTransferredUnit(player, record.state, true)
+            if possessed == nil then
+                return false, index
             end
-            activeTransfer = false
-            print("Ultimate possession activation rolled back safely at slot " .. tostring(index))
-            return false
+            created[#created + 1] = { unit = possessed, originalOwner = record.originalOwner }
         end
-        created[#created + 1] = { unit = possessed, originalOwner = record.originalOwner }
+        return true, nil
+    end)
+    if not transferOK or not completed then
+        RunTransfer("activation rollback", function()
+            for _, record in ipairs(created) do record.unit:Kill(false, -1) end
+            for _, record in ipairs(removed) do
+                local owner = Players[record.originalOwner]
+                if owner ~= nil and (owner:IsAlive() or owner:IsBarbarian()) then
+                    CreateTransferredUnit(owner, record.state, false)
+                end
+            end
+        end)
+        print("Ultimate possession activation rolled back safely at slot " .. tostring(failedSlot or "unknown"))
+        return false
     end
-    activeTransfer = false
 
     ClearSuspended(playerID)
     ClearActive(playerID)
@@ -385,37 +412,78 @@ local function ReturnSlot(playerID, slot, preserveMoves)
 
     if unit ~= nil then
         local state = CaptureUnitState(unit)
-        activeTransfer = true
-        unit:Kill(false, -1)
-        if owner ~= nil and (owner:IsAlive() or owner:IsBarbarian()) then
-            returned = CreateTransferredUnit(owner, state, false)
-            if returned ~= nil and not preserveMoves and returned.SetMoves ~= nil then returned:SetMoves(0) end
+        local removed = false
+        local transferOK = RunTransfer("return", function()
+            unit:Kill(false, -1)
+            removed = true
+            if owner ~= nil and (owner:IsAlive() or owner:IsBarbarian()) then
+                returned = CreateTransferredUnit(owner, state, false)
+                if returned ~= nil and not preserveMoves and returned.SetMoves ~= nil then returned:SetMoves(0) end
+            end
+        end)
+        if not transferOK or (owner ~= nil and (owner:IsAlive() or owner:IsBarbarian()) and returned == nil) then
+            local rollback = nil
+            if removed then
+                _, rollback = RunTransfer("return rollback", function()
+                    return CreateTransferredUnit(player, state, true)
+                end)
+            end
+            if rollback ~= nil then
+                SetNumber(playerID, SlotKey(slot, "UNIT_ID"), rollback:GetID())
+            end
+            return nil, false
         end
-        activeTransfer = false
     end
     ClearSlot(playerID, slot)
-    return returned
+    return returned, true
 end
 
 function Ultimate_EndPossession(playerID, reason, preserveMoves)
     if GetNumber(playerID, "ACTIVE") ~= 1 then return false end
-    for slot = 1, MAX_SLOTS do ReturnSlot(playerID, slot, preserveMoves == true) end
-    ClearActive(playerID)
+    local complete = true
+    for slot = 1, MAX_SLOTS do
+        local _, returned = ReturnSlot(playerID, slot, preserveMoves == true)
+        if returned == false then complete = false end
+    end
+    if complete then ClearActive(playerID) else Recount(playerID) end
     local player = Players[playerID]
-    if reason ~= nil then Alert(player, "Mass Possession Ended", tostring(reason) .. ".") end
+    if complete and reason ~= nil then Alert(player, "Mass Possession Ended", tostring(reason) .. ".") end
     NotifyChanged(playerID)
-    return true
+    return complete
 end
 
 local function SuspendForSave(playerID)
     if GetNumber(playerID, "ACTIVE") ~= 1 then return false end
+    local player = Players[playerID]
     local turns, cooldown = GetNumber(playerID, "TURNS"), GetNumber(playerID, "COOLDOWN")
     local saved = {}
     for slot = 1, MAX_SLOTS do
         local ownerID = GetNumber(playerID, SlotKey(slot, "ORIGINAL_OWNER"))
-        local returned = ReturnSlot(playerID, slot, true)
+        local returned, complete = ReturnSlot(playerID, slot, true)
+        if complete == false then
+            RunTransfer("save suspension rollback", function()
+                for _, record in ipairs(saved) do
+                    local owner = Players[record.ownerID]
+                    local normalized = owner ~= nil and owner:GetUnitByID(record.unitID) or nil
+                    if normalized ~= nil then
+                        local state = CaptureUnitState(normalized)
+                        normalized:Kill(false, -1)
+                        local possessed = CreateTransferredUnit(player, state, true)
+                        if possessed ~= nil then
+                            SetNumber(playerID, SlotKey(record.slot, "UNIT_ID"), possessed:GetID())
+                            SetNumber(playerID, SlotKey(record.slot, "ORIGINAL_OWNER"), record.ownerID)
+                        else
+                            CreateTransferredUnit(owner, state, false)
+                        end
+                    end
+                end
+            end)
+            Recount(playerID)
+            print("Ultimate possession could not be fully normalized for saving")
+            return false
+        end
         if returned ~= nil then
-            saved[#saved + 1] = { ownerID = ownerID, unitID = returned:GetID() }
+            saved[#saved + 1] = { slot = slot, ownerID = ownerID, unitID = returned:GetID() }
         end
     end
     ClearActive(playerID)
@@ -454,26 +522,33 @@ local function ResumeSuspended(playerID)
         return false
     end
 
-    local created = {}
-    activeTransfer = true
-    for _, record in ipairs(normalized) do
-        record.unit:Kill(false, -1)
-        local possessed = CreateTransferredUnit(player, record.state, true)
-        if possessed == nil then
-            CreateTransferredUnit(Players[record.ownerID], record.state, false)
-            for _, earlier in ipairs(created) do
-                local state = CaptureUnitState(earlier.unit)
-                earlier.unit:Kill(false, -1)
-                CreateTransferredUnit(Players[earlier.ownerID], state, false)
+    local created, removed = {}, {}
+    local transferOK, completed = RunTransfer("save restore", function()
+        for _, record in ipairs(normalized) do
+            record.unit:Kill(false, -1)
+            removed[#removed + 1] = record
+            local possessed = CreateTransferredUnit(player, record.state, true)
+            if possessed == nil then
+                return false
             end
-            activeTransfer = false
-            ClearSuspended(playerID)
-            print("Ultimate possession save restore rolled back safely")
-            return false
+            created[#created + 1] = { unit = possessed, ownerID = record.ownerID }
         end
-        created[#created + 1] = { unit = possessed, ownerID = record.ownerID }
+        return true
+    end)
+    if not transferOK or not completed then
+        RunTransfer("save restore rollback", function()
+            for _, record in ipairs(created) do record.unit:Kill(false, -1) end
+            for _, record in ipairs(removed) do
+                local owner = Players[record.ownerID]
+                if owner ~= nil and (owner:IsAlive() or owner:IsBarbarian()) then
+                    CreateTransferredUnit(owner, record.state, false)
+                end
+            end
+        end)
+        ClearSuspended(playerID)
+        print("Ultimate possession save restore rolled back safely")
+        return false
     end
-    activeTransfer = false
 
     local turns = GetNumber(playerID, "SAVE_TURNS")
     local cooldown = GetNumber(playerID, "SAVE_COOLDOWN")
