@@ -67,9 +67,51 @@ local function GameSpeedValues()
     return 30, 3
 end
 
-local function UnitIsTrade(unit)
+local function UnitHasUnsafeTransferState(unit)
     local info = GameInfo.Units[unit:GetUnitType()]
-    return info ~= nil and tonumber(info.Trade or 0) ~= 0
+    if info == nil then return true end
+    if tonumber(info.Trade or 0) ~= 0 or tonumber(info.NukeDamageLevel or 0) > 0
+        or tonumber(info.Suicide or 0) ~= 0 or info.Special == "SPECIALUNIT_MISSILE"
+        or info.Special == "SPECIALUNIT_PEOPLE" or tonumber(info.ReligionSpreads or 0) > 0
+        or tonumber(info.ReligiousStrength or 0) > 0 or tonumber(info.FoundReligion or 0) ~= 0
+        or tonumber(info.RemoveHeresy or 0) ~= 0 then return true end
+
+    if unit.IsCargo ~= nil then
+        local ok, isCargo = pcall(function() return unit:IsCargo() end)
+        if ok and isCargo then return true end
+    end
+    if unit.GetCargo ~= nil then
+        local ok, cargo = pcall(function() return unit:GetCargo() end)
+        if ok and (cargo == true or tonumber(cargo or 0) > 0) then return true end
+    elseif unit.HasCargo ~= nil then
+        local ok, hasCargo = pcall(function() return unit:HasCargo() end)
+        if ok and hasCargo then return true end
+    end
+    return false
+end
+
+local function UnitWasRemoved(owner, unitID)
+    if owner == nil or unitID == nil then return true end
+    local unit = owner:GetUnitByID(unitID)
+    if unit == nil then return true end
+    if unit.IsDead ~= nil then
+        local ok, dead = pcall(function() return unit:IsDead() end)
+        if ok and dead then return true end
+    end
+    if unit.IsDelayedDeath ~= nil then
+        local ok, delayed = pcall(function() return unit:IsDelayedDeath() end)
+        if ok and delayed then return true end
+    end
+    return false
+end
+
+local function KillAndVerify(unit, killerPlayerID, label)
+    local owner = Players[unit:GetOwner()]
+    local unitID = unit:GetID()
+    unit:Kill(false, killerPlayerID)
+    if not UnitWasRemoved(owner, unitID) then
+        error(tostring(label) .. ": original unit still exists after Kill")
+    end
 end
 
 function UnaCourt_IsEligiblePossessionTarget(playerID, trent, target)
@@ -77,7 +119,7 @@ function UnaCourt_IsEligiblePossessionTarget(playerID, trent, target)
     if target:GetOwner() == playerID then return false end
     if target:GetUnitType() == UNIT_TRENT or target:GetUnitType() == UNIT_DOMINION_TRENT
         or target:GetUnitType() == UNIT_BUDDY then return false end
-    if target:GetDomainType() == DOMAIN_AIR or UnitIsTrade(target) then return false end
+    if target:GetDomainType() == DOMAIN_AIR or UnitHasUnsafeTransferState(target) then return false end
     if PROMO_POSSESSED ~= nil and target:IsHasPromotion(PROMO_POSSESSED) then return false end
 
     local targetPlot = target:GetPlot()
@@ -106,6 +148,10 @@ local function CaptureUnitState(unit)
     }
 
     if unit.HasName ~= nil and unit:HasName() then state.name = unit:GetNameNoDesc() end
+    if unit.GetScriptData ~= nil then
+        local ok, scriptData = pcall(function() return unit:GetScriptData() end)
+        if ok then state.scriptData = scriptData end
+    end
     for promotion in GameInfo.UnitPromotions() do
         if unit:IsHasPromotion(promotion.ID) then state.promotions[#state.promotions + 1] = promotion.ID end
     end
@@ -119,6 +165,9 @@ local function RestoreUnitState(unit, state, isPossessed)
     elseif state.experience ~= nil and state.experience > 0 then unit:ChangeExperience(state.experience) end
     if state.level ~= nil and unit.SetLevel ~= nil then unit:SetLevel(math.max(1, state.level)) end
     if state.name ~= nil and state.name ~= "" then unit:SetName(state.name) end
+    if state.scriptData ~= nil and unit.SetScriptData ~= nil then
+        pcall(function() unit:SetScriptData(state.scriptData) end)
+    end
 
     for _, promotionID in ipairs(state.promotions or {}) do
         if promotionID ~= PROMO_POSSESSED then unit:SetHasPromotion(promotionID, true) end
@@ -205,7 +254,7 @@ function UnaCourt_StartPossession(playerID, trentID, targetOwnerID, targetUnitID
 
     local targetRemoved = false
     local transferOK, possessed = RunTransfer("activation", function()
-        target:Kill(false, playerID)
+        KillAndVerify(target, playerID, "activation")
         targetRemoved = true
         return CreateTransferredUnit(player, state, true)
     end)
@@ -249,7 +298,7 @@ function UnaCourt_EndPossession(playerID, reason, preserveMoves)
             local removed = false
             local transferOK
             transferOK, returned = RunTransfer("return", function()
-                possessed:Kill(false, preserveMoves and -1 or originalOwnerID)
+                KillAndVerify(possessed, preserveMoves and -1 or originalOwnerID, "return")
                 removed = true
                 return CreateTransferredUnit(originalOwner, state, false)
             end)
@@ -305,7 +354,7 @@ local function ResumeSuspendedPossession(playerID)
     local state = CaptureUnitState(target)
     local targetRemoved = false
     local transferOK, possessed = RunTransfer("save restore", function()
-        target:Kill(false, -1)
+        KillAndVerify(target, -1, "save restore")
         targetRemoved = true
         return CreateTransferredUnit(player, state, true)
     end)
@@ -368,7 +417,6 @@ local function FindBestAITarget(playerID, trent)
                         local score = math.max(target:GetBaseCombatStrength(), target:GetBaseRangedCombatStrength())
                         if info ~= nil then
                             if tonumber(info.Found or 0) ~= 0 then score = score + 80 end
-                            if info.Special == "SPECIALUNIT_PEOPLE" then score = score + 70 end
                             if tonumber(info.WorkRate or 0) > 0 then score = score + 15 end
                         end
                         if score > bestScore then bestTarget, bestScore = target, score end

@@ -13,6 +13,7 @@ local VISITOR_HAPPINESS = GameInfoTypes.BUILDING_TRENT_VISITOR_HAPPINESS
 local VISITOR_CULTURE = GameInfoTypes.BUILDING_TRENT_VISITOR_CULTURE
 local READER_CITY = GameInfoTypes.BUILDING_TRENT_READER_CITY
 local DUMMIES = {EXILE[1],EXILE[2],EXILE[3],VISITOR_WRITER,VISITOR_HAPPINESS,VISITOR_CULTURE,READER_CITY}
+local lastFullRefreshTurn = nil
 
 local function Key(id, suffix) return "TRENT_LIBRARY_EXILE_" .. id .. "_" .. suffix end
 local function Read(id, suffix, default)
@@ -123,7 +124,19 @@ local function CanConstruct(id, buildingType)
 end
 
 GameEvents.PlayerDoTurn.Add(function(id)
-    if id < GameDefines.MAX_MAJOR_CIVS then RefreshAll() end
+    if id >= GameDefines.MAX_MAJOR_CIVS then return end
+
+    -- One global reconciliation per round is enough for captured-city cleanup
+    -- and diplomacy changes outside the Exile's own turn. Each Exile player is
+    -- still refreshed at the start of their turn so its effects are never stale
+    -- when that player acts.
+    local gameTurn = Game ~= nil and Game.GetGameTurn ~= nil and Game.GetGameTurn() or nil
+    if gameTurn ~= nil and gameTurn ~= lastFullRefreshTurn then
+        lastFullRefreshTurn = gameTurn
+        RefreshAll()
+    elseif IsExile(Players[id]) then
+        RefreshPlayer(id)
+    end
 end)
 GameEvents.GreatPersonExpended.Add(GreatPersonExpended)
 GameEvents.PlayerCanConstruct.Add(CanConstruct)

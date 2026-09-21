@@ -14,6 +14,7 @@ The Freehold rewards protecting Trentrouls and keeping Buddy close.
 - Buddy doubles the empire bonus while adjacent to Trentrouls.
 - Trentrouls grows from 7 Combat Strength in the Ancient Era to 50 in the Information Era; Buddy doubles his current strength while adjacent.
 - Trentrouls may temporarily possess an eligible non-Barbarian enemy unit within two tiles.
+- Great People, religious units, cargo, and loaded transports are excluded because their hidden state cannot be recreated safely; ordinary Workers and Settlers remain eligible.
 - If Trentrouls dies, the Freehold collapses.
 
 ### Buddy
@@ -38,11 +39,11 @@ Trentrouls can exchange bodies with an eligible enemy unit within two tiles whil
 
 - The Dominion receives the borrowed body with +5% Combat Strength.
 - The enemy receives Trentrouls' original body for the swap's duration.
-- The borrowed body can move, fight, found cities, build, spread religion, and perform Great Person actions normally. Those actions are permanent.
+- The borrowed body can move, fight, found cities, and build normally. Those actions are permanent.
 - The enemy-controlled Trentrouls can move one tile or make one melee attack per turn, but cannot move and then attack.
 - Losing or expending the borrowed body returns Trentrouls. Killing his original body destroys the Dominion.
-- Air units, missiles, nuclear and suicide units, trade units, immune units, other Una Court heroes, and Barbarians are excluded for stability.
-- Saving or autosaving temporarily returns both bodies to their normal owners for safe serialization, then automatically restores the active Body Swap with the same remaining duration, cooldown, movement, damage, experience, name, and promotions. Loading that save restores the swap after gameplay initialization.
+- Air units, missiles, nuclear and suicide units, trade units, Great People, religious units, cargo and loaded transports, immune units, other Una Court heroes, and Barbarians are excluded because their hidden state cannot be recreated safely.
+- Saving or autosaving temporarily returns both bodies to their normal owners for safe serialization, then automatically restores the active Body Swap with the same remaining duration, cooldown, movement, damage, experience, level, name, promotions, and unit-attached ScriptData. Loading that save restores the swap after gameplay initialization.
 
 | Game speed | Active duration | Full cooldown |
 | --- | ---: | ---: |
@@ -61,7 +62,8 @@ Ultimate Possession is the large-scale version of Trentrouls' power. Instead of 
 - Maximum simultaneous targets equal the current Era number: 1 in the Ancient Era, increasing to 8 in the Information Era.
 - On Standard speed, groups of 1–4 units are possessed for 2 turns; groups of 5–8 units are possessed for 1 turn.
 - Cooldown depends on the size of the group: 8 turns for one unit, then +5 turns for every additional unit.
-- Possessed units retain their type, promotions, damage, experience, name, movement, and embarked state.
+- Possessed units retain their type, promotions, damage, experience, level, name, movement, facing, fortification, embarked state, and unit-attached ScriptData.
+- Great People, religious units, cargo and loaded transports are excluded because important native or third-party state cannot be recreated reliably. Ordinary Workers and Settlers remain eligible.
 - Possessed units cannot be deleted, gifted, or upgraded. Strategic-resource requirements are checked before activation.
 - Surviving units return to their original owner when the duration expires or peace is signed. Units killed or expended while possessed stay gone. If an original major civilization has been eliminated, its surviving borrowed unit is disbanded safely.
 - Saving and loading uses the same ownership-normalization transaction as the other Una Court possession systems: ordinary ownership is serialized, then the active group is rebuilt after the save or load finishes.
@@ -141,7 +143,7 @@ Phone Stealer has its own civ-only Stash window for beginning missions, tracking
 
 - The first four civilizations share Una Court's location map; Library Exile and Phone Stealer have dedicated map art. All six use base-game unit models and dedicated emblems and leader art.
 - Soft Kitty is validated against Community Patch 5.4.2's loaded database and mocked Lua 5.1 gameplay. Actual in-game layout, AI pathfinding and interactions with additional mods still require playtesting; full Vox Populi compatibility is not yet verified.
-- Highly specialized modded units may contain internal state that Civ V Lua cannot perfectly preserve through an ownership transfer.
+- Unit-attached ScriptData is preserved, but highly specialized modded units may also key private state by the original UnitID or store it outside the unit. Civ V Lua cannot generically preserve that external state through an ownership transfer.
 - Multiplayer and hotseat are intentionally disabled while the scripted transfer systems are stabilized.
 
 ## Requirements and installation

@@ -75,6 +75,49 @@ local function UnitInfo(unit)
     return unit ~= nil and GameInfo.Units[unit:GetUnitType()] or nil
 end
 
+local function UnitHasUnsafeTransferState(unit, info)
+    if unit == nil or info == nil then return true end
+    if info.Special == "SPECIALUNIT_PEOPLE" or tonumber(info.ReligionSpreads or 0) > 0
+        or tonumber(info.ReligiousStrength or 0) > 0 or tonumber(info.FoundReligion or 0) ~= 0
+        or tonumber(info.RemoveHeresy or 0) ~= 0 then return true end
+    if unit.IsCargo ~= nil then
+        local ok, isCargo = pcall(function() return unit:IsCargo() end)
+        if ok and isCargo then return true end
+    end
+    if unit.GetCargo ~= nil then
+        local ok, cargo = pcall(function() return unit:GetCargo() end)
+        if ok and (cargo == true or tonumber(cargo or 0) > 0) then return true end
+    elseif unit.HasCargo ~= nil then
+        local ok, hasCargo = pcall(function() return unit:HasCargo() end)
+        if ok and hasCargo then return true end
+    end
+    return false
+end
+
+local function UnitWasRemoved(owner, unitID)
+    if owner == nil or unitID == nil then return true end
+    local unit = owner:GetUnitByID(unitID)
+    if unit == nil then return true end
+    if unit.IsDead ~= nil then
+        local ok, dead = pcall(function() return unit:IsDead() end)
+        if ok and dead then return true end
+    end
+    if unit.IsDelayedDeath ~= nil then
+        local ok, delayed = pcall(function() return unit:IsDelayedDeath() end)
+        if ok and delayed then return true end
+    end
+    return false
+end
+
+local function KillAndVerify(unit, killerPlayerID, label)
+    local owner = Players[unit:GetOwner()]
+    local unitID = unit:GetID()
+    unit:Kill(false, killerPlayerID)
+    if not UnitWasRemoved(owner, unitID) then
+        error(tostring(label) .. ": original unit still exists after Kill")
+    end
+end
+
 function Dominion_IsEligibleBodySwapTarget(playerID, trent, target)
     if trent == nil or target == nil or target:IsDead() or target:GetOwner() == playerID then return false end
     local unitType = target:GetUnitType()
@@ -86,7 +129,8 @@ function Dominion_IsEligibleBodySwapTarget(playerID, trent, target)
 
     local info = UnitInfo(target)
     if info == nil or tonumber(info.Trade or 0) ~= 0 or tonumber(info.NukeDamageLevel or 0) > 0
-        or tonumber(info.Suicide or 0) ~= 0 or info.Special == "SPECIALUNIT_MISSILE" then return false end
+        or tonumber(info.Suicide or 0) ~= 0 or info.Special == "SPECIALUNIT_MISSILE"
+        or UnitHasUnsafeTransferState(target, info) then return false end
     local targetPlot, trentPlot = target:GetPlot(), trent:GetPlot()
     if targetPlot == nil or trentPlot == nil or targetPlot:IsCity() then return false end
     if Map.PlotDistance(trentPlot:GetX(), trentPlot:GetY(), targetPlot:GetX(), targetPlot:GetY()) > 2 then return false end
@@ -106,6 +150,10 @@ local function Capture(unit)
         promotions = {}
     }
     if unit.HasName ~= nil and unit:HasName() then state.name = unit:GetNameNoDesc() end
+    if unit.GetScriptData ~= nil then
+        local ok, scriptData = pcall(function() return unit:GetScriptData() end)
+        if ok then state.scriptData = scriptData end
+    end
     for promotion in GameInfo.UnitPromotions() do
         if unit:IsHasPromotion(promotion.ID) then state.promotions[#state.promotions + 1] = promotion.ID end
     end
@@ -120,6 +168,9 @@ local function Create(owner, state, role)
     elseif state.experience ~= nil and state.experience > 0 then unit:ChangeExperience(state.experience) end
     if state.level ~= nil and unit.SetLevel ~= nil then unit:SetLevel(math.max(1, state.level)) end
     if state.name ~= nil and state.name ~= "" then unit:SetName(state.name) end
+    if state.scriptData ~= nil and unit.SetScriptData ~= nil then
+        pcall(function() unit:SetScriptData(state.scriptData) end)
+    end
     for _, promotionID in ipairs(state.promotions or {}) do
         if promotionID ~= PROMO_BORROWED and promotionID ~= PROMO_ENEMY_TRENT
             and promotionID ~= PROMO_READY and promotionID ~= PROMO_COOLDOWN then
@@ -179,9 +230,9 @@ function Dominion_StartBodySwap(playerID, trentID, targetOwnerID, targetUnitID)
     local borrowed, enemyTrent = nil, nil
     local targetRemoved, trentRemoved = false, false
     local transferOK = RunTransfer("activation", function()
-        target:Kill(false, playerID)
+        KillAndVerify(target, playerID, "activation target")
         targetRemoved = true
-        trent:Kill(false, targetOwnerID)
+        KillAndVerify(trent, targetOwnerID, "activation Trentrouls")
         trentRemoved = true
         borrowed = Create(player, targetState, "borrowed")
         enemyTrent = Create(targetOwner, trentState, "enemy_trent")
@@ -189,8 +240,8 @@ function Dominion_StartBodySwap(playerID, trentID, targetOwnerID, targetUnitID)
 
     if not transferOK or borrowed == nil or enemyTrent == nil then
         RunTransfer("activation rollback", function()
-            if borrowed ~= nil then borrowed:Kill(false, -1) end
-            if enemyTrent ~= nil then enemyTrent:Kill(false, -1) end
+            if borrowed ~= nil then KillAndVerify(borrowed, -1, "activation rollback borrowed body") end
+            if enemyTrent ~= nil then KillAndVerify(enemyTrent, -1, "activation rollback Trentrouls") end
             if trentRemoved and Dominion_FindOwnedTrent ~= nil and Dominion_FindOwnedTrent(player) == nil then
                 Create(player, trentState, "trent")
             end
@@ -237,7 +288,7 @@ function Dominion_EndBodySwap(playerID, reason, restoreTrent, skipOriginalBodyKi
 
     local transferOK = RunTransfer("return", function()
         if borrowed ~= nil then
-            borrowed:Kill(false, preserveMoves and -1 or originalOwnerID)
+            KillAndVerify(borrowed, preserveMoves and -1 or originalOwnerID, "return borrowed body")
             borrowedRemoved = true
             if originalOwner ~= nil and originalOwner:IsAlive() then
                 returnedTarget = Create(originalOwner, borrowedState, "target")
@@ -248,7 +299,7 @@ function Dominion_EndBodySwap(playerID, reason, restoreTrent, skipOriginalBodyKi
         -- combat DLL already owns its delayed-death sequence. Killing that same
         -- object again here produces CvUnit's isInCombat assertion.
         if enemyTrent ~= nil and not skipOriginalBodyKill then
-            enemyTrent:Kill(false, preserveMoves and -1 or playerID)
+            KillAndVerify(enemyTrent, preserveMoves and -1 or playerID, "return Trentrouls")
             enemyTrentRemoved = true
             if restoreTrent and player:IsAlive() then
                 returnedTrent = Create(player, enemyTrentState, "trent")
@@ -260,8 +311,8 @@ function Dominion_EndBodySwap(playerID, reason, restoreTrent, skipOriginalBodyKi
         or (trentReturnRequired and returnedTrent == nil) then
         local rollbackBorrowed, rollbackEnemyTrent = nil, nil
         RunTransfer("return rollback", function()
-            if returnedTarget ~= nil then returnedTarget:Kill(false, -1) end
-            if returnedTrent ~= nil then returnedTrent:Kill(false, -1) end
+            if returnedTarget ~= nil then KillAndVerify(returnedTarget, -1, "return rollback target") end
+            if returnedTrent ~= nil then KillAndVerify(returnedTrent, -1, "return rollback Trentrouls") end
             if borrowedRemoved and borrowedState ~= nil and player:IsAlive() then
                 rollbackBorrowed = Create(player, borrowedState, "borrowed")
             end
@@ -303,9 +354,9 @@ local function ResumeSuspendedBodySwap(playerID)
     local borrowed, enemyTrent = nil, nil
     local targetRemoved, trentRemoved = false, false
     local transferOK = RunTransfer("save restore", function()
-        target:Kill(false, -1)
+        KillAndVerify(target, -1, "save restore target")
         targetRemoved = true
-        trent:Kill(false, -1)
+        KillAndVerify(trent, -1, "save restore Trentrouls")
         trentRemoved = true
         borrowed = Create(player, targetState, "borrowed")
         enemyTrent = Create(targetOwner, trentState, "enemy_trent")
@@ -313,8 +364,8 @@ local function ResumeSuspendedBodySwap(playerID)
 
     if not transferOK or borrowed == nil or enemyTrent == nil then
         RunTransfer("save restore rollback", function()
-            if borrowed ~= nil then borrowed:Kill(false, -1) end
-            if enemyTrent ~= nil then enemyTrent:Kill(false, -1) end
+            if borrowed ~= nil then KillAndVerify(borrowed, -1, "save restore rollback borrowed body") end
+            if enemyTrent ~= nil then KillAndVerify(enemyTrent, -1, "save restore rollback Trentrouls") end
             if trentRemoved and Dominion_FindOwnedTrent ~= nil and Dominion_FindOwnedTrent(player) == nil then
                 Create(player, trentState, "trent")
             end
@@ -385,7 +436,6 @@ local function FindBestTarget(playerID, trent)
                         local info = UnitInfo(unit)
                         local score = math.max(unit:GetBaseCombatStrength(), unit:GetBaseRangedCombatStrength())
                         if info ~= nil and tonumber(info.Found or 0) ~= 0 then score = score + 80 end
-                        if info ~= nil and info.Special == "SPECIALUNIT_PEOPLE" then score = score + 70 end
                         if score > bestScore then best, bestScore = unit, score end
                     end
                 end

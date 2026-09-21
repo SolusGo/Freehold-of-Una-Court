@@ -174,10 +174,47 @@ local function UnitInfoExcluded(unit)
     local info = GameInfo.Units[unit:GetUnitType()]
     if info == nil then return true end
     if tonumber(info.Trade or 0) ~= 0 or tonumber(info.NukeDamageLevel or 0) > 0
-        or tonumber(info.Suicide or 0) ~= 0 or info.Special == "SPECIALUNIT_MISSILE" then return true end
+        or tonumber(info.Suicide or 0) ~= 0 or info.Special == "SPECIALUNIT_MISSILE"
+        or info.Special == "SPECIALUNIT_PEOPLE" or tonumber(info.ReligionSpreads or 0) > 0
+        or tonumber(info.ReligiousStrength or 0) > 0 or tonumber(info.FoundReligion or 0) ~= 0
+        or tonumber(info.RemoveHeresy or 0) ~= 0 then return true end
     if unit:GetDomainType() == DOMAIN_AIR then return true end
-    if unit.IsCargo ~= nil and unit:IsCargo() then return true end
+    if unit.IsCargo ~= nil then
+        local ok, isCargo = pcall(function() return unit:IsCargo() end)
+        if ok and isCargo then return true end
+    end
+    if unit.GetCargo ~= nil then
+        local ok, cargo = pcall(function() return unit:GetCargo() end)
+        if ok and (cargo == true or tonumber(cargo or 0) > 0) then return true end
+    elseif unit.HasCargo ~= nil then
+        local ok, hasCargo = pcall(function() return unit:HasCargo() end)
+        if ok and hasCargo then return true end
+    end
     return false
+end
+
+local function UnitWasRemoved(owner, unitID)
+    if owner == nil or unitID == nil then return true end
+    local unit = owner:GetUnitByID(unitID)
+    if unit == nil then return true end
+    if unit.IsDead ~= nil then
+        local ok, dead = pcall(function() return unit:IsDead() end)
+        if ok and dead then return true end
+    end
+    if unit.IsDelayedDeath ~= nil then
+        local ok, delayed = pcall(function() return unit:IsDelayedDeath() end)
+        if ok and delayed then return true end
+    end
+    return false
+end
+
+local function KillAndVerify(unit, killerPlayerID, label)
+    local owner = Players[unit:GetOwner()]
+    local unitID = unit:GetID()
+    unit:Kill(false, killerPlayerID)
+    if not UnitWasRemoved(owner, unitID) then
+        error(tostring(label) .. ": original unit still exists after Kill")
+    end
 end
 
 local function HasRequiredResources(player, unit)
@@ -266,6 +303,10 @@ local function CaptureUnitState(unit)
         promotions = {}
     }
     if unit.HasName ~= nil and unit:HasName() then state.name = unit:GetNameNoDesc() end
+    if unit.GetScriptData ~= nil then
+        local ok, scriptData = pcall(function() return unit:GetScriptData() end)
+        if ok then state.scriptData = scriptData end
+    end
     for promotion in GameInfo.UnitPromotions() do
         if unit:IsHasPromotion(promotion.ID) then
             state.promotions[#state.promotions + 1] = promotion.ID
@@ -281,6 +322,9 @@ local function RestoreUnitState(unit, state, possessed)
     elseif state.experience ~= nil and state.experience > 0 then unit:ChangeExperience(state.experience) end
     if state.level ~= nil and unit.SetLevel ~= nil then unit:SetLevel(math.max(1, state.level)) end
     if state.name ~= nil and state.name ~= "" then unit:SetName(state.name) end
+    if state.scriptData ~= nil and unit.SetScriptData ~= nil then
+        pcall(function() unit:SetScriptData(state.scriptData) end)
+    end
     for _, promotionID in ipairs(state.promotions or {}) do
         if promotionID ~= PROMO_POSSESSED then unit:SetHasPromotion(promotionID, true) end
     end
@@ -361,7 +405,7 @@ function Ultimate_StartPossession(playerID, requestedTargets)
     local created, removed = {}, {}
     local transferOK, completed, failedSlot = RunTransfer("activation", function()
         for index, record in ipairs(targets) do
-            record.originalUnit:Kill(false, -1)
+            KillAndVerify(record.originalUnit, -1, "activation target " .. tostring(index))
             removed[#removed + 1] = record
             local possessed = CreateTransferredUnit(player, record.state, true)
             if possessed == nil then
@@ -373,7 +417,9 @@ function Ultimate_StartPossession(playerID, requestedTargets)
     end)
     if not transferOK or not completed then
         RunTransfer("activation rollback", function()
-            for _, record in ipairs(created) do record.unit:Kill(false, -1) end
+            for _, record in ipairs(created) do
+                KillAndVerify(record.unit, -1, "activation rollback possessed unit")
+            end
             for _, record in ipairs(removed) do
                 local owner = Players[record.originalOwner]
                 if owner ~= nil and (owner:IsAlive() or owner:IsBarbarian()) then
@@ -414,7 +460,7 @@ local function ReturnSlot(playerID, slot, preserveMoves)
         local state = CaptureUnitState(unit)
         local removed = false
         local transferOK = RunTransfer("return", function()
-            unit:Kill(false, -1)
+            KillAndVerify(unit, -1, "return slot " .. tostring(slot))
             removed = true
             if owner ~= nil and (owner:IsAlive() or owner:IsBarbarian()) then
                 returned = CreateTransferredUnit(owner, state, false)
@@ -467,7 +513,7 @@ local function SuspendForSave(playerID)
                     local normalized = owner ~= nil and owner:GetUnitByID(record.unitID) or nil
                     if normalized ~= nil then
                         local state = CaptureUnitState(normalized)
-                        normalized:Kill(false, -1)
+                        KillAndVerify(normalized, -1, "save suspension rollback slot " .. tostring(record.slot))
                         local possessed = CreateTransferredUnit(player, state, true)
                         if possessed ~= nil then
                             SetNumber(playerID, SlotKey(record.slot, "UNIT_ID"), possessed:GetID())
@@ -524,8 +570,8 @@ local function ResumeSuspended(playerID)
 
     local created, removed = {}, {}
     local transferOK, completed = RunTransfer("save restore", function()
-        for _, record in ipairs(normalized) do
-            record.unit:Kill(false, -1)
+        for index, record in ipairs(normalized) do
+            KillAndVerify(record.unit, -1, "save restore target " .. tostring(index))
             removed[#removed + 1] = record
             local possessed = CreateTransferredUnit(player, record.state, true)
             if possessed == nil then
@@ -537,7 +583,9 @@ local function ResumeSuspended(playerID)
     end)
     if not transferOK or not completed then
         RunTransfer("save restore rollback", function()
-            for _, record in ipairs(created) do record.unit:Kill(false, -1) end
+            for _, record in ipairs(created) do
+                KillAndVerify(record.unit, -1, "save restore rollback possessed unit")
+            end
             for _, record in ipairs(removed) do
                 local owner = Players[record.ownerID]
                 if owner ~= nil and (owner:IsAlive() or owner:IsBarbarian()) then
@@ -571,7 +619,6 @@ local function TargetScore(unit)
     local info = GameInfo.Units[unit:GetUnitType()]
     local score = math.max(unit:GetBaseCombatStrength(), unit:GetBaseRangedCombatStrength())
     if info ~= nil then
-        if info.Special == "SPECIALUNIT_PEOPLE" then score = score + 50 end
         if tonumber(info.WorkRate or 0) > 0 then score = score + 10 end
         score = score + math.floor((tonumber(info.Cost or 0) or 0) / 10)
     end

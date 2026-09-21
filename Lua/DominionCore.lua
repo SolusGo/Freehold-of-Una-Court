@@ -159,16 +159,60 @@ function Dominion_RefreshPlayer(playerID)
     ApplyCityBonus(player)
 end
 
+local function FindCityAt(player, x, y)
+    if Map ~= nil and Map.GetPlot ~= nil then
+        local ok, city = pcall(function()
+            local plot = Map.GetPlot(x, y)
+            return plot ~= nil and plot.GetPlotCity ~= nil and plot:GetPlotCity() or nil
+        end)
+        if ok and city ~= nil
+            and (player == nil or player.GetID == nil or city:GetOwner() == player:GetID()) then
+            return city
+        end
+    end
+    if player ~= nil then
+        for city in player:Cities() do
+            if city:GetX() == x and city:GetY() == y then return city end
+        end
+    end
+    return nil
+end
+
+local function TryTransferCapital(capital, killer, killerPlayerID)
+    if capital == nil or killer == nil or killer.AcquireCity == nil then return false end
+    local x, y = capital:GetX(), capital:GetY()
+    local ok, err = pcall(function() killer:AcquireCity(capital, true, false) end)
+    if not ok then
+        print("Dominion capital transfer raised an error: " .. tostring(err))
+        return false
+    end
+    local transferred = FindCityAt(killer, x, y)
+    return transferred ~= nil and transferred:GetOwner() == killerPlayerID
+end
+
+local function NormalizeBodySwapForCollapse(playerID)
+    if Dominion_EndBodySwap == nil then return true end
+    for attempt = 1, 2 do
+        if GetNumber(playerID, "ACTIVE") ~= 1 then return true end
+        local ok, result = pcall(function()
+            -- The original Trentrouls body is already in the DLL's death path.
+            return Dominion_EndBodySwap(playerID, "Trentrouls has fallen", false, true)
+        end)
+        if ok and result == true then return true end
+        print("Dominion collapse Body Swap cleanup attempt " .. tostring(attempt)
+            .. " failed: " .. tostring(ok and result or result))
+    end
+    return GetNumber(playerID, "ACTIVE") ~= 1
+end
+
 local function DestroyEmpire(playerID, killerPlayerID)
     if collapsing[playerID] then return end
     collapsing[playerID] = true
     local player = Players[playerID]
     if player == nil then return end
 
-    if Dominion_EndBodySwap ~= nil then
-        -- The original body is already in the DLL's death path. End the swap
-        -- without issuing a second immediate Kill on that same unit.
-        pcall(function() Dominion_EndBodySwap(playerID, "Trentrouls has fallen", false, true) end)
+    if not NormalizeBodySwapForCollapse(playerID) then
+        print("Dominion collapse continuing after Body Swap cleanup could not be completed")
     end
 
     if Events.GameplayAlertMessage ~= nil then
@@ -187,12 +231,11 @@ local function DestroyEmpire(playerID, killerPlayerID)
     end
     if capital ~= nil then
         local killer = killerPlayerID ~= nil and killerPlayerID >= 0 and Players[killerPlayerID] or nil
-        local acquired = false
-        if killer ~= nil and killer:IsAlive() and not killer:IsBarbarian() and killer.AcquireCity ~= nil then
-            acquired = pcall(function() killer:AcquireCity(capital, true, false) end)
-        end
+        local capitalX, capitalY = capital:GetX(), capital:GetY()
+        local validKiller = killer ~= nil and killer:IsAlive() and not killer:IsBarbarian()
+        local acquired = validKiller and TryTransferCapital(capital, killer, killerPlayerID)
         if not acquired then
-            local remaining = player:GetCityByID(capitalID)
+            local remaining = FindCityAt(nil, capitalX, capitalY) or player:GetCityByID(capitalID)
             if remaining ~= nil then remaining:Kill() end
         end
     end

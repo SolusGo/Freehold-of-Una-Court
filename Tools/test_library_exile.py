@@ -8,6 +8,8 @@ from lupa.lua51 import LuaRuntime
 
 MOCK = r'''
 save, notices = {}, {}
+gameTurn = 0
+Game={GetGameTurn=function()return gameTurn end}
 GameInfoTypes={CIVILIZATION_TRENT_LIBRARY_EXILE=100,BUILDING_TRENT_SCHOOL_LIBRARY=200,
  UNIT_TRENT_IPAD_READER=300,BUILDING_TRENT_EXILE_1=401,BUILDING_TRENT_EXILE_2=402,
  BUILDING_TRENT_EXILE_3=403,BUILDING_TRENT_VISITOR_WRITER=404,
@@ -67,7 +69,7 @@ for id=0,4 do
  Teams[id]=team
 end
 function ResetWorld()
- save,notices={},{}
+ save,notices,gameTurn={},{},0
  for id=0,4 do
   local p=Players[id];p.alive=true;p.friend={};p.denouncing={};p.cities={};p.units={};p.science=0;p.era=0;p.civ=id==0 and 100 or 99
   Teams[id].war={}
@@ -90,7 +92,7 @@ def scenario(name, code):
 
 scenario("zero stacks leaves School Library unmodified", "Events.SequenceGameInitComplete();assert(Players[0].cities[1]:GetNumRealBuilding(401)==0)")
 scenario("war and denouncement from one player count once", "Teams[0].war[1]=true;Players[1].denouncing[0]=true;GameEvents.PlayerDoTurn(0);assert(Players[0].cities[1].buildings[401]==1 and save['TRENT_LIBRARY_EXILE_0_STACKS']==1)")
-scenario("Exile stacks cap at three and reconcile", "for i=1,4 do Players[i].denouncing[0]=true end;GameEvents.PlayerDoTurn(0);assert(Players[0].cities[1].buildings[403]==1);for i=1,4 do Players[i].denouncing[0]=false end;GameEvents.PlayerDoTurn(1);assert(Players[0].cities[1]:GetNumRealBuilding(403)==0)")
+scenario("Exile stacks cap at three and reconcile once next round begins", "for i=1,4 do Players[i].denouncing[0]=true end;GameEvents.PlayerDoTurn(0);assert(Players[0].cities[1].buildings[403]==1);for i=1,4 do Players[i].denouncing[0]=false end;GameEvents.PlayerDoTurn(1);assert(Players[0].cities[1]:GetNumRealBuilding(403)==1);gameTurn=1;GameEvents.PlayerDoTurn(1);assert(Players[0].cities[1]:GetNumRealBuilding(403)==0)")
 scenario("only School Library cities receive Exile", "Teams[0].war[1]=true;GameEvents.PlayerDoTurn(0);assert(Players[0].cities[1].buildings[401]==1 and Players[0].cities[2]:GetNumRealBuilding(401)==0)")
 scenario("first friend becomes permanent active Visitor", "Players[0].friend[2]=true;GameEvents.PlayerDoTurn(0);local a=Players[0].cities[1];local b=Players[0].cities[2];assert(save['TRENT_LIBRARY_EXILE_0_VISITOR']==2 and a.buildings[404]==1 and b.buildings[404]==1 and a.buildings[405]==1 and b:GetNumRealBuilding(405)==0 and a.buildings[406]==1)")
 scenario("Visitor expires, cannot be replaced, and renews", "Players[0].friend[2]=true;GameEvents.PlayerDoTurn(0);Players[0].friend[2]=false;Players[0].friend[1]=true;GameEvents.PlayerDoTurn(0);assert(save['TRENT_LIBRARY_EXILE_0_VISITOR']==2 and Players[0].cities[1]:GetNumRealBuilding(404)==0);Players[0].friend[2]=true;GameEvents.PlayerDoTurn(0);assert(Players[0].cities[1].buildings[404]==1)")

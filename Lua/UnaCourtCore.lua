@@ -271,6 +271,57 @@ local function UnaCourt_EnforceCaps(player)
     end
 end
 
+local function UnaCourt_FindCityAt(player, x, y)
+    if Map ~= nil and Map.GetPlot ~= nil then
+        local ok, city = pcall(function()
+            local plot = Map.GetPlot(x, y)
+            return plot ~= nil and plot.GetPlotCity ~= nil and plot:GetPlotCity() or nil
+        end)
+        if ok and city ~= nil
+            and (player == nil or player.GetID == nil or city:GetOwner() == player:GetID()) then
+            return city
+        end
+    end
+    if player ~= nil then
+        for city in player:Cities() do
+            if city:GetX() == x and city:GetY() == y then return city end
+        end
+    end
+    return nil
+end
+
+local function UnaCourt_TryTransferCapital(capital, killer, killerPlayerID)
+    if capital == nil or killer == nil or killer.AcquireCity == nil then return false end
+    local x, y = capital:GetX(), capital:GetY()
+    local ok, err = pcall(function() killer:AcquireCity(capital, true, false) end)
+    if not ok then
+        print("Una Court capital transfer raised an error: " .. tostring(err))
+        return false
+    end
+    local transferred = UnaCourt_FindCityAt(killer, x, y)
+    return transferred ~= nil and transferred:GetOwner() == killerPlayerID
+end
+
+local function UnaCourt_NormalizePossessionForCollapse(playerID)
+    if UnaCourt_EndPossession == nil then return true end
+    for attempt = 1, 2 do
+        local active = true
+        if UnaCourt_GetPossessionStatus ~= nil then
+            local statusOK, status = pcall(function() return UnaCourt_GetPossessionStatus(playerID) end)
+            active = not statusOK or (status ~= nil and status.active == true)
+        end
+        if not active then return true end
+
+        local ok, result = pcall(function()
+            return UnaCourt_EndPossession(playerID, "Trentrouls has fallen")
+        end)
+        if ok and result == true then return true end
+        print("Una Court collapse possession cleanup attempt " .. tostring(attempt)
+            .. " failed: " .. tostring(ok and result or result))
+    end
+    return false
+end
+
 local function UnaCourt_DestroyRemainingEmpire(playerID, killerPlayerID)
     if collapsing[playerID] then return end
     collapsing[playerID] = true
@@ -278,9 +329,11 @@ local function UnaCourt_DestroyRemainingEmpire(playerID, killerPlayerID)
     local player = Players[playerID]
     if player == nil then return end
 
-    -- End possession before cities and units are removed.
-    if UnaCourt_EndPossession ~= nil then
-        pcall(function() UnaCourt_EndPossession(playerID, "Trentrouls has fallen") end)
+    -- Normalize foreign ownership before cities and units are removed. A
+    -- transient InitUnit failure receives one safe retry; collapse still
+    -- proceeds if both attempts fail.
+    if not UnaCourt_NormalizePossessionForCollapse(playerID) then
+        print("Una Court collapse continuing after possession cleanup could not be completed")
     end
 
     if Events.GameplayAlertMessage ~= nil then
@@ -302,14 +355,12 @@ local function UnaCourt_DestroyRemainingEmpire(playerID, killerPlayerID)
     if capital ~= nil then
         local killer = killerPlayerID ~= nil and killerPlayerID >= 0 and Players[killerPlayerID] or nil
         local validKiller = killer ~= nil and killer:IsAlive() and not killer:IsBarbarian()
-        local transferred = false
-
-        if validKiller and killer.AcquireCity ~= nil then
-            transferred = pcall(function() killer:AcquireCity(capital, true, false) end)
-        end
+        local capitalX, capitalY = capital:GetX(), capital:GetY()
+        local transferred = validKiller and UnaCourt_TryTransferCapital(capital, killer, killerPlayerID)
 
         if not transferred then
-            local stillCapital = player:GetCityByID(capitalID)
+            local stillCapital = UnaCourt_FindCityAt(nil, capitalX, capitalY)
+                or player:GetCityByID(capitalID)
             if stillCapital ~= nil then stillCapital:Kill() end
         end
     end
