@@ -119,6 +119,12 @@ local function KillAndVerify(unit, killerPlayerID, label)
 end
 
 function Dominion_IsEligibleBodySwapTarget(playerID, trent, target)
+    if target ~= nil then
+        for _, name in ipairs({"PROMOTION_PRINCE_IDENTITY", "PROMOTION_PRINCE_BORROWED"}) do
+            local promotion = GameInfoTypes[name]
+            if promotion ~= nil and target:IsHasPromotion(promotion) then return false end
+        end
+    end
     if trent == nil or target == nil or target:IsDead() or target:GetOwner() == playerID then return false end
     local unitType = target:GetUnitType()
     if unitType == UNIT_TRENT or unitType == UNIT_FREEHOLD_TRENT or unitType == UNIT_BUDDY then return false end

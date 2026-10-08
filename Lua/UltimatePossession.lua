@@ -277,6 +277,12 @@ local function IsNearPossessionNetwork(player, targetPlot)
 end
 
 function Ultimate_IsEligibleTarget(playerID, target)
+    if target ~= nil then
+        for _, name in ipairs({"PROMOTION_PRINCE_IDENTITY", "PROMOTION_PRINCE_BORROWED"}) do
+            local promotion = GameInfoTypes[name]
+            if promotion ~= nil and target:IsHasPromotion(promotion) then return false end
+        end
+    end
     local player = Players[playerID]
     if not IsUltimatePlayer(player) or target == nil or UnitInfoExcluded(target) then return false end
     if target:GetOwner() == playerID then return false end

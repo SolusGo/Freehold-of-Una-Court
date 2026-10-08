@@ -6,8 +6,8 @@
     <Name>The Freehold of Una Court</Name>
     <SafeName>The Freehold of Una Court</SafeName>
     <Guid>7ec83c11-5853-453c-9ca7-0b2cf85a2a48</Guid>
-    <Teaser>Six Trent civilizations: possession, loyal companions, serenades, library exile, and phone theft.</Teaser>
-    <Description>Six Community Patch civilizations: Freehold, Dominion, Ultimate Possession, Soft Kitty Serenader, Library Exile, and the espionage-focused Phone Stealer.</Description>
+    <Teaser>Seven Trent civilizations: possession, loyal companions, serenades, library exile, and phone theft.</Teaser>
+    <Description>Seven Community Patch civilizations: Freehold, Dominion, Ultimate Possession, Soft Kitty Serenader, Library Exile, the espionage-focused Phone Stealer, and the Pupil of Two Masters Princedom.</Description>
     <Authors>ThatOneYi</Authors>
     <AssemblyName>UnaCourt</AssemblyName>
     <RootNamespace>UnaCourt</RootNamespace>
@@ -47,6 +47,26 @@
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/90_PhoneStealer_Inherit.sql</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/91_PhoneStealer_Core.sql</FileName></Action>
       <Action><Set>OnModActivated</Set><Type>UpdateDatabase</Type><FileName>SQL/92_PhoneStealer_Text.sql</FileName></Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
+        <FileName>Princedom/Art/PrinceAtlases.xml</FileName>
+      </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
+        <FileName>Princedom/SQL/100_Prince_Inherit.sql</FileName>
+      </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
+        <FileName>Princedom/SQL/101_Prince_Core.sql</FileName>
+      </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
+        <FileName>Princedom/SQL/102_Prince_Text.sql</FileName>
+      </Action>
     </ModActions>
     <ModContent>
       <Content>
@@ -72,6 +92,12 @@
         <Name>Phone Stash Panel</Name>
         <Description>Foreign-capital Phone missions, Stash yields, cooldowns, and returns.</Description>
         <FileName>UI/TrentPhoneStealer_UI.xml</FileName>
+      </Content>
+      <Content>
+        <Type>InGameUIAddin</Type>
+        <Name>Princedom Two Masters Panel</Name>
+        <Description>Trent mastery, cooldown and adjacent target selection.</Description>
+        <FileName>Princedom/UI/PrincePanel.xml</FileName>
       </Content>
     </ModContent>
     <ModVersion>3</ModVersion>
@@ -319,6 +345,137 @@
     <Content Include="Art\PhoneStealer\Alpha32.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\PhoneStealer\Alpha24.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
     <Content Include="Art\PhoneStealer\Alpha16.dds"><ImportIntoVFS>True</ImportIntoVFS></Content>
+    <Content Include="Princedom\Art\PrinceAlpha128.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceAlpha16.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceAlpha24.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceAlpha32.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceAlpha45.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceAlpha48.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceAlpha64.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceAlpha80.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceAtlas128.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceAtlas256.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceAtlas32.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceAtlas45.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceAtlas64.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceAtlas80.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceAtlases.xml">
+      <SubType>XML</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceCiv128.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceCiv256.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceCiv32.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceCiv45.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceCiv64.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceCiv80.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceDawn.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceFlag24.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceFlag32.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceLeaderScene.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceLeaderScene.xml">
+      <SubType>XML</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Art\PrinceMap.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Lua\PrinceAbilities.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Lua\PrinceAI.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Lua\PrinceCombat.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Lua\PrinceIdentity.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Lua\PrinceMain.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Lua\PrinceRules.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\Lua\PrinceState.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\SQL\100_Prince_Inherit.sql">
+      <SubType>SQL</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\SQL\101_Prince_Core.sql">
+      <SubType>SQL</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\SQL\102_Prince_Text.sql">
+      <SubType>SQL</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\UI\PrincePanel.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="Princedom\UI\PrincePanel.xml">
+      <SubType>XML</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Art\" />

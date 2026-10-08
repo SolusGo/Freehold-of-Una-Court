@@ -1,0 +1,347 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Mod id="7ec83c11-5853-453c-9ca7-0b2cf85a2a48" version="3">
+  <Properties>
+    <Name>The Freehold of Una Court</Name>
+    <Teaser>Seven Trent civilizations: possession, loyal companions, serenades, library exile, and phone theft.</Teaser>
+    <Description>Seven Community Patch civilizations: Freehold, Dominion, Ultimate Possession, Soft Kitty Serenader, Library Exile, the espionage-focused Phone Stealer, and the Pupil of Two Masters Princedom.</Description>
+    <Authors>ThatOneYi</Authors>
+    <AffectsSavedGames>1</AffectsSavedGames>
+    <MinCompatibleSaveVersion>0</MinCompatibleSaveVersion>
+    <SupportsSinglePlayer>1</SupportsSinglePlayer>
+    <SupportsMultiplayer>0</SupportsMultiplayer>
+    <SupportsHotSeat>0</SupportsHotSeat>
+    <SupportsMac>0</SupportsMac>
+    <ReloadAudioSystem>0</ReloadAudioSystem>
+    <ReloadLandmarkSystem>0</ReloadLandmarkSystem>
+    <ReloadStrategicViewSystem>0</ReloadStrategicViewSystem>
+    <ReloadUnitSystem>0</ReloadUnitSystem>
+  </Properties>
+  <Dependencies>
+    <Mod id="d1b6328c-ff44-4b0d-aad7-c657f83610cd" minversion="151" maxversion="999" title="Community Patch" />
+  </Dependencies>
+  <Files>
+    <File md5="161b425c65d1780016cd22cfef635abf" import="1">Art/Buddy/BuddyIcon128.dds</File>
+    <File md5="4fe444775e9a83be1ae7970319d68591" import="1">Art/Buddy/BuddyIcon256.dds</File>
+    <File md5="af94f4a7d841a4e4955faf2af0709dfe" import="1">Art/Buddy/BuddyIcon32.dds</File>
+    <File md5="3d2ddfa60c4c92ce2f5b2c5c822495c2" import="1">Art/Buddy/BuddyIcon45.dds</File>
+    <File md5="d8f8509e43b3beee1abb9a705a0f7e61" import="1">Art/Buddy/BuddyIcon64.dds</File>
+    <File md5="5ab7f02dd5bd5e464b229c6840491994" import="1">Art/Buddy/BuddyIcon80.dds</File>
+    <File md5="3cb405bcdda171e6d9754e37f9f4b43f" import="1">Art/Centrelink/CentrelinkIcon128.dds</File>
+    <File md5="44817e79474da917a9ae97c051cd048f" import="1">Art/Centrelink/CentrelinkIcon256.dds</File>
+    <File md5="41feaf1d90774dfb34db68985dee1283" import="1">Art/Centrelink/CentrelinkIcon32.dds</File>
+    <File md5="87f0b666d9468feecc27eeb42ade3935" import="1">Art/Centrelink/CentrelinkIcon45.dds</File>
+    <File md5="ab8e5cfa90a9e8e47898885463129c51" import="1">Art/Centrelink/CentrelinkIcon64.dds</File>
+    <File md5="745fbe9f85e9517e71b9c5657ee9f3db" import="1">Art/Centrelink/CentrelinkIcon80.dds</File>
+    <File md5="add53b25b86c9baba729f22783c4faa6" import="1">Art/Civilization/UnaCourtAlpha128.dds</File>
+    <File md5="8e0adbffa773b4b2828f807fd3099928" import="1">Art/Civilization/UnaCourtAlpha32.dds</File>
+    <File md5="304d621d15ab5da1ed7ff343b0740af3" import="1">Art/Civilization/UnaCourtAlpha45.dds</File>
+    <File md5="3afee84ad688d684b9bd3aa74589179d" import="1">Art/Civilization/UnaCourtAlpha64.dds</File>
+    <File md5="b3e0199e8883932a9577a9771dde3d39" import="1">Art/Civilization/UnaCourtAlpha80.dds</File>
+    <File md5="628368b4df89ae6af6af8e0dde9041ff" import="1">Art/Civilization/UnaCourtIcon128.dds</File>
+    <File md5="479dd0904ea7368f3bc462984d7d1a16" import="1">Art/Civilization/UnaCourtIcon256.dds</File>
+    <File md5="6bce097be1b55144cc4ff9a804677b5b" import="1">Art/Civilization/UnaCourtIcon32.dds</File>
+    <File md5="5f2914c9bedbce912983cb52a1d73cb4" import="1">Art/Civilization/UnaCourtIcon45.dds</File>
+    <File md5="50f1b92e9961e92f2ae491df4d61affa" import="1">Art/Civilization/UnaCourtIcon64.dds</File>
+    <File md5="22bc04adfb3cc251eec9a6c5b7693850" import="1">Art/Civilization/UnaCourtIcon80.dds</File>
+    <File md5="75d7ec7eb27e94c34b82fa385a010b03" import="1">Art/DawnOfMan/UnaCourtDawnOfMan.dds</File>
+    <File md5="d9eca1eefe3b2bb5954e5997810232a5" import="1">Art/DawnOfMan/UnaCourtMap.dds</File>
+    <File md5="138bf4ccfd8debb365aa293f12d5d951" import="1">Art/DominionCivilization/DominionAlpha128.dds</File>
+    <File md5="20ea44028213c0511ceb8d5b5857ab0f" import="1">Art/DominionCivilization/DominionAlpha32.dds</File>
+    <File md5="36579a3e108841a40b78b039bf531c9d" import="1">Art/DominionCivilization/DominionAlpha45.dds</File>
+    <File md5="2cf4ea0d191813ebb2594517867a635a" import="1">Art/DominionCivilization/DominionAlpha64.dds</File>
+    <File md5="d98f70ccde96d257b42af12ac82a4252" import="1">Art/DominionCivilization/DominionAlpha80.dds</File>
+    <File md5="70c3a14456d2f1f2b85d62e492ce118e" import="1">Art/DominionCivilization/DominionIcon128.dds</File>
+    <File md5="b0562798f4755575ad052d2efed97258" import="1">Art/DominionCivilization/DominionIcon256.dds</File>
+    <File md5="2f09f3474948fcab8e84c9bb1d55d6ae" import="1">Art/DominionCivilization/DominionIcon32.dds</File>
+    <File md5="3ffc1bf76964df6355ada665c12c4188" import="1">Art/DominionCivilization/DominionIcon45.dds</File>
+    <File md5="ed8d0d300ce2500171ff65c6b2448d3a" import="1">Art/DominionCivilization/DominionIcon64.dds</File>
+    <File md5="03fb9fc274a6dee3eaad39e8618ef8f5" import="1">Art/DominionCivilization/DominionIcon80.dds</File>
+    <File md5="bcdbdf9759c596c7d282f3a0db55d405" import="1">Art/DominionDawnOfMan/DominionDawnOfMan.dds</File>
+    <File md5="bd1f06fa62ecb62d5f7ff6bb4a76a6c8" import="1">Art/DominionTrentrouls/DominionTrentroulsIcon128.dds</File>
+    <File md5="0450ebfad8fa236dce9acdc95facab14" import="1">Art/DominionTrentrouls/DominionTrentroulsIcon256.dds</File>
+    <File md5="df45d401bc540717d877cfe1e005db6a" import="1">Art/DominionTrentrouls/DominionTrentroulsIcon32.dds</File>
+    <File md5="d793bde3d31de53f99015583765d9397" import="1">Art/DominionTrentrouls/DominionTrentroulsIcon45.dds</File>
+    <File md5="3b159b698827204e06f1ee690ce6e704" import="1">Art/DominionTrentrouls/DominionTrentroulsIcon64.dds</File>
+    <File md5="9981481063c5608c86653279c4703af6" import="1">Art/DominionTrentrouls/DominionTrentroulsIcon80.dds</File>
+    <File md5="68a16732336c0f06aae50daa6c93a6d5" import="1">Art/LibraryExile/Alpha128.dds</File>
+    <File md5="c76df4dfc9eac774795979d84c486efd" import="1">Art/LibraryExile/Alpha16.dds</File>
+    <File md5="7f7acf47a4395033e7007ec2cb4df417" import="1">Art/LibraryExile/Alpha24.dds</File>
+    <File md5="41ba3a0aab153ca111c74d25098f8bd0" import="1">Art/LibraryExile/Alpha32.dds</File>
+    <File md5="f573c8583238c75431dd16f1c95edc43" import="1">Art/LibraryExile/Alpha45.dds</File>
+    <File md5="58645c4a204a73e30375e155534da11b" import="1">Art/LibraryExile/Alpha48.dds</File>
+    <File md5="6738cdd99e642566ae2085b59a45418e" import="1">Art/LibraryExile/Alpha64.dds</File>
+    <File md5="a9cfbd28739d4a54981800751643ebd9" import="1">Art/LibraryExile/Alpha80.dds</File>
+    <File md5="a0f9665f7a0e25b400456987a4190d39" import="1">Art/LibraryExile/Atlas128.dds</File>
+    <File md5="53f4bdfc866b3ecc59b067a9a6e9990b" import="1">Art/LibraryExile/Atlas256.dds</File>
+    <File md5="37fc26531fb5df9edcc365e74ef2c5ee" import="1">Art/LibraryExile/Atlas32.dds</File>
+    <File md5="5aa2d9f6c50a5216737b800e10c5e6fb" import="1">Art/LibraryExile/Atlas45.dds</File>
+    <File md5="5a5b6b87e0347844ef6437afbc7d6cb6" import="1">Art/LibraryExile/Atlas64.dds</File>
+    <File md5="9e960960fab03ff68cde5f4f3720d4c7" import="1">Art/LibraryExile/Atlas80.dds</File>
+    <File md5="9603a302d1f180d2d36bc9d1a3d84149" import="1">Art/LibraryExile/Civ128.dds</File>
+    <File md5="5a40bfaef9589313cce0ca6846d2e65a" import="1">Art/LibraryExile/Civ256.dds</File>
+    <File md5="700f9d1c4413012a16077ebe2b591e73" import="1">Art/LibraryExile/Civ32.dds</File>
+    <File md5="51a2c795edd2c5b39a6a9ad528bf646d" import="1">Art/LibraryExile/Civ45.dds</File>
+    <File md5="91ace50ece9b782364c0f3292acc690c" import="1">Art/LibraryExile/Civ64.dds</File>
+    <File md5="66fa9c0476a29fc3585d8bd1b3dff80a" import="1">Art/LibraryExile/Civ80.dds</File>
+    <File md5="8bbe530447035e6b1d7d7708dbdf0fc1" import="1">Art/LibraryExile/DawnOfMan.dds</File>
+    <File md5="4c81ccd0ab8abb9804a7c9bbce71ed09" import="1">Art/LibraryExile/Leader128.dds</File>
+    <File md5="feb5f03d29635631e88776f8a0380c70" import="1">Art/LibraryExile/Leader256.dds</File>
+    <File md5="a0a98feb89b806fe308c7db001fd2b11" import="1">Art/LibraryExile/Leader32.dds</File>
+    <File md5="0f18348d7ffe88a1e36cd38b9083558a" import="1">Art/LibraryExile/Leader45.dds</File>
+    <File md5="127ebfa23f7aa668c761a37f4dde1716" import="1">Art/LibraryExile/Leader64.dds</File>
+    <File md5="ac902cbb7240bb939d9d761ffe9f0af2" import="1">Art/LibraryExile/Leader80.dds</File>
+    <File md5="c33f8d875906c3875d3e373160984a02" import="1">Art/LibraryExile/LeaderScene.dds</File>
+    <File md5="bc30c1eb83bdd0043a04e1058d9c88fe" import="1">Art/LibraryExile/LeaderScene.xml</File>
+    <File md5="9603a302d1f180d2d36bc9d1a3d84149" import="1">Art/LibraryExile/LibraryExileCiv128.dds</File>
+    <File md5="5a40bfaef9589313cce0ca6846d2e65a" import="1">Art/LibraryExile/LibraryExileCiv256.dds</File>
+    <File md5="700f9d1c4413012a16077ebe2b591e73" import="1">Art/LibraryExile/LibraryExileCiv32.dds</File>
+    <File md5="51a2c795edd2c5b39a6a9ad528bf646d" import="1">Art/LibraryExile/LibraryExileCiv45.dds</File>
+    <File md5="91ace50ece9b782364c0f3292acc690c" import="1">Art/LibraryExile/LibraryExileCiv64.dds</File>
+    <File md5="66fa9c0476a29fc3585d8bd1b3dff80a" import="1">Art/LibraryExile/LibraryExileCiv80.dds</File>
+    <File md5="052ee3bf1dbcd1fa2877a167153b8a66" import="1">Art/LibraryExile/MapImage.dds</File>
+    <File md5="55148d1034f513b404259e905ec06754" import="1">Art/LibraryExile/Reader128.dds</File>
+    <File md5="44c50410516dafe163fb785bbaf5aafc" import="1">Art/LibraryExile/Reader256.dds</File>
+    <File md5="d172560dd961fa49e5e7e5ca6be052b5" import="1">Art/LibraryExile/Reader32.dds</File>
+    <File md5="4dbf28b9930c989389acc68577e1dd34" import="1">Art/LibraryExile/Reader45.dds</File>
+    <File md5="c4c1048a60568497aae8a6fde2beddbf" import="1">Art/LibraryExile/Reader64.dds</File>
+    <File md5="b1f0c4de361393ae54217d8f92302ac6" import="1">Art/LibraryExile/Reader80.dds</File>
+    <File md5="0257a43618f2fd2d1769d5df5b1a5fd2" import="1">Art/LibraryExile/SchoolLibrary128.dds</File>
+    <File md5="1ee6e4eb4a490f75436a60ec37f7e6f2" import="1">Art/LibraryExile/SchoolLibrary256.dds</File>
+    <File md5="7046ffbfc0d338089f0b58400de35233" import="1">Art/LibraryExile/SchoolLibrary32.dds</File>
+    <File md5="0348aa8aa8a7ac33727d3bb5b571c9c2" import="1">Art/LibraryExile/SchoolLibrary45.dds</File>
+    <File md5="67a11c3ac65596178278d66cbc4d0766" import="1">Art/LibraryExile/SchoolLibrary64.dds</File>
+    <File md5="8c979c4ad23c5d24d8c74dc3ff81eaa6" import="1">Art/LibraryExile/SchoolLibrary80.dds</File>
+    <File md5="6f6c8de24abe090d9b1990a7304a8be1" import="0">Art/LibraryExile_IconAtlases.xml</File>
+    <File md5="5897e5a1a72e94f932d06f7892019019" import="1">Art/PhoneStealer/Ability128.dds</File>
+    <File md5="6e8f9f41a9b0b537e31adde517e62ba6" import="1">Art/PhoneStealer/Ability256.dds</File>
+    <File md5="757f427e01a8bdfe12658a1cc671566e" import="1">Art/PhoneStealer/Ability32.dds</File>
+    <File md5="a3cb1b460c68708845c96e8312e70636" import="1">Art/PhoneStealer/Ability45.dds</File>
+    <File md5="b5066c2dd18b88e4f72f6a3217698928" import="1">Art/PhoneStealer/Ability64.dds</File>
+    <File md5="d30d1af7378aeb68bcb4101ded62aba5" import="1">Art/PhoneStealer/Ability80.dds</File>
+    <File md5="b908254d3867d0092b12992252c5953f" import="1">Art/PhoneStealer/Alpha128.dds</File>
+    <File md5="5a8de0fab1984630b92704582b49a3eb" import="1">Art/PhoneStealer/Alpha16.dds</File>
+    <File md5="d411d55fa066354da80ce4ccb9738a98" import="1">Art/PhoneStealer/Alpha24.dds</File>
+    <File md5="bc199fe3d022a69d90d9dd9fefdccae7" import="1">Art/PhoneStealer/Alpha32.dds</File>
+    <File md5="6c1310169529e8cb5fce74c6391718ad" import="1">Art/PhoneStealer/Alpha45.dds</File>
+    <File md5="00c1ba4715083adc8c4db450185b94dc" import="1">Art/PhoneStealer/Alpha48.dds</File>
+    <File md5="0b14e89c97a19f238829f4dfe3cd3306" import="1">Art/PhoneStealer/Alpha64.dds</File>
+    <File md5="cae988c7386856f491e53aafe97cd948" import="1">Art/PhoneStealer/Alpha80.dds</File>
+    <File md5="875b60d8a47f801f0991af104aa4dab5" import="1">Art/PhoneStealer/Atlas128.dds</File>
+    <File md5="a2af32e37c43e9d52afbd3a8d84adf94" import="1">Art/PhoneStealer/Atlas256.dds</File>
+    <File md5="6b01b9763fc029c4c140ec4d22d225e4" import="1">Art/PhoneStealer/Atlas32.dds</File>
+    <File md5="2b1157dbb1483cf3757ec8725bf5c310" import="1">Art/PhoneStealer/Atlas45.dds</File>
+    <File md5="8dd4ba4d37cf4c8813e09332a9bce5b2" import="1">Art/PhoneStealer/Atlas64.dds</File>
+    <File md5="51b078052ad61022e96d7b777da4ec1e" import="1">Art/PhoneStealer/Atlas80.dds</File>
+    <File md5="733754d31c031b215e76c70a97386b65" import="1">Art/PhoneStealer/Butler128.dds</File>
+    <File md5="ae4ce7785fda0118a05b4a21ad255c09" import="1">Art/PhoneStealer/Butler256.dds</File>
+    <File md5="a21f8066d791cdaca2e22a0d42aae8d4" import="1">Art/PhoneStealer/Butler32.dds</File>
+    <File md5="27b301d39e9d665832f1724444a6cdb6" import="1">Art/PhoneStealer/Butler45.dds</File>
+    <File md5="1d7fddb095197011d8606ff4f51e5f00" import="1">Art/PhoneStealer/Butler64.dds</File>
+    <File md5="5f65d38f5e0bd455043bee6be3654785" import="1">Art/PhoneStealer/Butler80.dds</File>
+    <File md5="e3f7f30217c98af3a03bf7383a17b2f4" import="1">Art/PhoneStealer/DawnOfMan.dds</File>
+    <File md5="7f7a4e52bc06fba62cd7fd643bca843a" import="1">Art/PhoneStealer/Leader128.dds</File>
+    <File md5="4a9fe0cd04c73cf896caf92936cbc6c9" import="1">Art/PhoneStealer/Leader256.dds</File>
+    <File md5="1677eb517e4f4aa66f730047dc780fc8" import="1">Art/PhoneStealer/Leader32.dds</File>
+    <File md5="3e8a2512e700e4d5dc8c51ea61795774" import="1">Art/PhoneStealer/Leader45.dds</File>
+    <File md5="e8631c3570c0549268334d6a230349f7" import="1">Art/PhoneStealer/Leader64.dds</File>
+    <File md5="f6e5f23f74048dec3900f0f0ddca4ed9" import="1">Art/PhoneStealer/Leader80.dds</File>
+    <File md5="483444ff974342daff193a4deffb8221" import="1">Art/PhoneStealer/LeaderScene.dds</File>
+    <File md5="90f1d4d7f778ca2cefffbaed6297c96e" import="1">Art/PhoneStealer/LeaderScene.xml</File>
+    <File md5="9741066646b3f1f092ca789ec10c09f6" import="1">Art/PhoneStealer/MapImage.dds</File>
+    <File md5="2f13340ea5187d391966d340c4a9a01a" import="1">Art/PhoneStealer/PhoneStealerCiv128.dds</File>
+    <File md5="86938f95abbedd3b7f5f55164953bcd9" import="1">Art/PhoneStealer/PhoneStealerCiv256.dds</File>
+    <File md5="e7e3b0ddbb8c51aba3505727c4fb7e8e" import="1">Art/PhoneStealer/PhoneStealerCiv32.dds</File>
+    <File md5="9ceec56b95cba34581ed2e800feac952" import="1">Art/PhoneStealer/PhoneStealerCiv45.dds</File>
+    <File md5="b0cb42f069b83025e57e71078057292e" import="1">Art/PhoneStealer/PhoneStealerCiv64.dds</File>
+    <File md5="9e9f17b954202347008d8723a77d38ef" import="1">Art/PhoneStealer/PhoneStealerCiv80.dds</File>
+    <File md5="13daf3252df855d0ccd1154946c43c4c" import="0">Art/PhoneStealer_IconAtlases.xml</File>
+    <File md5="b074aded8959a5032f2a9ebef3c5169d" import="1">Art/SoftKitty/Alpha128.dds</File>
+    <File md5="be717c280cddcf7cfad4ac3a0d88a470" import="1">Art/SoftKitty/Alpha16.dds</File>
+    <File md5="7ae34b8372408fc96d4fcafd5c4b7dc6" import="1">Art/SoftKitty/Alpha24.dds</File>
+    <File md5="47de84278c6ad8b3eb16df7a60e5ad9b" import="1">Art/SoftKitty/Alpha32.dds</File>
+    <File md5="14c1c2032989556cb1faec7d6e1138f3" import="1">Art/SoftKitty/Alpha45.dds</File>
+    <File md5="db4919f7218e2faa0f1d0424d7fa7f06" import="1">Art/SoftKitty/Alpha64.dds</File>
+    <File md5="9176ca89007fbc2e8e740d49a5bfced5" import="1">Art/SoftKitty/Alpha80.dds</File>
+    <File md5="f08c727436cd90c2ed9ac9a2f8f6e91e" import="1">Art/SoftKitty/Atlas128.dds</File>
+    <File md5="59376746b59b5dd598a688c42659e0f9" import="1">Art/SoftKitty/Atlas256.dds</File>
+    <File md5="6cb6028de45ec0fe3c58343581e5e159" import="1">Art/SoftKitty/Atlas32.dds</File>
+    <File md5="04fbdd09b90d15f967f530b519c5ce43" import="1">Art/SoftKitty/Atlas45.dds</File>
+    <File md5="f55a9520bc1bcbd7644d38c4b91884ec" import="1">Art/SoftKitty/Atlas64.dds</File>
+    <File md5="eb3f8e091de1f25ef6be46cd49a589a4" import="1">Art/SoftKitty/Atlas80.dds</File>
+    <File md5="8b147a7ee3f88aa6f0bf8e8cba26b2cc" import="1">Art/SoftKitty/Civ128.dds</File>
+    <File md5="7a0e5a31dd11d0810690fc2dddec8f35" import="1">Art/SoftKitty/Civ256.dds</File>
+    <File md5="b1a6493998d4e991f3941112c700a194" import="1">Art/SoftKitty/Civ32.dds</File>
+    <File md5="28939bfcf827805420e3660310bb40c0" import="1">Art/SoftKitty/Civ45.dds</File>
+    <File md5="62973ea93e89785a69660215d8ae6504" import="1">Art/SoftKitty/Civ64.dds</File>
+    <File md5="4dde7834fa8524d0618190b6cfc12698" import="1">Art/SoftKitty/Civ80.dds</File>
+    <File md5="442d20a4b011f29d3c5c88349163e44e" import="1">Art/SoftKitty/DawnOfMan.dds</File>
+    <File md5="b00fb161eb78561612b658ebcfb775d8" import="1">Art/SoftKitty/LeaderScene.dds</File>
+    <File md5="47c65e42a3b8c44f2600bc95d984e2f7" import="1">Art/SoftKitty/LeaderScene.xml</File>
+    <File md5="2ccf927d0ea985fd0c09917fa04a259e" import="0">Art/SoftKitty_IconAtlases.xml</File>
+    <File md5="0814ae73a7c844737f0e5e253b98e72e" import="1">Art/TrentLeader/TrentLeaderIcon128.dds</File>
+    <File md5="06e097a9c91476088b00b73150cf013a" import="1">Art/TrentLeader/TrentLeaderIcon256.dds</File>
+    <File md5="853759eb1b09641749e82e48979ba98e" import="1">Art/TrentLeader/TrentLeaderIcon32.dds</File>
+    <File md5="b3a76b91088e1a33ec929677f6867362" import="1">Art/TrentLeader/TrentLeaderIcon45.dds</File>
+    <File md5="7fa56e84a826d075998552cc2d84c846" import="1">Art/TrentLeader/TrentLeaderIcon64.dds</File>
+    <File md5="a66d9625d4d3cb9e95c9cffdc038ab40" import="1">Art/TrentLeader/TrentLeaderIcon80.dds</File>
+    <File md5="58902bf6a2c5b6f173655dc21a6d0e8d" import="1">Art/Trentrouls/TrentroulsIcon128.dds</File>
+    <File md5="55ed4931d3ddd503c7a7d372d50af691" import="1">Art/Trentrouls/TrentroulsIcon256.dds</File>
+    <File md5="4c8b9fc1c642cdd2cad43fbb83c2d7e8" import="1">Art/Trentrouls/TrentroulsIcon32.dds</File>
+    <File md5="50d6df91dc79f7ce89dd6b57a2f85724" import="1">Art/Trentrouls/TrentroulsIcon45.dds</File>
+    <File md5="50cfd03b16b1cb3eed57bb0b3172e5b0" import="1">Art/Trentrouls/TrentroulsIcon64.dds</File>
+    <File md5="1061c6ca714b37692d42f820d9329b15" import="1">Art/Trentrouls/TrentroulsIcon80.dds</File>
+    <File md5="04bf48c02815cfb8faf08531b1a644ff" import="1">Art/Ultimate3UnaCourt/ThreeUnaCourtIcon128.dds</File>
+    <File md5="21dd7f7b8ae4eb184324a20da4a39c3f" import="1">Art/Ultimate3UnaCourt/ThreeUnaCourtIcon256.dds</File>
+    <File md5="d300eb14c8dc887390458e9b6e103cb0" import="1">Art/Ultimate3UnaCourt/ThreeUnaCourtIcon32.dds</File>
+    <File md5="e81a90ed66e21cfbd7dddada4303486d" import="1">Art/Ultimate3UnaCourt/ThreeUnaCourtIcon45.dds</File>
+    <File md5="89dabdf38405ea6a1b3df0dd1c72675d" import="1">Art/Ultimate3UnaCourt/ThreeUnaCourtIcon64.dds</File>
+    <File md5="bdb3156ae5460fe3b190301ad289b254" import="1">Art/Ultimate3UnaCourt/ThreeUnaCourtIcon80.dds</File>
+    <File md5="51bc63250005507ce4028a752701fcd4" import="1">Art/UltimateCivilization/UltimateAlpha128.dds</File>
+    <File md5="8012f95295c6498f6f1726df52e740eb" import="1">Art/UltimateCivilization/UltimateAlpha32.dds</File>
+    <File md5="d920e76879be5409cafd0b698d13bd6f" import="1">Art/UltimateCivilization/UltimateAlpha45.dds</File>
+    <File md5="5a297092c4eccdfe6005250b35d8e6ee" import="1">Art/UltimateCivilization/UltimateAlpha64.dds</File>
+    <File md5="19452d1878411fff2353141d636669ec" import="1">Art/UltimateCivilization/UltimateAlpha80.dds</File>
+    <File md5="99efae8d2106730d54e10679ee803e3d" import="1">Art/UltimateCivilization/UltimateIcon128.dds</File>
+    <File md5="dab5d3d7ce6a0da149ccb88c08737f43" import="1">Art/UltimateCivilization/UltimateIcon256.dds</File>
+    <File md5="cd9d06e51449cce3472ad8fec2932e65" import="1">Art/UltimateCivilization/UltimateIcon32.dds</File>
+    <File md5="3dbfeadb62e0b1fc299244d3a236081c" import="1">Art/UltimateCivilization/UltimateIcon45.dds</File>
+    <File md5="df5dfe88d6868bd587c642fb23b3ee2c" import="1">Art/UltimateCivilization/UltimateIcon64.dds</File>
+    <File md5="9b955446133a487876e5b1bbf282b28f" import="1">Art/UltimateCivilization/UltimateIcon80.dds</File>
+    <File md5="6ea020d744eb91d270656c8f25c5359c" import="1">Art/UltimateDawnOfMan/UltimateDawnOfMan.dds</File>
+    <File md5="85cf5870449a3960d46f3018f386747e" import="1">Art/UltimateTrentLeader/UltimateTrentIcon128.dds</File>
+    <File md5="6d9fec5c8ba0cecb55b2b304646f6a37" import="1">Art/UltimateTrentLeader/UltimateTrentIcon256.dds</File>
+    <File md5="027cb88ff7223b1758cc570aac12c071" import="1">Art/UltimateTrentLeader/UltimateTrentIcon32.dds</File>
+    <File md5="1692ff9b802ee466451806db8b370d9b" import="1">Art/UltimateTrentLeader/UltimateTrentIcon45.dds</File>
+    <File md5="77a7325f1b463441cbecdf27a49113b2" import="1">Art/UltimateTrentLeader/UltimateTrentIcon64.dds</File>
+    <File md5="469ae2629b0c173a65964621d5b650d3" import="1">Art/UltimateTrentLeader/UltimateTrentIcon80.dds</File>
+    <File md5="21e4f669c8408e83f8c7994b0f82d792" import="0">Art/Ultimate_IconAtlases.xml</File>
+    <File md5="a991b9fd3a69d9365a09b39e71c222f1" import="0">Art/UnaCourt_CivilizationIconAtlases.xml</File>
+    <File md5="3384930e848f54a2bd5e9a49317548b6" import="0">Art/UnaCourt_IconAtlases.xml</File>
+    <File md5="591482428cc4cbe84966a44c60ada453" import="0">Art/UnaCourt_TrentIconAtlases.xml</File>
+    <File md5="3960701446a8905c6dbc6d31d7d6e2db" import="0">CHANGELOG.md</File>
+    <File md5="6ae6c1bc44417d47c2440e1f2652b12b" import="1">Lua/DominionBodySwap.lua</File>
+    <File md5="4d1280e1bc1f0d6db7f2b288205f4030" import="1">Lua/DominionCore.lua</File>
+    <File md5="2598b7d6ae369cde571c55e5ccf60455" import="1">Lua/TrentLibraryExile_Gameplay.lua</File>
+    <File md5="a230d47102f75f28068a16988dddf407" import="1">Lua/TrentPhoneStealer_Gameplay.lua</File>
+    <File md5="e738ea86986197abb2c8b1d0ec483eee" import="1">Lua/TrentSoftKitty_Gameplay.lua</File>
+    <File md5="f50bc4ff902adfb7d609cefb3b1bf7b6" import="1">Lua/UltimatePossession.lua</File>
+    <File md5="3690e7384e618da0cf2bc1561e6c2b07" import="1">Lua/UnaCourtCore.lua</File>
+    <File md5="d8c8cc2eeedd55ae5efa921f2a8916ef" import="0">Lua/UnaCourtLoader.lua</File>
+    <File md5="4cc1068fbe5eaaab0213dcb5941b5e3e" import="1">Lua/UnaCourtPossession.lua</File>
+    <File md5="40885ceec67b5e524a446db6f50aab27" import="1">Princedom/Art/PrinceAlpha128.dds</File>
+    <File md5="bba735de15c970ad16a3007305476d2a" import="1">Princedom/Art/PrinceAlpha16.dds</File>
+    <File md5="c2ed4a6b369f9497c7ec1f7def649040" import="1">Princedom/Art/PrinceAlpha24.dds</File>
+    <File md5="9d58f6bc082bb6bfdbdc8a5652e206a5" import="1">Princedom/Art/PrinceAlpha32.dds</File>
+    <File md5="47c5705a41df1bb211334e10c10932ac" import="1">Princedom/Art/PrinceAlpha45.dds</File>
+    <File md5="88e734229d03412cc2146a9b81fb286c" import="1">Princedom/Art/PrinceAlpha48.dds</File>
+    <File md5="132e76b0132f339e4dfbcf8d35cdb42c" import="1">Princedom/Art/PrinceAlpha64.dds</File>
+    <File md5="5cc30d5fc41e5ff676c0e005261ea90d" import="1">Princedom/Art/PrinceAlpha80.dds</File>
+    <File md5="4f2ce15bac722fb612f20c97288a0c89" import="1">Princedom/Art/PrinceAtlas128.dds</File>
+    <File md5="a01e7b4be63b70a4c12cac90259fc765" import="1">Princedom/Art/PrinceAtlas256.dds</File>
+    <File md5="2b96f29a92bd99caac3e447d2fb4f071" import="1">Princedom/Art/PrinceAtlas32.dds</File>
+    <File md5="6b9de3d12f31ef183c7eb9f9c6fb0f10" import="1">Princedom/Art/PrinceAtlas45.dds</File>
+    <File md5="51840b69ebbb0e8e1b6df5e8f74c98ec" import="1">Princedom/Art/PrinceAtlas64.dds</File>
+    <File md5="167d4919e95ca4e6d9c35d1d6c507271" import="1">Princedom/Art/PrinceAtlas80.dds</File>
+    <File md5="1f818c5ccc4b86109b72329d4c4c1ee6" import="0">Princedom/Art/PrinceAtlases.xml</File>
+    <File md5="dc22d0e9bcc3da781131c6eaebd7b694" import="1">Princedom/Art/PrinceCiv128.dds</File>
+    <File md5="90cc19fc988eaa6acbbed6d51b647f42" import="1">Princedom/Art/PrinceCiv256.dds</File>
+    <File md5="2feaab98dd1129864c64fe41cc84c437" import="1">Princedom/Art/PrinceCiv32.dds</File>
+    <File md5="224daf474f6f4c1f9ec5241496c4d5de" import="1">Princedom/Art/PrinceCiv45.dds</File>
+    <File md5="aded2b8a9748c8db2213a7064c8ff202" import="1">Princedom/Art/PrinceCiv64.dds</File>
+    <File md5="08ee27872a2dd6662590a53df4ecb32c" import="1">Princedom/Art/PrinceCiv80.dds</File>
+    <File md5="2fed553dbc171dff8e54393dfeec26c5" import="1">Princedom/Art/PrinceDawn.dds</File>
+    <File md5="c2ed4a6b369f9497c7ec1f7def649040" import="1">Princedom/Art/PrinceFlag24.dds</File>
+    <File md5="9d58f6bc082bb6bfdbdc8a5652e206a5" import="1">Princedom/Art/PrinceFlag32.dds</File>
+    <File md5="db48c7e5d8e304d0f2a455adaa52ede9" import="1">Princedom/Art/PrinceLeaderScene.dds</File>
+    <File md5="adee792aa80ce4726e700776b5a22123" import="1">Princedom/Art/PrinceLeaderScene.xml</File>
+    <File md5="d3076324e2931e9ca27a18fdda87b93c" import="1">Princedom/Art/PrinceMap.dds</File>
+    <File md5="fca6e28bb9d08d5a5e15e310d673458a" import="1">Princedom/Lua/PrinceAI.lua</File>
+    <File md5="16c3d4d5c752a28b38e56603d3c18ef8" import="1">Princedom/Lua/PrinceAbilities.lua</File>
+    <File md5="841c1d6892f8d27dd45ebfc89dfb8a97" import="1">Princedom/Lua/PrinceCombat.lua</File>
+    <File md5="26568fa955fb6156fdfd6ef661754f6f" import="1">Princedom/Lua/PrinceIdentity.lua</File>
+    <File md5="1137500e4d6904fcc59959a1345c6415" import="1">Princedom/Lua/PrinceMain.lua</File>
+    <File md5="93f914c990fbac0bd4e4e4fb41aea2cf" import="1">Princedom/Lua/PrinceRules.lua</File>
+    <File md5="4a48504da6260782c2fb20e8f8a79c43" import="1">Princedom/Lua/PrinceState.lua</File>
+    <File md5="172066889b26ed90fe0cd1637d7507ef" import="0">Princedom/SQL/100_Prince_Inherit.sql</File>
+    <File md5="e7909f8e7fcbf26074ba9286e2d71e35" import="0">Princedom/SQL/101_Prince_Core.sql</File>
+    <File md5="831875f803b4340adb6b1f46a037730e" import="0">Princedom/SQL/102_Prince_Text.sql</File>
+    <File md5="dc45e8baeda35a68797749fb4a3ac906" import="0">Princedom/UI/PrincePanel.lua</File>
+    <File md5="74d49aecb424b0e53095edfef58fc3cb" import="0">Princedom/UI/PrincePanel.xml</File>
+    <File md5="87349e1a5a5a74437b0f2156e8f3b9db" import="0">README.md</File>
+    <File md5="4d71a2fc3ef2672ace5b52054db85d62" import="0">SQL/00_UnaCourt_Core.sql</File>
+    <File md5="0f3f66a7de0bd5864b83e5befe637984" import="0">SQL/10_UnaCourt_Scaling.sql</File>
+    <File md5="e303b0c20454f73b4e75cc8d8e9b2fcf" import="0">SQL/20_UnaCourt_Text.sql</File>
+    <File md5="90b8a6e0d9eb623c27eeff2d3b1f121e" import="0">SQL/30_Dominion_Core.sql</File>
+    <File md5="30e4c3eacb5e20163deecae069b8d4a6" import="0">SQL/40_Dominion_Text.sql</File>
+    <File md5="492cc05db897dedb0e67431f1b08c138" import="0">SQL/50_Ultimate_Core.sql</File>
+    <File md5="ce7e647b3782716ea73715436462cf46" import="0">SQL/60_Ultimate_Text.sql</File>
+    <File md5="a5bf65b20462bbbe6f5da4bec65b780a" import="0">SQL/70_SoftKitty_Inherit.sql</File>
+    <File md5="1840be98b5a9417ed569b7c9741816ae" import="0">SQL/71_SoftKitty_Core.sql</File>
+    <File md5="3961b1526d33ff39231c1626eb41a16c" import="0">SQL/72_SoftKitty_Text.sql</File>
+    <File md5="f898c956c22efb4bdd8993050648fe49" import="0">SQL/80_LibraryExile_Inherit.sql</File>
+    <File md5="15a78486095034f690c3ee12d9182446" import="0">SQL/81_LibraryExile_Core.sql</File>
+    <File md5="54fbecf0ddb6f4a76a03f9f6c79ac836" import="0">SQL/82_LibraryExile_Text.sql</File>
+    <File md5="78664d9404ecdc9da67238b4dbd23e1f" import="0">SQL/90_PhoneStealer_Inherit.sql</File>
+    <File md5="35120dc36a667fa0237e9271e8a94f07" import="0">SQL/91_PhoneStealer_Core.sql</File>
+    <File md5="85ad3321af7981641547b9632c2832f7" import="0">SQL/92_PhoneStealer_Text.sql</File>
+    <File md5="6f57bab66b122c2c55a87e77d004a289" import="0">UI/TrentPhoneStealer_UI.lua</File>
+    <File md5="fbb4d488f58864e6e639060245eb4f33" import="0">UI/TrentPhoneStealer_UI.xml</File>
+    <File md5="7d885ae22faf25f4697baf81bf3007ba" import="0">UI/TrentSoftKitty_UI.lua</File>
+    <File md5="af7e0dacb293858781a8641006e23845" import="0">UI/TrentSoftKitty_UI.xml</File>
+    <File md5="3cc9b51ec2033241d5a7f986c717e670" import="0">UI/UnaCourtPanel.lua</File>
+    <File md5="99fc764dbd1ae42832bfe94683c5b16a" import="0">UI/UnaCourtPanel.xml</File>
+  </Files>
+  <Actions>
+    <OnModActivated>
+      <UpdateDatabase>Art/UnaCourt_IconAtlases.xml</UpdateDatabase>
+      <UpdateDatabase>Art/UnaCourt_TrentIconAtlases.xml</UpdateDatabase>
+      <UpdateDatabase>Art/UnaCourt_CivilizationIconAtlases.xml</UpdateDatabase>
+      <UpdateDatabase>Art/Ultimate_IconAtlases.xml</UpdateDatabase>
+      <UpdateDatabase>SQL/00_UnaCourt_Core.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/10_UnaCourt_Scaling.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/20_UnaCourt_Text.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/30_Dominion_Core.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/40_Dominion_Text.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/50_Ultimate_Core.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/60_Ultimate_Text.sql</UpdateDatabase>
+      <UpdateDatabase>Art/SoftKitty_IconAtlases.xml</UpdateDatabase>
+      <UpdateDatabase>SQL/70_SoftKitty_Inherit.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/71_SoftKitty_Core.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/72_SoftKitty_Text.sql</UpdateDatabase>
+      <UpdateDatabase>Art/LibraryExile_IconAtlases.xml</UpdateDatabase>
+      <UpdateDatabase>SQL/80_LibraryExile_Inherit.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/81_LibraryExile_Core.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/82_LibraryExile_Text.sql</UpdateDatabase>
+      <UpdateDatabase>Art/PhoneStealer_IconAtlases.xml</UpdateDatabase>
+      <UpdateDatabase>SQL/90_PhoneStealer_Inherit.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/91_PhoneStealer_Core.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/92_PhoneStealer_Text.sql</UpdateDatabase>
+      <UpdateDatabase>Princedom/Art/PrinceAtlases.xml</UpdateDatabase>
+      <UpdateDatabase>Princedom/SQL/100_Prince_Inherit.sql</UpdateDatabase>
+      <UpdateDatabase>Princedom/SQL/101_Prince_Core.sql</UpdateDatabase>
+      <UpdateDatabase>Princedom/SQL/102_Prince_Text.sql</UpdateDatabase>
+    </OnModActivated>
+  </Actions>
+  <EntryPoints>
+    <EntryPoint type="InGameUIAddin" file="Lua/UnaCourtLoader.lua">
+      <Name>Una Court Gameplay Loader</Name>
+      <Description>Loads Una Court gameplay systems.</Description>
+    </EntryPoint>
+    <EntryPoint type="InGameUIAddin" file="UI/UnaCourtPanel.xml">
+      <Name>Una Court Command Panel</Name>
+      <Description>Displays Freehold, Dominion, and Ultimate Possession controls.</Description>
+    </EntryPoint>
+    <EntryPoint type="InGameUIAddin" file="UI/TrentSoftKitty_UI.xml">
+      <Name>Soft Kitty Serenade Panel</Name>
+      <Description>Audience selection, reward and risk previews, and Hopeless Romantic actions.</Description>
+    </EntryPoint>
+    <EntryPoint type="InGameUIAddin" file="UI/TrentPhoneStealer_UI.xml">
+      <Name>Phone Stash Panel</Name>
+      <Description>Foreign-capital Phone missions, Stash yields, cooldowns, and returns.</Description>
+    </EntryPoint>
+    <EntryPoint type="InGameUIAddin" file="Princedom/UI/PrincePanel.xml">
+      <Name>Princedom Two Masters Panel</Name>
+      <Description>Trent mastery, cooldown and adjacent target selection.</Description>
+    </EntryPoint>
+  </EntryPoints>
+</Mod>

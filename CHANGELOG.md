@@ -2,6 +2,14 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-10-09 - Princedom: Pupil of Two Masters
+
+- Added a seventh selectable civilization with independent twelve-stack Possession and Body Swap mastery, fixed speed-scaled shared cooldowns, adjacent enemy/Barbarian targeting and an irreplaceable, normally upgrading Trent Steinhauer.
+- Added native temporary conversion, persistent canonical-body identity, save normalization, death cleanup, shell action restrictions, local AI decisions, Fanfic Monument bonuses and a dedicated event-driven targeting panel.
+- Added English Civilopedia/diplomacy/city text, DDS atlases with mipmaps, original geometric glyphs and retained Una Court portrait/scenery art.
+- Added a checked-in ModInfo and plain-file packaging command; ModBuddy is optional. Protected the new hero and borrowed bodies from the collection's existing possession systems.
+- Added Lua 5.1 scenarios, CP schema/inheritance/asset/manifest validation and an explicit manual engine checklist. In-game verification remains pending; CP damage-hook caps, noncombat damage bypasses and native defeat timing are documented in `Princedom/CP151_NOTES.md`.
+
 ## 2026-09-21 - Trent the Phone Stealer civilization
 
 - Added the sixth Trent civilization, the **Princedom of Una Court**, led by Trent — The Phone Stealer.

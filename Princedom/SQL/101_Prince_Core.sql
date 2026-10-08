@@ -1,0 +1,76 @@
+-- CP v151 hooks; no replacement DLL or vanilla UI overrides.
+UPDATE CustomModOptions SET Value=1 WHERE Name IN
+('EVENTS_UNIT_CONVERTS','EVENTS_UNIT_CREATED','EVENTS_UNIT_UPGRADES','EVENTS_UNIT_PREKILL',
+ 'EVENTS_COMMAND','EVENTS_CAN_MOVE_INTO','EVENTS_UNIT_ACTIONS','EVENTS_UNIT_RANGEATTACK',
+ 'EVENTS_BATTLES','EVENTS_BATTLES_DAMAGE','EVENTS_GAME_SAVE','EVENTS_CITY','EVENTS_PLAYER_TURN',
+ 'EVENTS_WAR_AND_PEACE','EVENTS_MINORS_INTERACTION');
+INSERT INTO Colors (Type,Red,Green,Blue,Alpha) VALUES
+('COLOR_PRINCE_VIOLET',0.25,0.12,0.42,1),('COLOR_PRINCE_GOLD',0.94,0.78,0.39,1);
+INSERT INTO PlayerColors (Type,PrimaryColor,SecondaryColor,TextColor) VALUES
+('PLAYERCOLOR_PRINCE_UNA','COLOR_PRINCE_VIOLET','COLOR_PRINCE_GOLD','COLOR_PLAYER_WHITE_TEXT');
+INSERT INTO Traits (Type,Description,ShortDescription) VALUES
+('TRAIT_PRINCE_TWO_MASTERS','TXT_KEY_PRINCE_TRAIT_HELP','TXT_KEY_PRINCE_TRAIT');
+UPDATE Civilizations SET Description='TXT_KEY_PRINCE_CIV',ShortDescription='TXT_KEY_PRINCE_SHORT',
+Adjective='TXT_KEY_PRINCE_ADJECTIVE',Civilopedia='TXT_KEY_PRINCE_PEDIA',
+CivilopediaTag='TXT_KEY_CIV5_PRINCE',Strategy='TXT_KEY_PRINCE_STRATEGY',Playable=1,AIPlayable=1,
+DefaultPlayerColor='PLAYERCOLOR_PRINCE_UNA',PortraitIndex=0,IconAtlas='PRINCE_CIV_ATLAS',
+AlphaIconAtlas='PRINCE_ALPHA_ATLAS',MapImage='Princedom/Art/PrinceMap.dds',
+DawnOfManImage='Princedom/Art/PrinceDawn.dds',DawnOfManQuote='TXT_KEY_PRINCE_DAWN',DawnOfManAudio=''
+WHERE Type='CIVILIZATION_PRINCE_UNA';
+UPDATE Leaders SET Description='TXT_KEY_PRINCE_LEADER',Civilopedia='TXT_KEY_PRINCE_LEADER_PEDIA',
+CivilopediaTag='TXT_KEY_CIV5_PRINCE_LEADER',ArtDefineTag='Princedom/Art/PrinceLeaderScene.xml',
+PortraitIndex=1,IconAtlas='PRINCE_ATLAS',Boldness=3,Loyalty=7,Forgiveness=5,Meanness=4,
+VictoryCompetitiveness=7,WonderCompetitiveness=4,Chattiness=6
+WHERE Type='LEADER_PRINCE_TRENT';
+INSERT INTO Leader_Traits VALUES ('LEADER_PRINCE_TRENT','TRAIT_PRINCE_TWO_MASTERS');
+INSERT INTO Civilization_Leaders VALUES ('CIVILIZATION_PRINCE_UNA','LEADER_PRINCE_TRENT');
+INSERT INTO Leader_MajorCivApproachBiases (LeaderType,MajorCivApproachType,Bias)
+SELECT 'LEADER_PRINCE_TRENT',MajorCivApproachType,Bias FROM Leader_MajorCivApproachBiases WHERE LeaderType='LEADER_WASHINGTON';
+INSERT INTO Leader_MinorCivApproachBiases (LeaderType,MinorCivApproachType,Bias)
+SELECT 'LEADER_PRINCE_TRENT',MinorCivApproachType,Bias FROM Leader_MinorCivApproachBiases WHERE LeaderType='LEADER_WASHINGTON';
+INSERT INTO Leader_Flavors (LeaderType,FlavorType,Flavor)
+SELECT 'LEADER_PRINCE_TRENT',FlavorType,CASE WHEN FlavorType IN ('FLAVOR_DEFENSE','FLAVOR_CULTURE') THEN 8 ELSE 5 END
+FROM Leader_Flavors WHERE LeaderType='LEADER_WASHINGTON';
+INSERT INTO Diplomacy_Responses (LeaderType,ResponseType,Response,Bias)
+SELECT 'LEADER_PRINCE_TRENT',ResponseType,'TXT_KEY_PRINCE_DIPLO_'||ResponseType,1
+FROM Diplomacy_Responses WHERE LeaderType='LEADER_WASHINGTON' GROUP BY ResponseType;
+INSERT INTO Civilization_FreeBuildingClasses VALUES ('CIVILIZATION_PRINCE_UNA','BUILDINGCLASS_PALACE');
+INSERT INTO Civilization_FreeTechs VALUES ('CIVILIZATION_PRINCE_UNA','TECH_AGRICULTURE');
+INSERT INTO Civilization_FreeUnits (CivilizationType,UnitClassType,UnitAIType,Count) VALUES
+('CIVILIZATION_PRINCE_UNA','UNITCLASS_SETTLER','UNITAI_SETTLE',1);
+-- Trent occupies the Warrior override. A baseline-identical militia provides
+-- retrainable Warriors through a private class with no other civilization access.
+UPDATE Units SET Description='TXT_KEY_PRINCE_TRENT',Civilopedia='TXT_KEY_PRINCE_TRENT_PEDIA',
+Strategy='TXT_KEY_PRINCE_TRENT_STRATEGY',Help='TXT_KEY_PRINCE_TRENT_HELP',Cost=-1,FaithCost=-1,
+Combat=CAST(((SELECT Combat FROM Units WHERE Type='UNIT_WARRIOR')*150+50)/100 AS INTEGER),Moves=2,
+PortraitIndex=2,IconAtlas='PRINCE_ATLAS',UnitFlagIconOffset=0,UnitFlagAtlas='PRINCE_FLAG_ATLAS'
+WHERE Type='UNIT_PRINCE_TRENT';
+INSERT INTO UnitClasses (Type,Description,DefaultUnit,MaxPlayerInstances) VALUES
+('UNITCLASS_PRINCE_MILITIA','TXT_KEY_UNIT_WARRIOR',NULL,-1);
+UPDATE Units SET Class='UNITCLASS_PRINCE_MILITIA' WHERE Type='UNIT_PRINCE_MILITIA';
+INSERT INTO Civilization_UnitClassOverrides (CivilizationType,UnitClassType,UnitType) VALUES
+('CIVILIZATION_PRINCE_UNA','UNITCLASS_WARRIOR','UNIT_PRINCE_TRENT'),
+('CIVILIZATION_PRINCE_UNA','UNITCLASS_PRINCE_MILITIA','UNIT_PRINCE_MILITIA');
+INSERT INTO UnitPromotions (Type,Description,Help,CannotBeChosen,LostWithUpgrade,CannotBeCaptured,
+PortraitIndex,IconAtlas,PediaType,PediaEntry,ShowInUnitPanel) VALUES
+('PROMOTION_PRINCE_IDENTITY','TXT_KEY_PRINCE_IDENTITY','TXT_KEY_PRINCE_IDENTITY_HELP',1,0,1,2,'PRINCE_ATLAS','PEDIA_ATTRIBUTES','TXT_KEY_PRINCE_IDENTITY',1),
+('PROMOTION_PRINCE_BORROWED','TXT_KEY_PRINCE_BORROWED','TXT_KEY_PRINCE_BORROWED_HELP',1,0,1,4,'PRINCE_ATLAS','PEDIA_ATTRIBUTES','TXT_KEY_PRINCE_BORROWED',1),
+('PROMOTION_PRINCE_SHELL','TXT_KEY_PRINCE_SHELL','TXT_KEY_PRINCE_SHELL_HELP',1,0,1,5,'PRINCE_ATLAS','PEDIA_ATTRIBUTES','TXT_KEY_PRINCE_SHELL',1);
+UPDATE UnitPromotions SET NoCapture=1 WHERE Type='PROMOTION_PRINCE_SHELL';
+CREATE TEMP TABLE PrinceResistance (N INTEGER);
+INSERT INTO PrinceResistance VALUES (80),(82),(85),(88),(90);
+INSERT INTO UnitPromotions (Type,Description,Help,CannotBeChosen,LostWithUpgrade,DamageTakenMod,
+PortraitIndex,IconAtlas,PediaType,PediaEntry,ShowInUnitPanel)
+SELECT 'PROMOTION_PRINCE_RESIST_'||N,'TXT_KEY_PRINCE_RESIST','TXT_KEY_PRINCE_RESIST_HELP',1,0,-N,
+5,'PRINCE_ATLAS','PEDIA_ATTRIBUTES','TXT_KEY_PRINCE_RESIST',1 FROM PrinceResistance;
+DROP TABLE PrinceResistance;
+UPDATE Buildings SET Description='TXT_KEY_PRINCE_FANFIC',Civilopedia='TXT_KEY_PRINCE_FANFIC_PEDIA',
+Strategy='TXT_KEY_PRINCE_FANFIC_STRATEGY',Help='TXT_KEY_PRINCE_FANFIC_HELP',PortraitIndex=3,IconAtlas='PRINCE_ATLAS'
+WHERE Type='BUILDING_PRINCE_FANFIC';
+INSERT INTO Civilization_BuildingClassOverrides VALUES ('CIVILIZATION_PRINCE_UNA','BUILDINGCLASS_MONUMENT','BUILDING_PRINCE_FANFIC');
+INSERT INTO BuildingClasses (Type,DefaultBuilding,Description) VALUES
+('BUILDINGCLASS_PRINCE_FANFIC_ACTIVE','BUILDING_PRINCE_FANFIC_ACTIVE','TXT_KEY_PRINCE_FANFIC_ACTIVE');
+UPDATE Buildings SET BuildingClass='BUILDINGCLASS_PRINCE_FANFIC_ACTIVE',Description='TXT_KEY_PRINCE_FANFIC_ACTIVE',
+Cost=-1,FaithCost=-1,GoldMaintenance=0,PrereqTech=NULL,FreeStartEra=NULL,IsDummy=1,ShowInPedia=0,
+NeverCapture=1,ConquestProb=0,PortraitIndex=3,IconAtlas='PRINCE_ATLAS'
+WHERE Type='BUILDING_PRINCE_FANFIC_ACTIVE';

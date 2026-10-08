@@ -1,6 +1,10 @@
 # Una Court Civilizations
 
-A version 3 Civilization V: Brave New World mod for the Community Patch ruleset. It adds six selectable civilizations led by Trent: the companion-focused **Freehold of Una Court**, the aggressive **Dominion of Una Court**, the army-stealing **Ultimate Possession**, the musical **Soft Kitty Serenader**, the science-and-culture focused **Library Exile**, and the espionage-driven **Phone Stealer**.
+A version 3 Civilization V: Brave New World mod for the Community Patch ruleset. It adds seven selectable civilizations led by Trent: the companion-focused **Freehold of Una Court**, the aggressive **Dominion of Una Court**, the army-stealing **Ultimate Possession**, the musical **Soft Kitty Serenader**, the science-and-culture focused **Library Exile**, the espionage-driven **Phone Stealer**, and **The Princedom of Una Court — Pupil of Two Masters**.
+
+The new [Princedom](Princedom/README.md) develops Possession and Body Swap independently through twelve mastery stacks each. One irreplaceable, normally upgrading Trent replaces its opening Warrior; his original body's death collapses the empire. Fanfic Monuments double intrinsic benefits during a technique. The civ includes local AI decisions, a dedicated targeting panel, native damage resistance, persistent ownership state and a reproducible test harness. See its [validation checklist](Princedom/TESTING.md) and [CP v151 limitations](Princedom/CP151_NOTES.md); in-game verification remains pending.
+
+**ModBuddy is optional:** run `python Tools/package_mod.py --package`, then copy the generated `Build/Una Court Civilizations (v 3)` folder to the game's `MODS` directory. The checked-in `UnaCourt.modinfo` registers the entire collection and requires Community Patch v151. Start a new game for the Princedom.
 
 The Freehold and Dominion begin with a Settler and their own Trentrouls instead of an ordinary Warrior. In either realm, Trentrouls is irreplaceable: if his body dies, the civilization collapses. Ultimate Possession, Soft Kitty, Library Exile, and Phone Stealer use normal starting units because Trent acts through their civilization mechanics rather than appearing as a separate map unit.
 
@@ -150,14 +154,15 @@ Phone Stealer has its own civ-only Stash window for beginning missions, tracking
 
 - Sid Meier's Civilization V: Brave New World
 - Community Patch / Vox Populi DLL
-- ModBuddy from the Civilization V SDK to build from source
+- Python 3.9+ for the plain-file packaging command, or optionally ModBuddy from the Civilization V SDK
 
-Open `UnaCourt.civ5proj`, choose **Build > Build Solution**, then enable **The Freehold of Una Court (v 3)** in Civilization V's Mods menu and start a new game. The version remains fixed at 3 so new builds replace the existing mod folder.
+Run `python Tools/package_mod.py --package` and copy the generated mod folder into the game's `MODS` directory. Alternatively, open `UnaCourt.civ5proj` and choose **Build > Build Solution**. Enable **The Freehold of Una Court (v 3)** in Civilization V's Mods menu and start a new game. The version remains fixed at 3 so new builds replace the existing mod folder.
 
 ## Source layout
 
 - `Art/` — custom icon atlases and retained source artwork
-- `SQL/` — all six civilizations, units, shared and unique buildings, scaling data, and text
+- `SQL/` — the original six civilizations, units, shared and unique buildings, scaling data, and text
+- `Princedom/` — the seventh civilization's isolated SQL, Lua, UI, art, documentation and engine checklist
 - `Lua/` — possession systems, Soft Kitty audiences, Library Exile diplomacy polling, Phone missions and Stash state, AI, aura support, collapse safety, and save/load state
 - `UI/` — shared possession command panel plus isolated Soft Kitty and Phone Stash panels
 - `Tools/` — reproducible art building and validation scripts

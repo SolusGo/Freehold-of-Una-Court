@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context ID="PrincePanelUI">
+  <Instance Name="PrinceTarget">
+    <GridButton ID="TargetButton" Size="446,58" Style="BaseButton">
+      <Label ID="Name" Anchor="L,T" Offset="12,6" Font="TwCenMT18" WrapWidth="420" ColorSet="Beige_Black_Alpha" />
+      <Label ID="Status" Anchor="L,T" Offset="12,30" Font="TwCenMT14" WrapWidth="420" ColorSet="Beige_Black_Alpha" />
+    </GridButton>
+  </Instance>
+  <Container ID="Root" Size="F,F">
+    <GridButton ID="Open" Anchor="R,T" Offset="24,194" Size="246,40" Style="BaseButton" String="TXT_KEY_PRINCE_PANEL" Hidden="1" />
+    <Grid ID="Panel" Anchor="R,C" Offset="30,0" Size="510,620" Style="Grid9DetailFive140" Hidden="1" ConsumeMouse="1">
+      <Box Style="MenuLeftSideTreatment" /><Box Style="MenuRightSideTreatment" />
+      <Image ID="Ability" Anchor="L,T" Offset="20,18" Size="64,64" />
+      <Label Anchor="L,T" Offset="94,24" Font="TwCenMT24" WrapWidth="386" ColorSet="Beige_Black_Alpha" String="TXT_KEY_PRINCE_TRAIT" />
+      <Label ID="Active" Anchor="L,T" Offset="94,56" Font="TwCenMT16" WrapWidth="380" ColorSet="Beige_Black_Alpha" />
+      <Grid Anchor="C,T" Offset="0,94" Size="466,160" Style="GridBlackIndent8">
+        <Label ID="Summary" Anchor="L,T" Offset="12,8" Font="TwCenMT16" WrapWidth="440" ColorSet="Beige_Black_Alpha" />
+      </Grid>
+      <GridButton ID="Possess" Anchor="L,T" Offset="22,264" Size="226,38" Style="BaseButton" String="TXT_KEY_PRINCE_POSSESS" />
+      <GridButton ID="Swap" Anchor="R,T" Offset="22,264" Size="226,38" Style="BaseButton" String="TXT_KEY_PRINCE_SWAP" />
+      <Label ID="Hint" Anchor="L,T" Offset="24,312" Font="TwCenMT16" WrapWidth="460" ColorSet="Beige_Black_Alpha" />
+      <ScrollPanel ID="Scroll" Anchor="C,T" Offset="0,370" Size="466,182" Vertical="1">
+        <Stack ID="Targets" Anchor="L,T" Size="446,0" StackGrowth="Bottom" Padding="3" />
+      </ScrollPanel>
+      <GridButton ID="Close" Anchor="C,B" Offset="0,18" Size="220,38" Style="BaseButton" String="TXT_KEY_CLOSE" />
+    </Grid>
+  </Container>
+</Context>

@@ -82,6 +82,10 @@ end
 
 local function UnitExcluded(unit, mode)
     if unit == nil or unit:IsDead() or EXCLUDED_TYPES[unit:GetUnitType()] then return true end
+    for _, name in ipairs({"PROMOTION_PRINCE_IDENTITY", "PROMOTION_PRINCE_BORROWED"}) do
+        local promotion = GameInfoTypes[name]
+        if promotion ~= nil and unit:IsHasPromotion(promotion) then return true end
+    end
     local info = GameInfo.Units[unit:GetUnitType()]
     if info == nil or tonumber(info.Trade or 0) ~= 0 or unit:GetDomainType() == DOMAIN_AIR then return true end
     if mode ~= "freehold" and (tonumber(info.NukeDamageLevel or 0) > 0

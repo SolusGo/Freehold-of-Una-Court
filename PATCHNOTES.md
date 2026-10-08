@@ -1,5 +1,11 @@
 # Patch Notes
 
+## Version 3 — Pupil of Two Masters — 2026-10-09
+
+- Added the seventh Trent civilization: The Princedom of Una Court, with twelve independent mastery stacks for each technique and one irreplaceable original body.
+- Added Possession, Body Swap, native damage resistance, normal upgrades, Fanfic Monuments, local AI support and a dedicated targeting panel.
+- Added pure-file installation without ModBuddy, mipmapped DDS assets, localization, automated tests and a manual engine checklist. Actual in-game verification is pending; documented CP v151 limitations apply.
+
 ## Version 3 — Trent the Phone Stealer — 2026-09-21
 
 - Added the Princedom of Una Court as the collection's sixth playable civilization.

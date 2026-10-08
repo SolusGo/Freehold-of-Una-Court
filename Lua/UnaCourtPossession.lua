@@ -115,6 +115,12 @@ local function KillAndVerify(unit, killerPlayerID, label)
 end
 
 function UnaCourt_IsEligiblePossessionTarget(playerID, trent, target)
+    if target ~= nil then
+        for _, name in ipairs({"PROMOTION_PRINCE_IDENTITY", "PROMOTION_PRINCE_BORROWED"}) do
+            local promotion = GameInfoTypes[name]
+            if promotion ~= nil and target:IsHasPromotion(promotion) then return false end
+        end
+    end
     if trent == nil or target == nil or target:IsDead() then return false end
     if target:GetOwner() == playerID then return false end
     if target:GetUnitType() == UNIT_TRENT or target:GetUnitType() == UNIT_DOMINION_TRENT
