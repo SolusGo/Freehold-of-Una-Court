@@ -7,6 +7,13 @@ if API.RuntimeLoaded then return end
 API.RuntimeLoaded = true
 local CIV = GameInfoTypes.CIVILIZATION_TRENT_WEALTHY
 if not CIV then return end
+local wealthyIDs = {}
+for id=0,GameDefines.MAX_MAJOR_CIVS-1 do
+    if Players[id] and Players[id]:GetCivilizationType()==CIV then
+        wealthyIDs[#wealthyIDs+1] = id
+    end
+end
+if #wealthyIDs==0 then return end
 local SAVE = Modding.OpenSaveData()
 local PREFIX = 'TRENT_WEALTHY_V1_'
 local function Read(id, name, fallback)
@@ -61,28 +68,69 @@ end
 local function SetBuilding(city, kind, count)
     if kind and city:GetNumRealBuilding(kind) ~= count then city:SetNumRealBuilding(kind,count) end
 end
-local function RefreshPalaces()
-    local palace = GameInfoTypes.BUILDING_TRENT_WEALTHY_PALACE
-    local ordinary = GameInfoTypes.BUILDING_PALACE
-    for id = 0, GameDefines.MAX_CIV_PLAYERS - 1 do
-        local p = Players[id]
-        if p then
-            local wealthy = IsTrent(p) and p:IsAlive()
-            if IsTrent(p) and not p:IsAlive() then Clear(id) end
-            local capital = wealthy and p:GetCapitalCity() or nil
-            local level = math.min(8, math.max(1, p:GetCurrentEra()+1))
-            for city in p:Cities() do
-                local isCapital = capital and city:GetID() == capital:GetID()
-                -- Never replace or remove another civilization's normal Palace.
-                SetBuilding(city,palace,isCapital and 1 or 0)
-                if wealthy and city:GetNumRealBuilding(ordinary)>0 then SetBuilding(city,ordinary,0) end
-                for tier=1,8 do
-                    SetBuilding(city,GameInfoTypes['BUILDING_TRENT_WEALTHY_LUXURY_'..tier],
-                        isCapital and tier==level and 1 or 0)
-                end
-            end
+local PALACE = GameInfoTypes.BUILDING_TRENT_WEALTHY_PALACE
+local ORDINARY = GameInfoTypes.BUILDING_PALACE
+local tiers = {}
+for tier=1,8 do tiers[tier]=GameInfoTypes['BUILDING_TRENT_WEALTHY_LUXURY_'..tier] end
+-- Runtime coordinates only: a captured city receives a new owner-local ID and
+-- old city userdata can become invalid. Native buildings remain the save state.
+local capitals, alive = {}, {}
+local function CityAt(x,y)
+    local plot = Map.GetPlot(x,y)
+    return plot and plot:GetPlotCity() or nil
+end
+local function ReconcileCity(city, wealthy, capital, level)
+    local isCapital = capital and city:GetOwner()==capital:GetOwner() and city:GetID()==capital:GetID()
+    -- Remove duplicates first, then install the native Palace and one total tier.
+    if wealthy then SetBuilding(city,ORDINARY,0) end
+    SetBuilding(city,PALACE,isCapital and 1 or 0)
+    for tier=1,8 do SetBuilding(city,tiers[tier],isCapital and tier==level and 1 or 0) end
+end
+local function RefreshPalaces(id)
+    local p = Players[id]
+    if not IsTrent(p) then return end
+    local living = p:IsAlive()
+    if not living and alive[id]~=false then Clear(id) end
+    alive[id] = living
+    local capital = living and p:GetCapitalCity() or nil
+    local level = math.min(8,math.max(1,p:GetCurrentEra()+1))
+    local previous = capitals[id]
+    if previous then
+        local old = CityAt(previous.x,previous.y)
+        if old and old:GetOwner()~=id then
+            local owner = Players[old:GetOwner()]
+            local ownCapital = IsTrent(owner) and owner:IsAlive() and owner:GetCapitalCity() or nil
+            ReconcileCity(old,IsTrent(owner),ownCapital,
+                ownCapital and math.min(8,math.max(1,owner:GetCurrentEra()+1)) or 0)
         end
     end
+    for city in p:Cities() do ReconcileCity(city,true,capital,level) end
+    capitals[id] = capital and {x=capital:GetX(),y=capital:GetY()} or nil
+end
+local function RestorePalaces()
+    -- One world cleanup on initialization/load repairs even stale foreign tiers
+    -- from an older save. Ordinary turns never iterate foreign city collections.
+    for id=0,GameDefines.MAX_CIV_PLAYERS-1 do
+        local p = Players[id]
+        if IsTrent(p) then RefreshPalaces(id)
+        elseif p then
+            for city in p:Cities() do ReconcileCity(city,false,nil,0) end
+        end
+    end
+end
+local function CheckLifeChanges()
+    -- No player-alive event is assumed. This costs one IsAlive per Wealthy
+    -- player; only a transition can trigger a city scan on somebody else's turn.
+    for _,id in ipairs(wealthyIDs) do
+        if Players[id]:IsAlive()~=alive[id] then RefreshPalaces(id) end
+    end
+end
+local function OnCapture(oldOwner, wasCapital, x, y, newOwner)
+    if IsTrent(Players[oldOwner]) then RefreshPalaces(oldOwner) end
+    if newOwner~=oldOwner and IsTrent(Players[newOwner]) then RefreshPalaces(newOwner) end
+    -- Includes gifts, liberation and city trades, not only military conquest.
+    local city = CityAt(x,y)
+    if city and not IsTrent(Players[city:GetOwner()]) then ReconcileCity(city,false,nil,0) end
 end
 local function Process(id)
     local p = Players[id]
@@ -116,7 +164,8 @@ local function Process(id)
         nextTurn = turn + Interval()
         Write(id,'NEXT',nextTurn)
     end
-    if turn >= nextTurn then
+    -- A missed callback must not let the next audit erase unfinished payments.
+    if turn >= nextTurn and Read(id,'REMAINING',0)==0 then
         Clear(id)
         Write(id,'NEXT',turn+Interval())
         local chosen, report = Targets(p), {}
@@ -136,19 +185,21 @@ local function Process(id)
         end
     end
 end
-local exists = false
-for id=0,GameDefines.MAX_MAJOR_CIVS-1 do if IsTrent(Players[id]) then exists=true end end
-if not exists then return end
-for id=0,GameDefines.MAX_MAJOR_CIVS-1 do
-    if IsTrent(Players[id]) and Read(id,'NEXT',nil)==nil then
+for _,id in ipairs(wealthyIDs) do
+    if Read(id,'NEXT',nil)==nil then
         Write(id,'NEXT',Game.GetGameTurn()+Interval())
     end
 end
-GameEvents.PlayerDoTurn.Add(function(id) RefreshPalaces(); Process(id) end)
+GameEvents.PlayerDoTurn.Add(function(id)
+    CheckLifeChanges()
+    if IsTrent(Players[id]) then RefreshPalaces(id); Process(id) end
+end)
 -- Events reconcile state only; they never advance installment counters.
-GameEvents.TeamSetEra.Add(RefreshPalaces)
-GameEvents.CityCaptureComplete.Add(RefreshPalaces)
-GameEvents.PlayerCityFounded.Add(RefreshPalaces)
-Events.LoadScreenClose.Add(RefreshPalaces)
-RefreshPalaces()
+GameEvents.TeamSetEra.Add(function(team)
+    for _,id in ipairs(wealthyIDs) do if Players[id]:GetTeam()==team then RefreshPalaces(id) end end
+end)
+GameEvents.CityCaptureComplete.Add(OnCapture)
+GameEvents.PlayerCityFounded.Add(function(id) RefreshPalaces(id) end)
+Events.LoadScreenClose.Add(RestorePalaces)
+RestorePalaces()
 API.Interval, API.Targets, API.RefreshPalaces = Interval, Targets, RefreshPalaces

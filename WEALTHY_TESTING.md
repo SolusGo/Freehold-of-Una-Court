@@ -20,6 +20,10 @@ speed convention: Standard 25, Quick 17, Epic 38, Marathon 75. Subsequent audits
 are scheduled from the activation turn, including when nobody qualifies. A missed
 callback never produces a backlog of old audits. Five installment turns always
 remain five, independent of speed. An interrupted/dead target slot is dropped.
+If callbacks are skipped so long that the next audit becomes due with installments
+still outstanding, finish those installments before starting another audit. The
+final installment and the next audit's immediate transfer may share a callback;
+neither is repeated on reload. This does not change the normal T+1..T+5 schedule.
 
 Rank **all living, met foreign major civilizations** by treasury descending, then
 player ID ascending. Take the richest `ceil(count / 3)` and, within that group,
@@ -84,6 +88,16 @@ another tier. Lua removes stray Wealthy Palaces/tiers outside the current Wealth
 Capital, including transferred cities, and removes a duplicate ordinary Palace
 only from Wealthy cities. Other civilizations' normal Palaces are untouched.
 
+Routine Palace work is bounded to Wealthy owners. On a Wealthy player's turn,
+only that player's cities are reconciled; foreign turns check cached Wealthy
+players' alive status without city iteration unless a life-state transition
+requires cleanup. Era/founding events reconcile only the relevant Wealthy owner.
+CityCaptureComplete handles conquest, trades, gifts and liberation by reconciling
+affected Wealthy owners and the single transferred foreign city. Previous Capital
+coordinates allow cleanup after an unexpected ownership change without retaining
+invalid city userdata or assuming city IDs survive transfer. A full cleanup of
+every owner's stale Wealthy buildings runs only at initialization/load.
+
 CP API audit used the installed CP v151 (5.4.6) schema and source revision
 `aefacbf1b24a27aa42dc50b4283420a999f7fded`, already retained in `.modbuddy/cp151`.
 `CvCity::GetLocalHappiness` includes UnmoddedHappiness, and in Community Patch-only
@@ -94,7 +108,34 @@ Full Vox Populi changes Happiness accounting and is **not** a compatibility clai
 are assumed. `TeamSetEra` requires **EVENTS_NEW_ERA**, explicitly enabled here.
 Standard PlayerDoTurn, CityCaptureComplete and PlayerCityFounded plus load
 reconciliation cover normal transitions; arbitrary third-party capital changes
-are repaired by the next player-turn reconciliation.
+are repaired by that Wealthy player's next turn. Alive-state transitions are
+observed on any player's turn, including elimination and resurrection.
+
+The source path was re-audited during hardening: `CvCity::processBuilding`
+updates UnmoddedHappiness through ChangeUnmoddedHappinessFromBuildings and updates
+native base yields through ChangeBaseYieldRateFromBuildings/GetYieldChange.
+In CP-only mode, `CvPlayer::DoUpdateTotalHappiness` adds GetHappinessFromCities,
+which sums GetLocalHappiness with no population clamp. Thus the configured tier
+is an empire Happiness contribution, and its +2N Gold is an actual native flat
+building yield, subject to normal city yield modifiers. This is source/database
+verification, not an executed DLL gameplay test. Native AddFreeCapitalBuildings
+resolves the Palace class through the civilization override; the complete Palace
+clone retains Capital=1, all scalar effects and all supported relationship rows.
+
+Native source evidence at the previously audited revision:
+
+- [Lua SetNumRealBuilding binding](https://github.com/LoneGazebo/Community-Patch-DLL/blob/aefacbf1b24a27aa42dc50b4283420a999f7fded/CvGameCoreDLL_Expansion2/Lua/CvLuaCity.cpp#L5583)
+- [Native SetNumRealBuilding effect dispatch](https://github.com/LoneGazebo/Community-Patch-DLL/blob/aefacbf1b24a27aa42dc50b4283420a999f7fded/CvGameCoreDLL_Expansion2/CvBuildingClasses.cpp#L6041)
+- [Building Happiness processing](https://github.com/LoneGazebo/Community-Patch-DLL/blob/aefacbf1b24a27aa42dc50b4283420a999f7fded/CvGameCoreDLL_Expansion2/CvCity.cpp#L13718)
+- [Building yield processing](https://github.com/LoneGazebo/Community-Patch-DLL/blob/aefacbf1b24a27aa42dc50b4283420a999f7fded/CvGameCoreDLL_Expansion2/CvCity.cpp#L14600)
+- [CP-only empire Happiness path](https://github.com/LoneGazebo/Community-Patch-DLL/blob/aefacbf1b24a27aa42dc50b4283420a999f7fded/CvGameCoreDLL_Expansion2/CvPlayer.cpp#L20260)
+- [City Happiness sum](https://github.com/LoneGazebo/Community-Patch-DLL/blob/aefacbf1b24a27aa42dc50b4283420a999f7fded/CvGameCoreDLL_Expansion2/CvPlayer.cpp#L21669)
+- [Native Palace relocation](https://github.com/LoneGazebo/Community-Patch-DLL/blob/aefacbf1b24a27aa42dc50b4283420a999f7fded/CvGameCoreDLL_Expansion2/CvCity.cpp#L35974)
+
+The Lua binding dispatches to native SetNumRealBuilding, whose effect processing
+calls CvCity::processBuilding even for dummy buildings. That function also
+recalculates the owner's net Happiness. The Lua reconciliation therefore uses
+the native yield/Happiness system rather than only setting informational state.
 
 ## Automated checks
 
@@ -102,6 +143,8 @@ Run from the repository root:
 
 ```
 python Tools/build_wealthy_inheritance.py
+python Tools/build_wealthy_inheritance.py --check
+python Tools/test_wealthy_inheritance.py
 python Tools/build_wealthy_art.py
 python Tools/package_mod.py --package
 python Tools/validate_wealthy.py
@@ -116,6 +159,32 @@ atlases, DDS mipmaps/transparency, manifest hashes, project parity and GUID/vers
 This is a schema/inheritance dry-run, **not** proof that the game loaded it.
 After launching the mod, optional read-only actual cache checks can be run with
 `python Tools/validate_wealthy.py --loaded-db "<path to Civ5DebugDatabase.db>"`.
+
+For reproducible inputs on any machine, all three inheritance/validation tools
+accept `--baseline-db "<pre-collection Civ5DebugDatabase.db>"`,
+`--cp-root "<Community Patch v151 folder>"`, and `--game-assets "<Civ V Assets>"`.
+The default game path retains this checkout's existing G: installation convention;
+override it for other machines. Inputs are read-only; schema additions run only
+on an in-memory copy. `--loaded-db` validates an already activated game cache
+directly rather than replaying SQL over existing civilization entries. The
+separate baseline input may still be supplied for the regeneration check.
+
+The builder follows CP's activation manifest for schema discovery, ignores
+inactive files and excludes localization files from the schema fingerprint.
+CP's installed Policy schema contains an XML comment rejected by strict XML
+parsers; comments are stripped before parsing so table discovery is not silently
+skipped. Malformed non-comment schema now fails explicitly. A missing optional
+localization XML named in the installed CP manifest is outside this schema audit;
+the on-disk counterpart is SQL and no installed CP files are changed here.
+
+`Tools/wealthy_schema.json` records CP version 151, a line-ending-independent
+fingerprint of activated schema inputs and the 149 referenced tables' explicit
+key/ID/modified-column types. The generated SQL still reads full active rows with
+SELECT *, so unreferenced scalar additions are inherited normally. The read-only
+`--check` compares generated SQL and contract exactly, tolerating checkout line
+endings. Missing declared building tables, missing required columns or incompatible
+types fail explicitly. Regeneration still produces 296 clones with unchanged
+gameplay SQL; only a schema-contract comment was added to 110_Wealthy_Inherit.sql.
 
 The Lua 5.1 harness executes the actual module, covering conservation, five
 payments, reloads, duplicate callbacks, changing GPT, liquidity caps, eligibility,
@@ -157,7 +226,13 @@ the target; multiplayer and hotseat remain disabled by the existing collection.
 
 ## Recorded validation results
 
-- `test_wealthy.py`: **20/20** scenarios passed using actual Lua 5.1.
+- `test_wealthy.py`: **34/34** scenarios passed using actual Lua 5.1 after hardening.
+- `test_wealthy_inheritance.py`: exact regeneration, explicit input paths,
+  optional/inactive table exclusion, missing tables/columns/type failures,
+  comment handling, line-ending stability and unchanged source DB bytes passed.
+- The `--loaded-db` CLI branch passed a smoke test against a synthetic, fully
+  activated SQL fixture. This checks the procedure, not an actual engine-loaded
+  cache; that in-game validation is still pending.
 - `validate_wealthy.py`: full 31-action activation sequence, all eight identities,
   unchanged previous DB rows, Centrelink/Palace inheritance, positive/negative
   sentinel inputs, era tiers, localization and 305-file manifest/asset checks passed.
@@ -190,6 +265,9 @@ Added gameplay/database: `Lua/TrentWealthy_Gameplay.lua`,
 Added tools/docs: `Tools/build_wealthy_inheritance.py`,
 `Tools/build_wealthy_art.py`, `Tools/register_wealthy.py`,
 `Tools/test_wealthy.py`, `Tools/validate_wealthy.py`, `WEALTHY_TESTING.md`.
+Hardening also adds `Tools/wealthy_schema.json` and
+`Tools/test_wealthy_inheritance.py`, and extends the existing read-only
+`Tools/princedom_db.py` helper with optional explicit input paths.
 
 Added art in `Art/WealthyTrent/`: `WealthyCiv{256,128,80,64,45,32}.dds`,
 `WealthyLeader{256,128,80,64,45,32}.dds`,

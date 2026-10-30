@@ -217,11 +217,23 @@ uncapped in empire totals. Full Vox Populi Happiness is not supported or claimed
 
 Run `python Tools/validate_wealthy.py` for the full-manifest CP schema dry-run,
 inheritance/regression/asset checks, and `python Tools/test_wealthy.py` for the
-actual gameplay module's 20 Lua 5.1 scenarios. Rebuild art and inheritance with
+actual gameplay module's 34 Lua 5.1 scenarios. Rebuild art and inheritance with
 `Tools/build_wealthy_art.py` and `Tools/build_wealthy_inheritance.py`.
 The complete algorithm, source audit, save representation, engine caveats and
 **pending** in-game checklist are in [WEALTHY_TESTING.md](WEALTHY_TESTING.md).
 The royal-blue/gold art and generated Trent scene live in `Art/WealthyTrent/`,
 with retained source/prompt in `Art/Source/WealthyTrent/`.
+
+The hardening pass limits routine Palace reconciliation to Wealthy cities;
+foreign turns check only Wealthy players' alive status. Capture/gift/liberation
+callbacks clean the affected city, and initialization/load performs a full stale
+building cleanup. Unfinished installments survive a callback gap beyond the next
+audit date without being overwritten. Bonuses and normal audit timing are unchanged.
+
+`python Tools/build_wealthy_inheritance.py --check` verifies exact regeneration
+against the installed CP v151 schema contract in `Tools/wealthy_schema.json`.
+`python Tools/test_wealthy_inheritance.py` tests schema failures and reproducibility.
+Both the builder and `validate_wealthy.py` accept `--baseline-db`, `--cp-root` and
+`--game-assets` for explicit, read-only inputs on another installation.
 
 For an in-game smoke test: start a new Phone Stealer game, confirm a normal Warrior and Settler opening, inspect the civ/leader/Butler/Centrelink icons, establish a Spy in another Capital, begin Snatch Phone, and verify completion after the scaled duration. Confirm Capital yields and the victim's opinion entry, save and reload with a Phone and mission in progress, return the Phone and test the protection period, then allow a rival and Barbarians to capture Butlers. Check `Lua.log` and `Database.log` throughout.

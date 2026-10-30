@@ -11,17 +11,21 @@ from validate_mod import find_vp_debug_database, GAME_USER_ROOT
 CP=GAME_USER_ROOT/'MODS/(1) Community Patch'
 
 
-def database():
-    source=sqlite3.connect(f'file:{find_vp_debug_database().as_posix()}?mode=ro',uri=True)
+def database(source_path=None, cp_root=None):
+    # Optional explicit paths let other collection tools reproduce a schema
+    # dry-run without replacing the user's active game cache or installation.
+    cp = CP if cp_root is None else cp_root
+    source_path = find_vp_debug_database() if source_path is None else source_path
+    source=sqlite3.connect(f'file:{source_path.resolve().as_posix()}?mode=ro',uri=True)
     db=sqlite3.connect(':memory:')
     source.backup(db);source.close()
     db.row_factory=sqlite3.Row
     # CP recreates these tables rather than ALTER-adding its victory fields.
     leader_columns={r[1] for r in db.execute('PRAGMA table_info(Leaders)')}
     if 'PrimaryVictoryPursuit' not in leader_columns:
-        db.executescript((CP/'Database Changes/AI/LeaderTableChanges.sql').read_text(encoding='utf-8-sig'))
+        db.executescript((cp/'Database Changes/AI/LeaderTableChanges.sql').read_text(encoding='utf-8-sig'))
     tables={r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
-    for path in (CP/'Database Changes').rglob('*.xml'):
+    for path in sorted((cp/'Database Changes').rglob('*.xml')):
         try: tree=ET.parse(path)
         except ET.ParseError: continue
         for table in tree.iter('Table'):
@@ -35,7 +39,7 @@ def database():
             if columns:
                 db.execute(f'CREATE TABLE "{name}" ({",".join(columns)})')
                 tables.add(name)
-    for path in (CP/'Database Changes').rglob('*.sql'):
+    for path in sorted((cp/'Database Changes').rglob('*.sql')):
         sql=path.read_text(encoding='utf-8-sig')
         for table,column,definition in re.findall(r'ALTER TABLE\s+(\w+)\s+ADD\s+(?:COLUMN\s+)?(\w+)\s+([^;]+);',sql,re.I):
             if table not in tables:continue
@@ -43,7 +47,7 @@ def database():
             if column not in columns:db.execute(f'ALTER TABLE "{table}" ADD "{column}" {definition}')
     db.execute('CREATE TABLE IF NOT EXISTS Language_en_US (Tag TEXT PRIMARY KEY,Text TEXT)')
     db.execute('CREATE TABLE IF NOT EXISTS CustomModOptions (Name TEXT PRIMARY KEY,Value INTEGER)')
-    options=ET.parse(CP/'Database Changes/NewCustomModOptions.xml')
+    options=ET.parse(cp/'Database Changes/NewCustomModOptions.xml')
     columns={r[1] for r in db.execute('PRAGMA table_info(CustomModOptions)')}
     for row in options.findall('.//CustomModOptions/Row'):
         values={k:v for k,v in row.attrib.items() if k in columns}

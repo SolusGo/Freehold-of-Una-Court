@@ -2,6 +2,14 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-10-31 - Wealthy Trent hardening
+
+- Replaced the every-player-turn world/city sweep with Wealthy-owner reconciliation, targeted captured-city cleanup, small alive-status checks and full initialization/load cleanup. Coordinates track former Capitals safely across owner-local city ID changes; ordinary foreign Palaces remain untouched.
+- Deferred a due audit while installments remain, preventing missed callbacks from overwriting an unfinished five-payment cycle. Normal timing, payment percentages and bonuses are unchanged.
+- Added configurable read-only baseline/CP/game paths, a checked-in contract for 149 referenced schema tables, exact regeneration checks and explicit missing-table/column/type failures. Schema discovery follows CP v151's activated files and excludes inactive optional files.
+- Extended Wealthy Lua regression coverage from 20 to 34 scenarios, including city-scan counts, gifts/liberation, resurrection, two Wealthy players, duplicate Palace cleanup, callback gaps and restoration of native treasury/save-state snapshots. Added generator/schema regressions and strengthened native Palace database checks.
+- Re-audited the native CP-only Happiness and Gold building paths and documented their source evidence. Actual in-game engine/tooltip/autosave checks remain pending; no civilization was redesigned or rebalanced.
+
 ## 2026-10-30 - The Wealthy of Una Court
 
 - Added the eighth selectable civilization, human-only Wealthy Trent, with ordinary starting units, economic/diplomatic flavors and no possession or special combat mechanics.

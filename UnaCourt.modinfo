@@ -249,13 +249,13 @@
     <File md5="ba860f05e23db123ae9801711bb16ed4" import="1">Art/WealthyTrent/WealthyPalace45.dds</File>
     <File md5="f91f4f01aaf6d2b2359b5b89b982e0cb" import="1">Art/WealthyTrent/WealthyPalace64.dds</File>
     <File md5="96478a2d437a1357b5855c8055c5df65" import="1">Art/WealthyTrent/WealthyPalace80.dds</File>
-    <File md5="8affa4ffbca854489ad19f3004d2dddb" import="0">CHANGELOG.md</File>
+    <File md5="87ba7dabea9e2583f32c0819b404ca5d" import="0">CHANGELOG.md</File>
     <File md5="6ae6c1bc44417d47c2440e1f2652b12b" import="1">Lua/DominionBodySwap.lua</File>
     <File md5="4d1280e1bc1f0d6db7f2b288205f4030" import="1">Lua/DominionCore.lua</File>
     <File md5="2598b7d6ae369cde571c55e5ccf60455" import="1">Lua/TrentLibraryExile_Gameplay.lua</File>
     <File md5="a230d47102f75f28068a16988dddf407" import="1">Lua/TrentPhoneStealer_Gameplay.lua</File>
     <File md5="e738ea86986197abb2c8b1d0ec483eee" import="1">Lua/TrentSoftKitty_Gameplay.lua</File>
-    <File md5="17db0da5fa841441f09a7b429cc8e840" import="1">Lua/TrentWealthy_Gameplay.lua</File>
+    <File md5="e889c6cd23e226013670c5e78173b90c" import="1">Lua/TrentWealthy_Gameplay.lua</File>
     <File md5="f50bc4ff902adfb7d609cefb3b1bf7b6" import="1">Lua/UltimatePossession.lua</File>
     <File md5="3690e7384e618da0cf2bc1561e6c2b07" import="1">Lua/UnaCourtCore.lua</File>
     <File md5="b840d691d3312921596bcbbcb39a12d8" import="0">Lua/UnaCourtLoader.lua</File>
@@ -299,10 +299,10 @@
     <File md5="831875f803b4340adb6b1f46a037730e" import="0">Princedom/SQL/102_Prince_Text.sql</File>
     <File md5="dc45e8baeda35a68797749fb4a3ac906" import="0">Princedom/UI/PrincePanel.lua</File>
     <File md5="74d49aecb424b0e53095edfef58fc3cb" import="0">Princedom/UI/PrincePanel.xml</File>
-    <File md5="028a34e84ca543c4cdfdc370825cd58f" import="0">README.md</File>
+    <File md5="fb3dcf47d0a0064fee06d6602fa73bfc" import="0">README.md</File>
     <File md5="4d71a2fc3ef2672ace5b52054db85d62" import="0">SQL/00_UnaCourt_Core.sql</File>
     <File md5="0f3f66a7de0bd5864b83e5befe637984" import="0">SQL/10_UnaCourt_Scaling.sql</File>
-    <File md5="acb65aa4012699def00bf573b50f55ed" import="0">SQL/110_Wealthy_Inherit.sql</File>
+    <File md5="985ea7b94994c9da6f7c10bf0d27945d" import="0">SQL/110_Wealthy_Inherit.sql</File>
     <File md5="380bf3fc6c6096f595f1ed978fdd2ce7" import="0">SQL/111_Wealthy_Core.sql</File>
     <File md5="a6324894fefcaf2aac92234cf1bbaa9e" import="0">SQL/112_Wealthy_Text.sql</File>
     <File md5="e303b0c20454f73b4e75cc8d8e9b2fcf" import="0">SQL/20_UnaCourt_Text.sql</File>

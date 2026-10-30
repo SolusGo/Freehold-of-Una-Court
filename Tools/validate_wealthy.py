@@ -7,6 +7,7 @@ from collections import Counter
 from pathlib import Path
 import argparse
 import hashlib
+import json
 import re
 import sqlite3
 import struct
@@ -14,7 +15,8 @@ import xml.etree.ElementTree as ET
 from PIL import Image
 from princedom_db import database
 from validate_mod import ROOT, validate_project
-from build_wealthy_inheritance import CIV, BANK, PALACE, SCALARS, BENEFITS
+from build_wealthy_inheritance import (CIV,BANK,PALACE,SCALARS,BENEFITS,
+    add_schema_arguments,build,audit_schema,CONTRACT_PATH,DEFAULT_CP)
 
 
 def check_identity(db):
@@ -42,6 +44,7 @@ def check_identity(db):
 
 
 def check_buildings(db):
+    audit_schema(db,json.loads(CONTRACT_PATH.read_text(encoding='utf-8')))
     allowed={'ID','Type','Civilopedia','Strategy','Help'}
     for base,clone in [('BUILDING_UNA_CENTRELINK',BANK),('BUILDING_PALACE',PALACE)]:
         a=db.execute('SELECT * FROM Buildings WHERE Type=?',(base,)).fetchone()
@@ -67,6 +70,9 @@ def check_buildings(db):
         kind=f'BUILDING_TRENT_WEALTHY_LUXURY_{tier}'
         assert tuple(db.execute('SELECT UnmoddedHappiness,Happiness,Cost,FaithCost,IsDummy,ShowInPedia FROM Buildings WHERE Type=?',(kind,)).fetchone())==(tier,0,-1,-1,1,0)
         assert db.execute("SELECT Yield FROM Building_YieldChanges WHERE BuildingType=? AND YieldType='YIELD_GOLD'",(kind,)).fetchone()[0]==tier*2
+    assert tuple(db.execute('SELECT BuildingClass,Capital,NeverCapture FROM Buildings WHERE Type=?',(PALACE,)).fetchone())==('BUILDINGCLASS_PALACE',1,1)
+    assert db.execute("SELECT COUNT(*) FROM Buildings WHERE Type=?",(PALACE,)).fetchone()[0]==1
+    assert db.execute("SELECT COUNT(*) FROM Civilization_BuildingClassOverrides WHERE CivilizationType=? AND BuildingClassType='BUILDINGCLASS_PALACE'",(CIV,)).fetchone()[0]==1
 
 
 def localization_and_atlases(db):
@@ -90,8 +96,10 @@ def localization_and_atlases(db):
     print('PASS: Wealthy localization references, unique atlas keys and shared Centrelink art')
 
 
-def dry_run():
-    db=database()
+def dry_run(baseline_db=None,cp_root=DEFAULT_CP):
+    db=database(baseline_db,cp_root)
+    if db.execute('SELECT 1 FROM Civilizations WHERE Type=?',(CIV,)).fetchone():
+        raise ValueError('Dry-run needs a pre-collection cache; select --baseline-db. Use --loaded-db for a cache containing Wealthy Trent.')
     actions=[n.text for n in ET.parse(ROOT/'UnaCourt.modinfo').findall('./Actions/OnModActivated/UpdateDatabase')]
     before=None
     def snapshot():
@@ -109,7 +117,7 @@ def dry_run():
     check_identity(db);check_buildings(db);localization_and_atlases(db)
     # Preserve active Palace/Bank requirements, plus positive/negative effects
     # from other mods at activation. These are injected only into this memory DB.
-    db2=database()
+    db2=database(baseline_db,cp_root)
     for action in actions:
         if action=='SQL/110_Wealthy_Inherit.sql':break
         if action.endswith('.sql'):db2.executescript((ROOT/action).read_text(encoding='utf-8'))
@@ -156,9 +164,13 @@ def assets():
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--loaded-db',type=Path);args=parser.parse_args()
-    dry_run();assets()
+    parser=argparse.ArgumentParser();add_schema_arguments(parser)
+    parser.add_argument('--loaded-db',type=Path,help='Read-only actual game cache; validates without replaying mod SQL')
+    args=parser.parse_args()
+    build(args.baseline_db,args.game_assets,args.cp_root,check=True)
+    if not args.loaded_db:dry_run(args.baseline_db,args.cp_root)
+    assets()
     if args.loaded_db:
         db=sqlite3.connect(f'file:{args.loaded_db.resolve().as_posix()}?mode=ro',uri=True);db.row_factory=sqlite3.Row
         check_identity(db);check_buildings(db)
-        print('PASS: supplied actual loaded database; visual/gameplay checks still manual')
+        print('PASS: supplied database identities/buildings; in-game behavior still requires manual verification')

@@ -1,0 +1,558 @@
+{
+  "activated_schema_sha256": "000ca20fd5d9637f6ade8c9124bdb01c89c044f5135e6ff97edb57407029cf83",
+  "community_patch_version": 151,
+  "tables": {
+    "Building_AreaYieldModifiers": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_BonusFromAccomplishments": {
+      "BuildingType": "TEXT",
+      "Happiness": "INTEGER"
+    },
+    "Building_BuildingClassHappiness": {
+      "BuildingType": "TEXT",
+      "Happiness": "INTEGER"
+    },
+    "Building_BuildingClassLocalHappiness": {
+      "BuildingType": "TEXT",
+      "Happiness": "INTEGER"
+    },
+    "Building_BuildingClassLocalYieldChanges": {
+      "BuildingType": "TEXT",
+      "YieldChange": "INTEGER"
+    },
+    "Building_BuildingClassYieldChanges": {
+      "BuildingType": "TEXT",
+      "YieldChange": "INTEGER"
+    },
+    "Building_BuildingClassYieldModifiers": {
+      "BuildingType": "TEXT"
+    },
+    "Building_CityConnectionPlotYieldChanges": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_CityConnectionPlotYieldChangesGlobal": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_ClassNeededAnywhere": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ClassNeededNowhere": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ClassesNeededInCity": {
+      "BuildingType": "TEXT"
+    },
+    "Building_DomainFreeExperiencePerGreatWork": {
+      "BuildingType": "TEXT"
+    },
+    "Building_DomainFreeExperiencePerGreatWorkCity": {
+      "BuildingType": "TEXT"
+    },
+    "Building_DomainFreeExperiencePerGreatWorkGlobal": {
+      "BuildingType": "TEXT"
+    },
+    "Building_DomainFreeExperiences": {
+      "BuildingType": "TEXT"
+    },
+    "Building_DomainFreeExperiencesGlobal": {
+      "BuildingType": "TEXT"
+    },
+    "Building_DomainProductionModifiers": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ExtraPlayerInstancesFromAccomplishments": {
+      "BuildingType": "TEXT"
+    },
+    "Building_FeatureYieldChanges": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_Flavors": {
+      "BuildingType": "TEXT"
+    },
+    "Building_FreeSpecUnits": {
+      "BuildingType": "TEXT"
+    },
+    "Building_FreeSpecialistCounts": {
+      "BuildingType": "TEXT",
+      "Count": "INTEGER"
+    },
+    "Building_FreeUnits": {
+      "BuildingType": "TEXT"
+    },
+    "Building_GlobalYieldModifiers": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_GoldenAgeYieldMod": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_GreatPersonPointFromConstruction": {
+      "BuildingType": "TEXT"
+    },
+    "Building_GreatPersonProgressFromConstruction": {
+      "BuildingType": "TEXT"
+    },
+    "Building_GreatWorkYieldChanges": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_GreatWorkYieldChangesLocal": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_GrowthExtraYield": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_HurryModifiers": {
+      "BuildingType": "TEXT"
+    },
+    "Building_HurryModifiersLocal": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ImprovementYieldChanges": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_ImprovementYieldChangesGlobal": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_InstantYield": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_InstantYieldFromWLTKDStart": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_LakePlotYieldChanges": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_LakePlotYieldChangesGlobal": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_LocalFeatureAnds": {
+      "BuildingType": "TEXT"
+    },
+    "Building_LocalFeatureOrs": {
+      "BuildingType": "TEXT"
+    },
+    "Building_LocalResourceAnds": {
+      "BuildingType": "TEXT"
+    },
+    "Building_LocalResourceOrs": {
+      "BuildingType": "TEXT"
+    },
+    "Building_LockedBuildingClasses": {
+      "BuildingType": "TEXT"
+    },
+    "Building_LuxuryYieldChanges": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_PlotYieldChanges": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_PrereqBuildingClasses": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ReligionYieldFromFaithPurchasableBuildings": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_ReligionYieldFromFaithPurchasableBuildingsGlobal": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_ResourceClaim": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ResourceCultureChanges": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ResourceFaithChanges": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ResourceHappinessChange": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ResourceMonopolyAnds": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ResourceMonopolyOrs": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ResourcePlotsToPlace": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ResourceQuantity": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ResourceQuantityFromPOP": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ResourceQuantityPerXFranchises": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ResourceQuantityRequirements": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ResourceYieldChanges": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_ResourceYieldChangesGlobal": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_ResourceYieldModifiers": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_RiverPlotYieldChanges": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_SeaPlotYieldChanges": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_SeaResourceYieldChanges": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_SpecialistYieldChanges": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_SpecialistYieldChangesLocal": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_SpecificGreatPersonRateModifier": {
+      "BuildingType": "TEXT"
+    },
+    "Building_TechAndPrereqs": {
+      "BuildingType": "TEXT"
+    },
+    "Building_TechEnhancedYieldChanges": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_TerrainYieldChanges": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_ThemingBonuses": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ThemingBonuses_new": {
+      "BuildingType": "TEXT"
+    },
+    "Building_ThemingYieldBonus": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_UnitClassTrainingAllowed": {
+      "BuildingType": "TEXT"
+    },
+    "Building_UnitCombatFreeExperiences": {
+      "BuildingType": "TEXT"
+    },
+    "Building_UnitCombatProductionModifiers": {
+      "BuildingType": "TEXT"
+    },
+    "Building_UnitCombatProductionModifiersGlobal": {
+      "BuildingType": "TEXT"
+    },
+    "Building_WLTKDFromProject": {
+      "BuildingType": "TEXT"
+    },
+    "Building_WLTKDYieldMod": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldChangeWorldWonder": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldChangeWorldWonderGlobal": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldChanges": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldChangesEraScalingTimes100": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldChangesFromAccomplishments": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldChangesFromPassingTR": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldChangesFromXCityStateStrategicResource": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldChangesPerCityStrengthTimes100": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldChangesPerGoldenAge": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldChangesPerLocalTheme": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldChangesPerMonopoly": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldChangesPerPop": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldChangesPerPopInEmpire": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldChangesPerReligion": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldChangesPerXBuilding": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldChangesPerXTiles": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromBirth": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromBirthRetroactive": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromBorderGrowth": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromCombatExperienceTimes100": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromConstruction": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromDeath": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromFaithPurchase": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromGPBirthScaledWithArtistBulb": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromGPBirthScaledWithPerTurnYield": {
+      "BuildingType": "TEXT"
+    },
+    "Building_YieldFromGPBirthScaledWithWriterBulb": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromGPExpend": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromGoldenAgeStart": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromInternalTR": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromInternalTREnd": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromInternationalTREnd": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromLongCount": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromPillage": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromPillageGlobal": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromPillageGlobalPlayer": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromPolicyUnlock": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromProcessModifier": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromPurchase": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromPurchaseGlobal": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromSpyAttack": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromSpyDefense": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromSpyDefenseOrID": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromSpyIdentify": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromSpyRigElection": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromTech": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromUnitGiftGlobal": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromUnitLevelUp": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromUnitLevelUpGlobal": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromUnitProduction": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromVictory": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromVictoryGlobal": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromVictoryGlobalPlayer": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldFromYieldPercent": {
+      "BuildingType": "TEXT"
+    },
+    "Building_YieldFromYieldPercentGlobal": {
+      "BuildingType": "TEXT"
+    },
+    "Building_YieldModifiers": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldModifiersEraScaling": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldModifiersFromAccomplishments": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldModifiersFromDistanceToCapital": {
+      "BuildingType": "TEXT"
+    },
+    "Building_YieldPerAllyTimes100": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldPerFranchise": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldPerFriendTimes100": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldPerXFeatureTimes100": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldPerXImprovementGlobal": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldPerXImprovementLocal": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Building_YieldPerXTerrainTimes100": {
+      "BuildingType": "TEXT",
+      "Yield": "INTEGER"
+    },
+    "Buildings": {
+      "Happiness": "INTEGER",
+      "ID": "INTEGER",
+      "SpecialistCount": "INTEGER",
+      "TradeRouteRecipientBonus": "INTEGER",
+      "Type": "TEXT",
+      "UnmoddedHappiness": "INTEGER"
+    },
+    "Civilizations": {
+      "ID": "INTEGER",
+      "Type": "TEXT"
+    },
+    "Leaders": {
+      "ID": "INTEGER",
+      "Type": "TEXT"
+    }
+  }
+}
