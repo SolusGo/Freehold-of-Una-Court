@@ -6,8 +6,8 @@
     <Name>The Freehold of Una Court</Name>
     <SafeName>The Freehold of Una Court</SafeName>
     <Guid>7ec83c11-5853-453c-9ca7-0b2cf85a2a48</Guid>
-    <Teaser>Seven Trent civilizations: possession, loyal companions, serenades, library exile, and phone theft.</Teaser>
-    <Description>Seven Community Patch civilizations: Freehold, Dominion, Ultimate Possession, Soft Kitty Serenader, Library Exile, the espionage-focused Phone Stealer, and the Pupil of Two Masters Princedom.</Description>
+    <Teaser>Eight Trent civilizations: possession, loyal companions, serenades, library exile, and phone theft.</Teaser>
+    <Description>Eight Community Patch civilizations: Freehold, Dominion, Ultimate Possession, Soft Kitty Serenader, Library Exile, the espionage-focused Phone Stealer, the Pupil of Two Masters Princedom, and the Wealthy of Una Court.</Description>
     <Authors>ThatOneYi</Authors>
     <AssemblyName>UnaCourt</AssemblyName>
     <RootNamespace>UnaCourt</RootNamespace>
@@ -66,6 +66,26 @@
         <Set>OnModActivated</Set>
         <Type>UpdateDatabase</Type>
         <FileName>Princedom/SQL/102_Prince_Text.sql</FileName>
+      </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
+        <FileName>Art/WealthyTrent/WealthyAtlases.xml</FileName>
+      </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
+        <FileName>SQL/110_Wealthy_Inherit.sql</FileName>
+      </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
+        <FileName>SQL/111_Wealthy_Core.sql</FileName>
+      </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
+        <FileName>SQL/112_Wealthy_Text.sql</FileName>
       </Action>
     </ModActions>
     <ModContent>
@@ -475,6 +495,111 @@
     <Content Include="Princedom\UI\PrincePanel.xml">
       <SubType>XML</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyAtlases.xml">
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="SQL\110_Wealthy_Inherit.sql">
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="SQL\111_Wealthy_Core.sql">
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="SQL\112_Wealthy_Text.sql">
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="Lua\TrentWealthy_Gameplay.lua">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyAlpha128.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyAlpha16.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyAlpha24.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyAlpha32.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyAlpha45.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyAlpha48.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyAlpha64.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyAlpha80.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyCiv128.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyCiv256.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyCiv32.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyCiv45.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyCiv64.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyCiv80.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyDawn.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyLeader128.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyLeader256.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyLeader32.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyLeader45.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyLeader64.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyLeader80.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyLeaderScene.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyLeaderScene.xml">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyMap.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyPalace128.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyPalace256.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyPalace32.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyPalace45.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyPalace64.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Art\WealthyTrent\WealthyPalace80.dds">
+      <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
   </ItemGroup>
   <ItemGroup>

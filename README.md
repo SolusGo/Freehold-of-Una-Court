@@ -1,10 +1,10 @@
 # Una Court Civilizations
 
-A version 3 Civilization V: Brave New World mod for the Community Patch ruleset. It adds seven selectable civilizations led by Trent: the companion-focused **Freehold of Una Court**, the aggressive **Dominion of Una Court**, the army-stealing **Ultimate Possession**, the musical **Soft Kitty Serenader**, the science-and-culture focused **Library Exile**, the espionage-driven **Phone Stealer**, and **The Princedom of Una Court — Pupil of Two Masters**.
+A version 3 Civilization V: Brave New World mod for the Community Patch ruleset. It adds eight selectable civilizations led by Trent: the companion-focused **Freehold of Una Court**, the aggressive **Dominion of Una Court**, the army-stealing **Ultimate Possession**, the musical **Soft Kitty Serenader**, the science-and-culture focused **Library Exile**, the espionage-driven **Phone Stealer**, **The Princedom of Una Court — Pupil of Two Masters**, and the human-only economic parody **The Wealthy of Una Court**.
 
 The new [Princedom](Princedom/README.md) develops Possession and Body Swap independently through twelve mastery stacks each. One irreplaceable, normally upgrading Trent replaces its opening Warrior; his original body's death collapses the empire. Fanfic Monuments double intrinsic benefits during a technique. The civ includes local AI decisions, a dedicated targeting panel, native damage resistance, persistent ownership state and a reproducible test harness. See its [validation checklist](Princedom/TESTING.md) and [CP v151 limitations](Princedom/CP151_NOTES.md); in-game verification remains pending.
 
-**ModBuddy is optional:** run `python Tools/package_mod.py --package`, then copy the generated `Build/Una Court Civilizations (v 3)` folder to the game's `MODS` directory. The checked-in `UnaCourt.modinfo` registers the entire collection and requires Community Patch v151. Start a new game for the Princedom.
+**ModBuddy is optional:** run `python Tools/package_mod.py --package`, then copy the generated `Build/Una Court Civilizations (v 3)` folder to the game's `MODS` directory. The checked-in `UnaCourt.modinfo` registers the entire collection and requires Community Patch v151. Start a new game for the Princedom or Wealthy civilization; old saves without their database entries are unsupported.
 
 The Freehold and Dominion begin with a Settler and their own Trentrouls instead of an ordinary Warrior. In either realm, Trentrouls is irreplaceable: if his body dies, the civilization collapses. Ultimate Possession, Soft Kitty, Library Exile, and Phone Stealer use normal starting units because Trent acts through their civilization mechanics rather than appearing as a separate map unit.
 
@@ -145,7 +145,7 @@ Phone Stealer has its own civ-only Stash window for beginning missions, tracking
 
 ## Current alpha limitations
 
-- The first four civilizations share Una Court's location map; Library Exile and Phone Stealer have dedicated map art. All six use base-game unit models and dedicated emblems and leader art.
+- The first four civilizations share Una Court's location map; later variants have dedicated or framed court maps. The collection uses base-game unit models and dedicated emblems and leader art.
 - Soft Kitty is validated against Community Patch 5.4.2's loaded database and mocked Lua 5.1 gameplay. Actual in-game layout, AI pathfinding and interactions with additional mods still require playtesting; full Vox Populi compatibility is not yet verified.
 - Unit-attached ScriptData is preserved, but highly specialized modded units may also key private state by the original UnitID or store it outside the unit. Civ V Lua cannot generically preserve that external state through an ownership transfer.
 - Multiplayer and hotseat are intentionally disabled while the scripted transfer systems are stabilized.
@@ -161,7 +161,7 @@ Run `python Tools/package_mod.py --package` and copy the generated mod folder in
 ## Source layout
 
 - `Art/` — custom icon atlases and retained source artwork
-- `SQL/` — the original six civilizations, units, shared and unique buildings, scaling data, and text
+- `SQL/` — seven civilizations outside Princedom, units, shared and unique buildings, scaling data, and text
 - `Princedom/` — the seventh civilization's isolated SQL, Lua, UI, art, documentation and engine checklist
 - `Lua/` — possession systems, Soft Kitty audiences, Library Exile diplomacy polling, Phone missions and Stash state, AI, aura support, collapse safety, and save/load state
 - `UI/` — shared possession command panel plus isolated Soft Kitty and Phone Stash panels
@@ -183,5 +183,45 @@ For an in-game smoke test: begin a new Library Exile game, confirm exactly one o
 ### Phone Stealer verification
 
 Run `Tools/validate_phone_stealer.py` against the active Community Patch debug database and `Tools/test_phone_stealer.py` with Python 3.12 and the local Lua 5.1 test runtime. Art is reproducible with `Tools/build_phone_stealer_art.py`; Worker inheritance is reproducible with `Tools/build_phone_stealer_inheritance.py`. The concept sheet, generated PNG sources, and exact built-in generation prompts are retained in `Art/Source/PhoneStealer/`.
+
+### The Wealthy of Una Court — eighth civilization
+
+**Trent:** "The man who has everything, yet still receives Centrelink."
+Human-playable only, with ordinary Settler/Warrior starts. Favors peaceful economic
+development, infrastructure purchases and City-State alliances for Diplomatic
+Victory, with Science as a secondary route.
+
+- **Cheating the Centrelink System:** every 25 Standard-speed turns, rank all
+  surviving, met foreign majors by treasury and consider the richest third
+  (rounded up). Select at most two with >=500 Gold and >=+10 GPT, wealthiest first,
+  breaking ties by player ID. War does not exempt donors. Each loses 5% of its
+  treasury immediately, then 20% of its current positive GPT on Trent's next five
+  turns; Trent receives exactly the same Gold. Payments round down and cannot
+  exceed available treasury. Standard/Quick/Epic/Marathon intervals are 25/17/38/75;
+  installment duration always stays five turns.
+- **Centrelink (Bank):** a separate Wealthy-only version doubles positive yields,
+  yield modifiers, Happiness, Merchant capacity and recipient trade Gold from the
+  active shared Centrelink. The original stays unchanged. Costs, maintenance,
+  prerequisites, penalties and foreign traders' target bonus are retained.
+- **3 Una Court (Palace):** retains every normal Palace effect and automatically
+  follows the Capital. Adds total +1 empire Happiness/+2 GPT per current Era level:
+  Ancient +1/+2, Medieval +3/+6, Information +8/+16. One hidden total tier replaces
+  the previous tier, preventing accumulated or reload bonuses. This is distinct
+  from the Ultimate Possessor's 3 Una Court National Wonder.
+
+`Modding.OpenSaveData` persists the last processed turn, next audit, two donor IDs
+and remaining installments under `TRENT_WEALTHY_V1_` keys. Only Trent's PlayerDoTurn
+advances transfers; load/era/capture callbacks reconcile Palace tiers without
+levying Gold. The inspected CP-only Happiness path includes UnmoddedHappiness
+uncapped in empire totals. Full Vox Populi Happiness is not supported or claimed.
+
+Run `python Tools/validate_wealthy.py` for the full-manifest CP schema dry-run,
+inheritance/regression/asset checks, and `python Tools/test_wealthy.py` for the
+actual gameplay module's 20 Lua 5.1 scenarios. Rebuild art and inheritance with
+`Tools/build_wealthy_art.py` and `Tools/build_wealthy_inheritance.py`.
+The complete algorithm, source audit, save representation, engine caveats and
+**pending** in-game checklist are in [WEALTHY_TESTING.md](WEALTHY_TESTING.md).
+The royal-blue/gold art and generated Trent scene live in `Art/WealthyTrent/`,
+with retained source/prompt in `Art/Source/WealthyTrent/`.
 
 For an in-game smoke test: start a new Phone Stealer game, confirm a normal Warrior and Settler opening, inspect the civ/leader/Butler/Centrelink icons, establish a Spy in another Capital, begin Snatch Phone, and verify completion after the scaled duration. Confirm Capital yields and the victim's opinion entry, save and reload with a Phone and mission in progress, return the Phone and test the protection period, then allow a rival and Barbarians to capture Butlers. Check `Lua.log` and `Database.log` throughout.

@@ -2,6 +2,16 @@
 
 This file records the main player-facing and technical changes included in each repository push. New entries are added at the top.
 
+## 2026-10-30 - The Wealthy of Una Court
+
+- Added the eighth selectable civilization, human-only Wealthy Trent, with ordinary starting units, economic/diplomatic flavors and no possession or special combat mechanics.
+- Added automatic audits of up to two qualifying members of the richest third of met, surviving foreign majors: 5% treasury immediately and 20% current positive GPT on each of Trent's following five turns. Actual paired Gold deductions/deposits conserve Gold and cap payments by available funds.
+- Persisted cooldowns, targets, remaining installments and last processed turn; added duplicate/load protection, elimination handling and concise human audit/payment reports. Audit intervals scale by speed; installment duration stays five turns.
+- Added a separate Centrelink clone doubling only positive benefits while preserving shared Centrelink behavior, requirements, costs, maintenance, penalties and foreign traders' bonus.
+- Added a complete active-Palace clone, distinct from Ultimate's National Wonder, plus eight hidden total tiers granting +1 empire Happiness/+2 Gold per Era level and reconciling load, era progression and capital relocation.
+- Added royal-blue/gold DDS atlases, leader/Dawn scene based on the retained Trent portrait, alpha emblems, framed court map, Palace icon and full English localization. Reused Centrelink artwork.
+- Updated both manifests and the existing loader, retaining version 3 and the mod GUID. Added inheritance/art builders, manifest/database/asset validation, 20 actual Lua 5.1 gameplay scenarios and the explicit manual checklist in WEALTHY_TESTING.md. In-game verification remains pending.
+
 ## 2026-10-09 - Princedom: Pupil of Two Masters
 
 - Added a seventh selectable civilization with independent twelve-stack Possession and Body Swap mastery, fixed speed-scaled shared cooldowns, adjacent enemy/Barbarian targeting and an irreplaceable, normally upgrading Trent Steinhauer.

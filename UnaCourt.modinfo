@@ -2,8 +2,8 @@
 <Mod id="7ec83c11-5853-453c-9ca7-0b2cf85a2a48" version="3">
   <Properties>
     <Name>The Freehold of Una Court</Name>
-    <Teaser>Seven Trent civilizations: possession, loyal companions, serenades, library exile, and phone theft.</Teaser>
-    <Description>Seven Community Patch civilizations: Freehold, Dominion, Ultimate Possession, Soft Kitty Serenader, Library Exile, the espionage-focused Phone Stealer, and the Pupil of Two Masters Princedom.</Description>
+    <Teaser>Eight Trent civilizations: possession, loyal companions, serenades, library exile, and phone theft.</Teaser>
+    <Description>Eight Community Patch civilizations: Freehold, Dominion, Ultimate Possession, Soft Kitty Serenader, Library Exile, the espionage-focused Phone Stealer, the Pupil of Two Masters Princedom, and the Wealthy of Una Court.</Description>
     <Authors>ThatOneYi</Authors>
     <AffectsSavedGames>1</AffectsSavedGames>
     <MinCompatibleSaveVersion>0</MinCompatibleSaveVersion>
@@ -218,15 +218,47 @@
     <File md5="a991b9fd3a69d9365a09b39e71c222f1" import="0">Art/UnaCourt_CivilizationIconAtlases.xml</File>
     <File md5="3384930e848f54a2bd5e9a49317548b6" import="0">Art/UnaCourt_IconAtlases.xml</File>
     <File md5="591482428cc4cbe84966a44c60ada453" import="0">Art/UnaCourt_TrentIconAtlases.xml</File>
-    <File md5="3960701446a8905c6dbc6d31d7d6e2db" import="0">CHANGELOG.md</File>
+    <File md5="f69a9aa5145b0a451e62fa79abc078e6" import="1">Art/WealthyTrent/WealthyAlpha128.dds</File>
+    <File md5="d60a0054569f3bd0b03519796ae9b473" import="1">Art/WealthyTrent/WealthyAlpha16.dds</File>
+    <File md5="db49ea9450896b89e0b4110c23a5b120" import="1">Art/WealthyTrent/WealthyAlpha24.dds</File>
+    <File md5="42730a28b699548059a7d5e0cd45efd5" import="1">Art/WealthyTrent/WealthyAlpha32.dds</File>
+    <File md5="7293dcff5ec8a281fce1f764bb28e7f2" import="1">Art/WealthyTrent/WealthyAlpha45.dds</File>
+    <File md5="189eec2494399d4eaf8088082bbe967b" import="1">Art/WealthyTrent/WealthyAlpha48.dds</File>
+    <File md5="4bcf82e79aa7892cbcc8177174b27531" import="1">Art/WealthyTrent/WealthyAlpha64.dds</File>
+    <File md5="7dfe243f8907777466614952b32c7869" import="1">Art/WealthyTrent/WealthyAlpha80.dds</File>
+    <File md5="dff1e913664da5e60901cf6ed680cce8" import="0">Art/WealthyTrent/WealthyAtlases.xml</File>
+    <File md5="55fa3db86bd52bc7aa5668fe683933f8" import="1">Art/WealthyTrent/WealthyCiv128.dds</File>
+    <File md5="db73a964767e70bcf052a0869d401169" import="1">Art/WealthyTrent/WealthyCiv256.dds</File>
+    <File md5="7deb7ef3c98ad0cf5aadff8fbd8f56dc" import="1">Art/WealthyTrent/WealthyCiv32.dds</File>
+    <File md5="28d5780a5f7d5e0b5cab472414698a04" import="1">Art/WealthyTrent/WealthyCiv45.dds</File>
+    <File md5="4465b004d48faf3b47c70098e1cb63f7" import="1">Art/WealthyTrent/WealthyCiv64.dds</File>
+    <File md5="b4cfaa66561820dcae6a310bae07a389" import="1">Art/WealthyTrent/WealthyCiv80.dds</File>
+    <File md5="7a96137d9366f1cc89a2b97c998e3c35" import="1">Art/WealthyTrent/WealthyDawn.dds</File>
+    <File md5="d9de64129b16fc614e521b9509847957" import="1">Art/WealthyTrent/WealthyLeader128.dds</File>
+    <File md5="04b5ae735f32ed1b348d39d5fb094844" import="1">Art/WealthyTrent/WealthyLeader256.dds</File>
+    <File md5="6207d7d2cd05ca80dd3db375c79f8771" import="1">Art/WealthyTrent/WealthyLeader32.dds</File>
+    <File md5="6cddc50978e55cc668957f2b2cbbea2a" import="1">Art/WealthyTrent/WealthyLeader45.dds</File>
+    <File md5="18ed4e1bd705ac213e1a799a10593334" import="1">Art/WealthyTrent/WealthyLeader64.dds</File>
+    <File md5="b8dc8ab4498fd496c3ed22d1fc07bf5c" import="1">Art/WealthyTrent/WealthyLeader80.dds</File>
+    <File md5="ec49d632880711fc1c9785972a26a29f" import="1">Art/WealthyTrent/WealthyLeaderScene.dds</File>
+    <File md5="36cb2c7bd86c3c2571663b8dcd66cc90" import="1">Art/WealthyTrent/WealthyLeaderScene.xml</File>
+    <File md5="e6cab06558b2bf2d101013070dc25287" import="1">Art/WealthyTrent/WealthyMap.dds</File>
+    <File md5="34c98b51dbeeb82fd10ca29a365ee4c8" import="1">Art/WealthyTrent/WealthyPalace128.dds</File>
+    <File md5="38d40bda7ebffcf95868f6cca9ae4b24" import="1">Art/WealthyTrent/WealthyPalace256.dds</File>
+    <File md5="25ec5d5bc6a41a41a07bb5c7d36ca791" import="1">Art/WealthyTrent/WealthyPalace32.dds</File>
+    <File md5="ba860f05e23db123ae9801711bb16ed4" import="1">Art/WealthyTrent/WealthyPalace45.dds</File>
+    <File md5="f91f4f01aaf6d2b2359b5b89b982e0cb" import="1">Art/WealthyTrent/WealthyPalace64.dds</File>
+    <File md5="96478a2d437a1357b5855c8055c5df65" import="1">Art/WealthyTrent/WealthyPalace80.dds</File>
+    <File md5="8affa4ffbca854489ad19f3004d2dddb" import="0">CHANGELOG.md</File>
     <File md5="6ae6c1bc44417d47c2440e1f2652b12b" import="1">Lua/DominionBodySwap.lua</File>
     <File md5="4d1280e1bc1f0d6db7f2b288205f4030" import="1">Lua/DominionCore.lua</File>
     <File md5="2598b7d6ae369cde571c55e5ccf60455" import="1">Lua/TrentLibraryExile_Gameplay.lua</File>
     <File md5="a230d47102f75f28068a16988dddf407" import="1">Lua/TrentPhoneStealer_Gameplay.lua</File>
     <File md5="e738ea86986197abb2c8b1d0ec483eee" import="1">Lua/TrentSoftKitty_Gameplay.lua</File>
+    <File md5="17db0da5fa841441f09a7b429cc8e840" import="1">Lua/TrentWealthy_Gameplay.lua</File>
     <File md5="f50bc4ff902adfb7d609cefb3b1bf7b6" import="1">Lua/UltimatePossession.lua</File>
     <File md5="3690e7384e618da0cf2bc1561e6c2b07" import="1">Lua/UnaCourtCore.lua</File>
-    <File md5="d8c8cc2eeedd55ae5efa921f2a8916ef" import="0">Lua/UnaCourtLoader.lua</File>
+    <File md5="b840d691d3312921596bcbbcb39a12d8" import="0">Lua/UnaCourtLoader.lua</File>
     <File md5="4cc1068fbe5eaaab0213dcb5941b5e3e" import="1">Lua/UnaCourtPossession.lua</File>
     <File md5="40885ceec67b5e524a446db6f50aab27" import="1">Princedom/Art/PrinceAlpha128.dds</File>
     <File md5="bba735de15c970ad16a3007305476d2a" import="1">Princedom/Art/PrinceAlpha16.dds</File>
@@ -267,9 +299,12 @@
     <File md5="831875f803b4340adb6b1f46a037730e" import="0">Princedom/SQL/102_Prince_Text.sql</File>
     <File md5="dc45e8baeda35a68797749fb4a3ac906" import="0">Princedom/UI/PrincePanel.lua</File>
     <File md5="74d49aecb424b0e53095edfef58fc3cb" import="0">Princedom/UI/PrincePanel.xml</File>
-    <File md5="87349e1a5a5a74437b0f2156e8f3b9db" import="0">README.md</File>
+    <File md5="028a34e84ca543c4cdfdc370825cd58f" import="0">README.md</File>
     <File md5="4d71a2fc3ef2672ace5b52054db85d62" import="0">SQL/00_UnaCourt_Core.sql</File>
     <File md5="0f3f66a7de0bd5864b83e5befe637984" import="0">SQL/10_UnaCourt_Scaling.sql</File>
+    <File md5="acb65aa4012699def00bf573b50f55ed" import="0">SQL/110_Wealthy_Inherit.sql</File>
+    <File md5="380bf3fc6c6096f595f1ed978fdd2ce7" import="0">SQL/111_Wealthy_Core.sql</File>
+    <File md5="a6324894fefcaf2aac92234cf1bbaa9e" import="0">SQL/112_Wealthy_Text.sql</File>
     <File md5="e303b0c20454f73b4e75cc8d8e9b2fcf" import="0">SQL/20_UnaCourt_Text.sql</File>
     <File md5="90b8a6e0d9eb623c27eeff2d3b1f121e" import="0">SQL/30_Dominion_Core.sql</File>
     <File md5="30e4c3eacb5e20163deecae069b8d4a6" import="0">SQL/40_Dominion_Text.sql</File>
@@ -320,6 +355,10 @@
       <UpdateDatabase>Princedom/SQL/100_Prince_Inherit.sql</UpdateDatabase>
       <UpdateDatabase>Princedom/SQL/101_Prince_Core.sql</UpdateDatabase>
       <UpdateDatabase>Princedom/SQL/102_Prince_Text.sql</UpdateDatabase>
+      <UpdateDatabase>Art/WealthyTrent/WealthyAtlases.xml</UpdateDatabase>
+      <UpdateDatabase>SQL/110_Wealthy_Inherit.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/111_Wealthy_Core.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/112_Wealthy_Text.sql</UpdateDatabase>
     </OnModActivated>
   </Actions>
   <EntryPoints>

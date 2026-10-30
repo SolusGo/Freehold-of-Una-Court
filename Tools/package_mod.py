@@ -60,7 +60,7 @@ def build(package=False):
             dest.parent.mkdir(parents=True,exist_ok=True)
             shutil.copy2(ROOT/filename,dest)
         shutil.copy2(manifest,target/manifest.name)
-        for filename in ('README.md','Princedom/README.md','Princedom/TESTING.md','Princedom/CP151_NOTES.md'):
+        for filename in ('README.md','WEALTHY_TESTING.md','Princedom/README.md','Princedom/TESTING.md','Princedom/CP151_NOTES.md'):
             if (ROOT/filename).exists():
                 dest=target/filename;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(ROOT/filename,dest)
         print(f'Installable mod folder: {target}')
