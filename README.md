@@ -1,239 +1,371 @@
-# Una Court Civilizations
+<div align="center">
 
-A version 3 Civilization V: Brave New World mod for the Community Patch ruleset. It adds eight selectable civilizations led by Trent: the companion-focused **Freehold of Una Court**, the aggressive **Dominion of Una Court**, the army-stealing **Ultimate Possession**, the musical **Soft Kitty Serenader**, the science-and-culture focused **Library Exile**, the espionage-driven **Phone Stealer**, **The Princedom of Una Court — Pupil of Two Masters**, and the human-only economic parody **The Wealthy of Una Court**.
+<img src="Art/Source/TrentDawnOfManPainted.png" alt="Trent presiding over Una Court beside a roaring hearth" width="640">
 
-The new [Princedom](Princedom/README.md) develops Possession and Body Swap independently through twelve mastery stacks each. One irreplaceable, normally upgrading Trent replaces its opening Warrior; his original body's death collapses the empire. Fanfic Monuments double intrinsic benefits during a technique. The civ includes local AI decisions, a dedicated targeting panel, native damage resistance, persistent ownership state and a reproducible test harness. See its [validation checklist](Princedom/TESTING.md) and [CP v151 limitations](Princedom/CP151_NOTES.md); in-game verification remains pending.
+# 👑 Una Court Civilizations
 
-**ModBuddy is optional:** run `python Tools/package_mod.py --package`, then copy the generated `Build/Una Court Civilizations (v 3)` folder to the game's `MODS` directory. The checked-in `UnaCourt.modinfo` registers the entire collection and requires Community Patch v151. Start a new game for the Princedom or Wealthy civilization; old saves without their database entries are unsupported.
+**Eight Trents. Eight ways to rule Una Court.**
 
-The Freehold and Dominion begin with a Settler and their own Trentrouls instead of an ordinary Warrior. In either realm, Trentrouls is irreplaceable: if his body dies, the civilization collapses. Ultimate Possession, Soft Kitty, Library Exile, and Phone Stealer use normal starting units because Trent acts through their civilization mechanics rather than appearing as a separate map unit.
+Loyal companions, stolen armies, questionable serenades, library exile, missing phones and remarkably generous Centrelink payments.
 
-## The Freehold of Una Court
+**Civilization V: Brave New World** · **Community Patch v151** · **Version 3** · **Single player / Windows**
 
-The Freehold rewards protecting Trentrouls and keeping Buddy close.
+[Choose your Trent](#civilization-roster) · [Install](#installation) · [Civilization guides](#civilization-guides) · [Compatibility](#compatibility) · [Development](#development)
+
+</div>
+
+---
+
+## Civilization roster
+
+All eight civilizations are selectable by a human player in the same mod. **AI opponent** indicates whether the civilization is enabled for AI selection in the current database.
+
+| Civilization | Playstyle | Signature ability | Unique content | AI opponent |
+| :--- | :--- | :--- | :--- | :---: |
+| 🐕 **[Freehold of Una Court](#freehold)** | Companions & empire growth | Era-scaled city bonuses; adjacent Buddy doubles the bonuses and Trentrouls' strength. Possess nearby enemies. | **Trentrouls** hero · **Buddy** companion · **Centrelink** (Bank) | — |
+| 🔴 **[Dominion of Una Court](#dominion)** | Aggression & risky exchanges | Body Swap lends an enemy Trentrouls' original body. Active swaps double city bonuses and grant Golden Age Points. | **Trentrouls** hero · **Centrelink** (Bank) | — |
+| 🌀 **[Ultimate Possession](#ultimate-possession)** | Army control & tactical warfare | Possess **1–8 enemy or Barbarian units** near friendly cities and military units, with capacity increasing by era. | **Golden Retriever** (Scout) · **Centrelink** (Bank) · **3 Una Court** National Wonder | — |
+| 🎵 **[Soft Kitty Serenader](#soft-kitty)** | Culture, Tourism & diplomacy | Sing to peaceful rivals for Culture, targeted Tourism and allied city-state influence; unfriendly audiences can cause backlash. | **Hopeless Romantic** (Great Musician) · **Comfort Room** (Opera House) | ✓ |
+| 📚 **[Library Exile](#library-exile)** | Tall Science & Culture | Hostile majors strengthen School Libraries. Your first friend becomes the permanent Visitor, rewarding renewed friendship. | **iPad Reader** (Great Writer) · **School Library** (Library) | ✓ |
+| 📱 **[Phone Stealer](#phone-stealer)** | Espionage & Capital growth | Spies steal one Phone per rival; the Stash supplies Science, Gold, Culture and Happiness at a diplomatic cost. | **Una Court Butler** (Worker) · **Centrelink** (Bank) | ✓ |
+| 👑 **[Princedom of Una Court](#princedom)** | Hero progression & tactical mastery | Develop Possession and Body Swap independently through **12 mastery stacks each**. One original body, one life. | **Trent Steinhauer** hero · **Fanfic Monument** (Monument) | ✓ |
+| 💰 **[Wealthy of Una Court](#wealthy)** | Gold, infrastructure & city-state alliances | Audit wealthy rivals for real Gold transfers, enjoy doubled Centrelink benefits and collect an era-scaled luxury allowance. | **Enhanced Centrelink** (Bank) · **3 Una Court** (Palace) | — |
+
+### Your opening army
+
+| Civilizations | Opening units | Special defeat condition |
+| :--- | :--- | :--- |
+| Freehold & Dominion | Settler + their own **Trentrouls** in place of a Warrior | The original Trentrouls body's death collapses the empire, including during enemy control. |
+| Princedom | Settler + **Trent Steinhauer** in place of a Warrior | Trent's original body's death collapses the empire. Normal upgrades preserve his identity. |
+| Ultimate Possession, Soft Kitty, Library Exile, Phone Stealer & Wealthy | Normal Settler + Warrior | No irreplaceable hero or special collapse mechanic. |
+
+> **Choose carefully:** borrowed bodies are expendable. The original bodies of Freehold, Dominion and Princedom heroes are not.
+
+## Installation
+
+Requires **Civilization V: Brave New World on Windows** and the **Community Patch DLL**. The manifest requires Community Patch v151 or later; the documented implementation baseline is **v151**. Full Vox Populi is not required; see [compatibility](#compatibility) before using the complete overhaul.
+
+1. Install and enable the Community Patch.
+2. From this repository's root, run the following with **Python 3.9+**:
+
+   ```powershell
+   python Tools/package_mod.py --package
+   ```
+
+3. Copy the generated **`Build/Una Court Civilizations (v 3)`** folder into your Civilization V user folder's **`MODS`** directory, usually:
+
+   ```text
+   Documents\My Games\Sid Meier's Civilization 5\MODS\
+   ```
+
+4. In the game's Mods menu, enable **The Freehold of Una Court (v 3)**. This retained mod name contains **all eight** civilizations.
+5. Start a **new game** and select your Trent. Avoid enabling a second installed copy of the collection.
+
+**ModBuddy alternative:** open `UnaCourt.civ5proj` and choose **Build → Build Solution**. ModBuddy is optional; plain-file packaging uses only Python's standard library. Pillow and Lupa are development dependencies, not requirements for packaging or playing.
+
+The version stays fixed at **3**, so new builds replace the existing mod folder. Existing saves without a civilization's database entries are unsupported.
+
+## Civilization guides
+
+Expand a civilization for its abilities, unique content and important tradeoffs. Unless specified otherwise, turn counts and ability rewards below use **Standard speed**.
+
+<a id="freehold"></a>
+<details>
+<summary><strong>🐕 Freehold of Una Court</strong> — keep Buddy close and Trentrouls alive</summary>
 
 ### The Court Lives Through Him
 
-- Every city gains +1% Food, Production, Gold, Science, Culture, Faith, and Great Person generation per era, from +1% to +8%.
-- Buddy doubles the empire bonus while adjacent to Trentrouls.
-- Trentrouls grows from 7 Combat Strength in the Ancient Era to 50 in the Information Era; Buddy doubles his current strength while adjacent.
-- Trentrouls may temporarily possess an eligible non-Barbarian enemy unit within two tiles.
-- Great People, religious units, cargo, and loaded transports are excluded because their hidden state cannot be recreated safely; ordinary Workers and Settlers remain eligible.
-- If Trentrouls dies, the Freehold collapses.
+- Every city gains **+1% Food, Production, Gold, Science, Culture, Faith and Great Person generation per era**, from +1% in Ancient to +8% in Information.
+- Adjacent **Buddy doubles** both the empire bonus and Trentrouls' current Combat Strength.
+- Trentrouls grows from **7 to 50 Combat Strength** across the eras. He is irreplaceable: his death collapses the Freehold.
+- **Body Possession** temporarily takes an eligible non-Barbarian enemy unit within **two tiles**. Ordinary Workers and Settlers are eligible; Great People, religious units, cargo and loaded transports are excluded because their hidden state cannot be recreated safely.
 
-### Buddy
+### Unique content
 
-Buddy is a retrainable, one-at-a-time companion unit. He costs 125 Production, has 3 Combat Strength, ignores terrain movement costs, and empowers Trentrouls while adjacent.
+| Content | Benefits |
+| :--- | :--- |
+| **Buddy** | Retrainable companion, limited to one at a time. Costs **125 Production**, has **3 Combat Strength**, ignores terrain movement costs and empowers adjacent Trentrouls. |
+| **Centrelink** | Replaces the Bank, keeping its normal benefits and adding **+1 local Happiness**. |
 
-## The Dominion of Una Court
+**Court advice:** protect Buddy as carefully as Trentrouls. Positioning the pair safely keeps both the army and the empire stronger.
 
-The Dominion is the aggressive alternate Trentrouls civilization. It turns nearby enemy units into weapons, but each exchange gives the enemy control of Trentrouls' original—and fatal—body.
+</details>
+
+<a id="dominion"></a>
+<details>
+<summary><strong>🔴 Dominion of Una Court</strong> — their army, your body, enormous stakes</summary>
 
 ### The One Who Possesses Una Court
 
-- Every city gains the same +1% to +8% era-scaled yields and Great Person generation as the Freehold.
-- The empire bonus doubles while a Body Swap is active.
-- Starting a Body Swap grants 5 to 12 Golden Age Points by era on Standard speed, scaled for the selected game speed.
-- Trentrouls grows through 8/10/16/22/30/42/56/72 Combat Strength by era.
-- If Trentrouls' original body dies, including while controlled by an enemy, the Dominion collapses.
+- Cities gain the Freehold's **+1% to +8% era-scaled yields and Great Person generation**, doubled during Body Swap.
+- Starting a swap grants **5–12 Golden Age Points by era**, scaled with game speed.
+- Trentrouls' era strengths are **8 / 10 / 16 / 22 / 30 / 42 / 56 / 72**. His original body's death destroys the Dominion, even while an enemy controls it.
 
 ### Body Swap
 
-Trentrouls can exchange bodies with an eligible enemy unit within two tiles while at war:
+Exchange bodies with an eligible enemy within **two tiles** while at war. The borrowed body receives **+5% Combat Strength** and can fight, build or found cities normally; those actions remain permanent. The enemy receives the original Trentrouls and may move him one tile **or** make one melee attack per turn, never both.
 
-- The Dominion receives the borrowed body with +5% Combat Strength.
-- The enemy receives Trentrouls' original body for the swap's duration.
-- The borrowed body can move, fight, found cities, and build normally. Those actions are permanent.
-- The enemy-controlled Trentrouls can move one tile or make one melee attack per turn, but cannot move and then attack.
-- Losing or expending the borrowed body returns Trentrouls. Killing his original body destroys the Dominion.
-- Air units, missiles, nuclear and suicide units, trade units, Great People, religious units, cargo and loaded transports, immune units, other Una Court heroes, and Barbarians are excluded because their hidden state cannot be recreated safely.
-- Saving or autosaving temporarily returns both bodies to their normal owners for safe serialization, then automatically restores the active Body Swap with the same remaining duration, cooldown, movement, damage, experience, level, name, promotions, and unit-attached ScriptData. Loading that save restores the swap after gameplay initialization.
+Losing or expending the borrowed body returns Trentrouls. Losing the original body ends the civilization.
 
-| Game speed | Active duration | Full cooldown |
-| --- | ---: | ---: |
+| Speed | Active duration | Full cooldown |
+| :--- | ---: | ---: |
 | Quick | 1 turn | 8 turns |
 | Standard | 2 turns | 12 turns |
 | Epic | 3 turns | 18 turns |
 | Marathon | 6 turns | 36 turns |
 
-## Trentrouls - Ultimate Possession
+Barbarians, other Una Court heroes, immune units, air units, missiles, nuclear/suicide units, trade units, Great People, religious units, cargo and loaded transports are ineligible.
 
-Ultimate Possession is the large-scale version of Trentrouls' power. Instead of risking a unique Trentrouls unit, it projects a possession network from every friendly city and military unit.
+**Centrelink** replaces the Bank and adds **+1 local Happiness** to its normal benefits.
+
+**Court advice:** check what can reach the original body before accepting a powerful borrowed one.
+
+</details>
+
+<a id="ultimate-possession"></a>
+<details>
+<summary><strong>🌀 Ultimate Possession</strong> — why stop at borrowing one unit?</summary>
 
 ### Two Possessions for the Price of One
 
-- Enemy and Barbarian units within two tiles of any friendly city or military unit can be selected in the Una Court panel.
-- Maximum simultaneous targets equal the current Era number: 1 in the Ancient Era, increasing to 8 in the Information Era.
-- On Standard speed, groups of 1–4 units are possessed for 2 turns; groups of 5–8 units are possessed for 1 turn.
-- Cooldown depends on the size of the group: 8 turns for one unit, then +5 turns for every additional unit.
-- Possessed units retain their type, promotions, damage, experience, level, name, movement, facing, fortification, embarked state, and unit-attached ScriptData.
-- Great People, religious units, cargo and loaded transports are excluded because important native or third-party state cannot be recreated reliably. Ordinary Workers and Settlers remain eligible.
-- Possessed units cannot be deleted, gifted, or upgraded. Strategic-resource requirements are checked before activation.
-- Surviving units return to their original owner when the duration expires or peace is signed. Units killed or expended while possessed stay gone. If an original major civilization has been eliminated, its surviving borrowed unit is disbanded safely.
-- Saving and loading uses the same ownership-normalization transaction as the other Una Court possession systems: ordinary ownership is serialized, then the active group is rebuilt after the save or load finishes.
-- AI-controlled Ultimate Possession automatically selects the most valuable eligible targets.
+Project possession from every friendly city and military unit, with **no separate Trentrouls hero to protect**. Eligible enemy and Barbarian units within **two tiles** can be selected in the Una Court panel.
 
-| Units selected | Standard cooldown |
-| ---: | ---: |
-| 1 | 8 turns |
-| 2 | 13 turns |
-| 3 | 18 turns |
-| 4 | 23 turns |
-| 5 | 28 turns |
-| 6 | 33 turns |
-| 7 | 38 turns |
-| 8 | 43 turns |
+- Capacity increases from **1 target in Ancient** to **8 in Information**.
+- Groups of **1–4** last **2 turns**; groups of **5–8** last **1 turn**.
+- Cooldown is **8 turns for one target, plus 5 per additional target**.
 
-Quick, Epic, and Marathon games retain the existing 67%, 150%, and 300% timing scaling for both duration and cooldown.
+| Targets | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Cooldown, turns | 8 | 13 | 18 | 23 | 28 | 33 | 38 | 43 |
 
-### Golden Retriever
+Quick, Epic and Marathon scale duration and cooldown by **67%, 150% and 300%** respectively.
 
-The Golden Retriever replaces the Scout. It costs 45 Production, has 3 Movement, and costs one additional Gold per turn while retaining the Scout's ordinary abilities. Its non-stacking **Good Boy** promotion grants adjacent friendly units +10% Combat Strength and +5 HP healing per turn.
+Possessed units retain type, promotions, damage, experience, level, name, movement, facing, fortification, embarked state and attached ScriptData. They cannot be deleted, gifted or upgraded; strategic-resource requirements are checked before activation. Great People, religious units, cargo and loaded transports are excluded; ordinary Workers and Settlers remain eligible.
 
-### 3 Una Court
+Survivors return when the duration expires or peace is signed. Units killed or expended remain gone; surviving units belonging to an eliminated major are safely disbanded. Automatic target selection exists in the script, but **AI civilization selection is currently disabled**.
 
-This unique National Wonder becomes available at Civil Service and costs 250 Production. It provides +1 Happiness and +5% Gold in every city, while unemployed Citizens in every city produce +1 Culture.
+### Unique content
 
-## Trent - The Soft Kitty Serenader
+| Content | Benefits |
+| :--- | :--- |
+| **Golden Retriever** · Scout | **45 Production**, **3 Movement**, +1 Gold maintenance over a Scout. Retains Scout abilities; non-stacking **Good Boy** aura gives adjacent friendly units **+10% Combat Strength and +5 HP healing per turn**. |
+| **3 Una Court** · National Wonder | Available at **Civil Service**, costs **250 Production**. Provides **+1 Happiness**, **+5% Gold in every city** and **+1 Culture from unemployed Citizens** empire-wide. |
+| **Centrelink** · Bank | Normal Bank benefits plus **+1 local Happiness**. |
 
-A navy-and-gold Una Court focused on Culture, Tourism and diplomacy. It uses a normal starting army, with no irreplaceable Trent unit or collapse mechanic.
+**Court advice:** borrow the units that decide the battle. Filling every slot also commits you to a longer cooldown.
 
-- **Soft Kitty, Warm Kitty:** use the independent **Sing Soft Kitty** button to select a met, peaceful major civilization. Standard-speed cooldown is 15 turns. Successful songs award 30 Culture and 20 targeted Tourism per era number, plus 5 influence with each city-state allied to the audience.
-- Friendly audiences or Declarations of Friendship double rewards and normally cannot fail. Neutral/afraid audiences have 10% backlash risk; guarded/deceptive audiences receive 75% rewards with 25% risk; hostile audiences receive 50% rewards with 50% risk. The confirmation displays the current rewards and risk.
-- **Repercussions:** a failed song gives no rewards and causes five Standard-speed turns of -15% Production, -10% military Combat Strength and -20% Great Person generation. Military land/naval units trained during recovery also lose one Movement until recovery ends; purchases are exempt. Further backlash refreshes the duration without stacking the penalties.
-- The first civilization to cause backlash becomes the permanent **Ex**: subsequent songs give +25% rewards but have at least 15% backlash risk. Cooldown, Ex and recovery survive saving and loading.
-- **Hopeless Romantic:** replaces the active ruleset's Great Musician, retaining Great Work creation. Its custom **Serenade** action requires adjacency to a peaceful foreign major city and consumes the unit for 125% of its normal concert Tourism, 100 Culture and the allied city-state influence bonus. The Ex receives a further 20% Tourism. Hostile audiences have a 25% backlash risk, but the concert still awards its rewards. The native concert mission is replaced by this action.
-- **Comfort Room:** replaces and inherits the active Opera House, adding 1 Culture, 1 local Happiness, 1 Culture per local Great Work of Music and 10% local Great Musician generation. Each Comfort Room reduces the empire's recovery Production penalty by one percentage point, capped at zero, and produces 3 extra Culture locally during recovery.
+</details>
 
-Cooldown and recovery durations scale with game speed; ordinary song yields and concert Tourism also scale. The fixed concert Culture award is 100. This civ has custom circular portraits, a static diplomacy scene, silent Dawn of Man art, and native Civilopedia articles. Its AI can select audiences and use adjacent concerts; the existing three civs remain player-only, as configured previously.
+<a id="soft-kitty"></a>
+<details>
+<summary><strong>🎵 Soft Kitty Serenader</strong> — Culture, courtship and consequences</summary>
 
-## Trent - The Library Exile
+### Soft Kitty, Warm Kitty
 
-The Library Exile is a defensive, tall-leaning civilization that turns diplomatic isolation into Science and Culture.
+Use **Sing Soft Kitty** to choose a met, peaceful major civilization. A successful song gives **30 Culture and 20 targeted Tourism per era number**, plus **5 influence** with each city-state allied to the audience. Base cooldown is **15 turns**.
 
-- **Banished to the Library:** every living major civilization denouncing or at war with Trent supplies one Exile Stack, even when both conditions apply. Each stack gives School Library cities +3% Science and +3% Culture, capped at three stacks and +9%.
-- **The Visitor:** the first civilization to share a Declaration of Friendship with Trent is recorded permanently. While friendship with that same Visitor is active, all cities gain +15% Great Writer generation, the empire gains +2 Happiness, and School Libraries produce +1 Culture. Another friend cannot replace the Visitor.
-- **School Library:** replaces and inherits the installed Community Patch Library. It additionally produces +1 Culture and +1 Great Writer Point and contains one Great Work of Writing slot.
-- **iPad Reader:** replaces and inherits the Great Writer, retaining Great Works and Political Treatises. A Reader stationed in a School Library city at the start of a turn gives that city +2 Science and +2 Culture; multiple Readers do not stack. Expending one through a Great Person action grants 25 Science per Era number, from 25 to 200.
-- The civilization has a normal Settler-and-Warrior opening, quiet defensive AI priorities, custom library-themed artwork and map, a silent Dawn of Man screen, complete diplomacy lines, and structured Civilopedia entries.
+| Audience | Rewards | Backlash risk |
+| :--- | :--- | :--- |
+| Friendly or Declaration of Friendship | 200% | Normally none |
+| Neutral or afraid | 100% | 10% |
+| Guarded or deceptive | 75% | 25% |
+| Hostile | 50% | 50% |
 
-Exile and Visitor state are refreshed through an isolated gameplay script and persistent save data. The implementation adds no top-left, city-view, unit-panel, or other core UI replacement.
+The confirmation shows current rewards and risk. The first audience to cause backlash becomes the permanent **Ex**: future songs to that civilization gain **+25% rewards** but carry at least **15% backlash risk**.
 
-## Shared unique building: Centrelink
+**Repercussions:** a failed song gives no rewards and causes **5 turns** of **−15% Production, −10% military Combat Strength and −20% Great Person generation**. Land/naval military units trained during recovery lose one Movement until recovery ends; purchases are exempt. Further backlash refreshes the duration without stacking penalties.
 
-The original three civilizations and Phone Stealer replace the Bank with the same single **Centrelink** building definition and unchanged existing icon art. Centrelink retains the Bank's normal benefits and adds +1 local Happiness. Soft Kitty and Library Exile use their own unique buildings instead.
+### Unique content
 
-## Trent — The Phone Stealer
+- **Hopeless Romantic** replaces the Great Musician and retains Great Work creation. Its custom **Serenade**, replacing the native concert action, consumes the unit beside a peaceful foreign major city for **125% of normal concert Tourism, 100 Culture** and the allied city-state influence bonus. The Ex receives a further **20% Tourism**. Hostile audiences have **25% backlash risk**, but the concert still pays its rewards.
+- **Comfort Room** inherits the active Opera House and adds **+1 Culture, +1 local Happiness, +1 Culture per local Great Work of Music and +10% local Great Musician generation**. Each room reduces the empire's recovery Production penalty by one percentage point, capped at zero, and produces **+3 local Culture** during recovery.
 
-The Phone Stealer is a tall economic and espionage civilization that grows stronger by collecting one unique Phone from every rival.
+Song yields, concert Tourism, cooldown and recovery scale with game speed. The concert's **100 Culture** is fixed. Cooldown, Ex identity and recovery persist through saves. AI can choose audiences and use adjacent concerts.
 
-- **The Red-Headed Phone Snatcher:** an established Spy in a foreign Capital can begin an eight-turn Snatch Phone mission on Standard Speed. Moving the Spy away cancels the attempt.
-- Each Phone in the Stash gives the Capital +2 Science, +2 Gold and +1 Culture; every three Phones provide +1 Happiness.
-- A victim receives the strong **He Stole My Phone!** opinion penalty for exactly as long as Trent possesses its Phone. Phones from eliminated civilizations remain in the Stash.
-- The Phone Stash panel lists every civilization, mission progress, accumulated yields, return protection, and whether its Phone is currently held. Returning a Phone removes its yields and grievance and protects it from another theft for 30 Standard-Speed turns.
-- **Una Court Butler:** replaces the Worker, costs 20% more Production and works 25% faster. A capture attempt sends it back to Trent's Capital or the nearest valid tile instead of transferring it permanently.
-- **Centrelink:** reuses the collection's existing Bank replacement and art unchanged, retaining the Bank plus +1 local Happiness.
-- AI Trent aggressively begins missions against established non-friendly targets and avoids close friends unless relations deteriorate.
+**Court advice:** cultivate friendly audiences before singing. Comfort Rooms soften the economic cost when romance goes badly.
 
-## Interface and compatibility
+</details>
 
-The existing right-side command panel automatically switches between Freehold Body Possession, Dominion Body Swap, and Ultimate Mass Possession. Ultimate mode provides toggleable multi-selection, capacity and cooldown previews, active-unit tracking, and capital/retriever/possessed-unit finders. The panel hides in city view and does not replace the TopPanel, UnitPanel, CityView, Community Patch, or EUI contexts.
+<a id="library-exile"></a>
+<details>
+<summary><strong>📚 Library Exile</strong> — turn diplomatic isolation into scholarship</summary>
 
-Soft Kitty has a separate, civ-only audience window with reward/risk previews, recovery status and confirmation. It hides during city view and does not replace any core or existing Una Court UI files.
+### Banished to the Library
 
-Phone Stealer has its own civ-only Stash window for beginning missions, tracking every Phone and voluntarily returning devices. It also hides during city view and does not replace the espionage overview or any core UI context.
+Each living major civilization denouncing or at war with Trent supplies **one Exile Stack**, even if both conditions apply. Each stack gives School Library cities **+3% Science and +3% Culture**, capped at **three stacks / +9%**.
 
-## Current alpha limitations
+The first civilization to share a Declaration of Friendship becomes the permanent **Visitor**. While friendship with that same civilization is active, all cities gain **+15% Great Writer generation**, the empire gains **+2 Happiness**, and School Libraries gain **+1 Culture**. Another friend cannot replace the Visitor.
 
-- The first four civilizations share Una Court's location map; later variants have dedicated or framed court maps. The collection uses base-game unit models and dedicated emblems and leader art.
-- Soft Kitty is validated against Community Patch 5.4.2's loaded database and mocked Lua 5.1 gameplay. Actual in-game layout, AI pathfinding and interactions with additional mods still require playtesting; full Vox Populi compatibility is not yet verified.
-- Unit-attached ScriptData is preserved, but highly specialized modded units may also key private state by the original UnitID or store it outside the unit. Civ V Lua cannot generically preserve that external state through an ownership transfer.
-- Multiplayer and hotseat are intentionally disabled while the scripted transfer systems are stabilized.
+### Unique content
 
-## Requirements and installation
+| Content | Benefits |
+| :--- | :--- |
+| **School Library** · Library | Inherits the installed Community Patch Library; adds **+1 Culture, +1 Great Writer Point** and **one Great Work of Writing slot**. |
+| **iPad Reader** · Great Writer | Retains Great Works and Political Treatises. A Reader in a School Library city at turn start gives **+2 Science and +2 Culture** there; multiple Readers do not stack. Expending one through a Great Person action awards **25 Science per era number**, from 25 to 200. |
 
-- Sid Meier's Civilization V: Brave New World
-- Community Patch / Vox Populi DLL
-- Python 3.9+ for the plain-file packaging command, or optionally ModBuddy from the Civilization V SDK
+Exile and Visitor state persist through saves. The civilization uses defensive AI priorities and adds no core UI replacement.
 
-Run `python Tools/package_mod.py --package` and copy the generated mod folder into the game's `MODS` directory. Alternatively, open `UnaCourt.civ5proj` and choose **Build > Build Solution**. Enable **The Freehold of Una Court (v 3)** in Civilization V's Mods menu and start a new game. The version remains fixed at 3 so new builds replace the existing mod folder.
+**Court advice:** build tall around School Libraries, and remember who your first friend was when diplomacy improves.
 
-## Source layout
+</details>
 
-- `Art/` — custom icon atlases and retained source artwork
-- `SQL/` — seven civilizations outside Princedom, units, shared and unique buildings, scaling data, and text
-- `Princedom/` — the seventh civilization's isolated SQL, Lua, UI, art, documentation and engine checklist
-- `Lua/` — possession systems, Soft Kitty audiences, Library Exile diplomacy polling, Phone missions and Stash state, AI, aura support, collapse safety, and save/load state
-- `UI/` — shared possession command panel plus isolated Soft Kitty and Phone Stash panels
-- `Tools/` — reproducible art building and validation scripts
-- `CHANGELOG.md` — player-facing and technical changes for each push
+<a id="phone-stealer"></a>
+<details>
+<summary><strong>📱 Phone Stealer</strong> — a thriving Capital, a growing Stash, some angry rivals</summary>
 
-### Soft Kitty verification
+### The Red-Headed Phone Snatcher
 
-Run `Tools/validate_soft_kitty.py` with Python/Pillow against a pre-Soft-Kitty Community Patch debug database. Run `Tools/test_soft_kitty.py` with Lupa installed in `.modbuddy/test-deps` for the twelve Lua 5.1 gameplay scenarios. Art can be rebuilt using `Tools/build_soft_kitty_art.py`; retained source art and generation prompts are in `Art/Source/SoftKitty/`.
+An established Spy in a foreign Capital can begin **Snatch Phone**, taking **8 turns** to steal that rival's unique Phone. Moving the Spy away cancels the attempt.
 
-For a new-game smoke test: check civilization selection and Civilopedia icons, meet another major civ, inspect and confirm a song, save/reload through cooldown and recovery, and test an adjacent Hopeless Romantic. Open and close the city screen to check panel isolation. Confirm Great Work creation and Comfort Room bonuses; check Lua.log and Database.log for errors. Do not add the new civilization to an existing campaign.
+- Each Phone gives the Capital **+2 Science, +2 Gold and +1 Culture**; every three Phones provide **+1 Happiness**.
+- The victim receives **He Stole My Phone!**, a strong opinion penalty lasting exactly while Trent holds its Phone.
+- Phones from eliminated civilizations stay in the Stash.
+- Returning a Phone removes its yields and grievance, and protects it from another theft for **30 turns**.
 
-### Library Exile verification
+The **Phone Stash** window shows rivals, mission progress, yields, held Phones and return protection. Mission and protection timing scale with game speed. AI begins missions against established non-friendly targets and avoids close friends unless relations deteriorate.
 
-Run `Tools/validate_library_exile.py` against the active Community Patch debug database and `Tools/test_library_exile.py` with the local Lua 5.1 test runtime. Art is reproducible through `Tools/build_library_exile_art.py`; the generated PNG sources and exact built-in generation prompts are retained in `Art/Source/`.
+### Unique content
 
-For an in-game smoke test: begin a new Library Exile game, confirm exactly one ordinary Warrior, inspect all Civilopedia and selection icons, build a School Library, and station an iPad Reader inside. Verify one enemy at war and denouncing Trent produces only one stack; test three simultaneous hostile civilizations and reconciliation. Establish the first friendship, let it expire, befriend someone else, then renew the original friendship to confirm permanent Visitor identity. Create both a Great Work and Political Treatise with Readers and check Lua.log and Database.log.
+| Content | Benefits |
+| :--- | :--- |
+| **Una Court Butler** · Worker | Costs **20% more Production**, works **25% faster**. Capture attempts return it to Trent's Capital or the nearest valid tile instead of permanently transferring it. |
+| **Centrelink** · Bank | Uses the shared Bank replacement and art, with normal Bank benefits plus **+1 local Happiness**. |
 
-### Phone Stealer verification
+**Court advice:** balance the Capital's growing income against the diplomatic value of returning a rival's Phone.
 
-Run `Tools/validate_phone_stealer.py` against the active Community Patch debug database and `Tools/test_phone_stealer.py` with Python 3.12 and the local Lua 5.1 test runtime. Art is reproducible with `Tools/build_phone_stealer_art.py`; Worker inheritance is reproducible with `Tools/build_phone_stealer_inheritance.py`. The concept sheet, generated PNG sources, and exact built-in generation prompts are retained in `Art/Source/PhoneStealer/`.
+</details>
 
-### The Wealthy of Una Court — eighth civilization
+<a id="princedom"></a>
+<details>
+<summary><strong>👑 Princedom of Una Court</strong> — Pupil of Two Masters</summary>
 
-**Trent:** "The man who has everything, yet still receives Centrelink."
-Human-playable only, with ordinary Settler/Warrior starts. Favors peaceful economic
-development, infrastructure purchases and City-State alliances for Diplomatic
-Victory, with Science as a secondary route.
+### One Trent. Two masters. One life.
 
-- **Cheating the Centrelink System:** every 25 Standard-speed turns, rank all
-  surviving, met foreign majors by treasury and consider the richest third
-  (rounded up). Select at most two with >=500 Gold and >=+10 GPT, wealthiest first,
-  breaking ties by player ID. War does not exempt donors. Each loses 5% of its
-  treasury immediately, then 20% of its current positive GPT on Trent's next five
-  turns; Trent receives exactly the same Gold. Payments round down and cannot
-  exceed available treasury. Standard/Quick/Epic/Marathon intervals are 25/17/38/75;
-  installment duration always stays five turns.
-- **Centrelink (Bank):** a separate Wealthy-only version doubles positive yields,
-  yield modifiers, Happiness, Merchant capacity and recipient trade Gold from the
-  active shared Centrelink. The original stays unchanged. Costs, maintenance,
-  prerequisites, penalties and foreign traders' target bonus are retained.
-- **3 Una Court (Palace):** retains every normal Palace effect and automatically
-  follows the Capital. Adds total +1 empire Happiness/+2 GPT per current Era level:
-  Ancient +1/+2, Medieval +3/+6, Information +8/+16. One hidden total tier replaces
-  the previous tier, preventing accumulated or reload bonuses. This is distinct
-  from the Ultimate Possessor's 3 Una Court National Wonder.
+**Trent Steinhauer** studies possession under Baby and body exchange under Captain Ginyu. He replaces the opening Warrior at **150% of its base strength**: **12 Combat Strength and 2 Movement** on the inspected Community Patch baseline. He upgrades normally between techniques but cannot be replaced, purchased, gifted or disbanded. Ordinary Warriors remain trainable.
 
-`Modding.OpenSaveData` persists the last processed turn, next audit, two donor IDs
-and remaining installments under `TRENT_WEALTHY_V1_` keys. Only Trent's PlayerDoTurn
-advances transfers; load/era/capture callbacks reconcile Palace tiers without
-levying Gold. The inspected CP-only Happiness path includes UnmoddedHappiness
-uncapped in empire totals. Full Vox Populi Happiness is not supported or claimed.
+Use the **Two Masters** panel against visible, adjacent enemy **land military units**, including Barbarians, outside cities. Each successful activation grants one permanent stack to that technique alone, capped at **12**. The activation uses the mastery held **before** earning its new stack.
 
-Run `python Tools/validate_wealthy.py` for the full-manifest CP schema dry-run,
-inheritance/regression/asset checks, and `python Tools/test_wealthy.py` for the
-actual gameplay module's 34 Lua 5.1 scenarios. Rebuild art and inheritance with
-`Tools/build_wealthy_art.py` and `Tools/build_wealthy_inheritance.py`.
-The complete algorithm, source audit, save representation, engine caveats and
-**pending** in-game checklist are in [WEALTHY_TESTING.md](WEALTHY_TESTING.md).
-The royal-blue/gold art and generated Trent scene live in `Art/WealthyTrent/`,
-with retained source/prompt in `Art/Source/WealthyTrent/`.
+| Mastery stacks | Duration | Possession damage | Swap damage | Original-body swap resistance | Target base strength limit |
+| :--- | ---: | ---: | ---: | ---: | :--- |
+| 0–2 | 1 turn | −35% | −20% | 80% | 100% of Trent |
+| 3–5 | 1 turn | −20% | 0% | 82% | 125% |
+| 6–8 | 2 turns | −10% | +15% | 85% | 150% |
+| 9–11 | 2 turns | 0% | +25% | 88% | 200% |
+| 12 | 3 turns | +10% | +40% | 90% | Unlimited |
 
-The hardening pass limits routine Palace reconciliation to Wealthy cities;
-foreign turns check only Wealthy players' alive status. Capture/gift/liberation
-callbacks clean the affected city, and initialization/load performs a full stale
-building cleanup. Unfinished installments survive a callback gap beyond the next
-audit date without being overwritten. Bonuses and normal audit timing are unchanged.
+Both techniques share a fixed cooldown: **5 / 8 / 12 / 24 turns** on Quick / Standard / Epic / Marathon. Mastery never reduces it.
 
-`python Tools/build_wealthy_inheritance.py --check` verifies exact regeneration
-against the installed CP v151 schema contract in `Tools/wealthy_schema.json`.
-`python Tools/test_wealthy_inheritance.py` tests schema failures and reproducibility.
-Both the builder and `validate_wealthy.py` accept `--baseline-db`, `--cp-root` and
-`--game-assets` for explicit, read-only inputs on another installation.
+- **Possession** leaves the original body immobile and vulnerable.
+- **Body Swap** gives the enemy the original body with damage resistance. It may move at most one tile but cannot attack, pillage, embark or capture cities.
+- The original body's death collapses the empire, even after upgrading or during enemy control. Losing a borrowed body does not.
+- **Fanfic Monuments** inherit Monuments and double their intrinsic benefits while either technique is active. On the inspected baseline, intrinsic Culture rises from **+2 to +4**; maintenance and policy/religious modifiers are not doubled.
 
-For an in-game smoke test: start a new Phone Stealer game, confirm a normal Warrior and Settler opening, inspect the civ/leader/Butler/Centrelink icons, establish a Spy in another Capital, begin Snatch Phone, and verify completion after the scaled duration. Confirm Capital yields and the victim's opinion entry, save and reload with a Phone and mission in progress, return the Phone and test the protection period, then allow a rival and Barbarians to capture Butlers. Check `Lua.log` and `Database.log` throughout.
+AI uses the same abilities, practices on Barbarians and avoids obvious danger, while native tactical AI still controls ordinary movement.
+
+**Court advice:** escort Trent, practice both techniques and upgrade between activations. Even maximum resistance is not immortality.
+
+See the **[full Princedom guide](Princedom/README.md)** for targeting, rounding, return behavior and progression; [engine notes](Princedom/CP151_NOTES.md) and [validation checklist](Princedom/TESTING.md) document the remaining limits. In-game verification is pending.
+
+</details>
+
+<a id="wealthy"></a>
+<details>
+<summary><strong>💰 Wealthy of Una Court</strong> — the man who has everything, yet still receives Centrelink</summary>
+
+### Cheating the Centrelink System
+
+A **human-only** economic civilization favoring infrastructure purchases and city-state alliances for Diplomatic Victory, with Science as a secondary route. It has a normal opening and no special combat bonus.
+
+Every **25 turns**, rank surviving, met foreign majors by treasury. From the richest third, rounded up, audit up to **two** civilizations with at least **500 Gold and +10 GPT**. Contact is required; war does not prevent an audit.
+
+1. Transfer **5% of each donor's current treasury** immediately.
+2. On Trent's next **five turns**, transfer **20% of each donor's current positive GPT**.
+3. Round payments down and cap them at available treasury. Trent receives exactly what the donor loses; a non-positive GPT pays nothing that turn, but the turn still counts.
+
+Audit intervals are **17 / 25 / 38 / 75 turns** on Quick / Standard / Epic / Marathon. Installments always last **five turns**.
+
+### Unique content
+
+| Content | Benefits |
+| :--- | :--- |
+| **Enhanced Centrelink** · Bank | A Wealthy-only version doubles the shared Centrelink's positive yields, yield modifiers, local Happiness (**+2 instead of +1**), Merchant capacity and recipient trade Gold. Costs, maintenance, prerequisites, penalties and foreign traders' target bonus are retained. |
+| **3 Una Court** · Palace | Retains normal Palace effects and follows the Capital. Adds total **+1 empire Happiness and +2 GPT per current era level**: Ancient +1/+2, Medieval +3/+6, Information +8/+16. Tiers replace each other rather than accumulating. |
+
+This **3 Una Court is a Palace replacement**; Ultimate Possession's building of the same name is a **National Wonder**. Other civilizations keep their ordinary Centrelink.
+
+**Court advice:** explore early to meet donors, research Banking and invest the proceeds in infrastructure and city-state alliances.
+
+See [Wealthy testing and implementation notes](WEALTHY_TESTING.md) for the complete algorithm, persistence, schema contract and pending in-game checklist. Full Vox Populi Happiness is unsupported.
+
+</details>
+
+## Compatibility
+
+| Area | Current support |
+| :--- | :--- |
+| **Ruleset** | Brave New World + Community Patch; v151 is the documented baseline. Soft Kitty also has database validation against Community Patch 5.4.2. |
+| **Full Vox Populi** | Not fully verified. Wealthy's Happiness implementation specifically targets CP-only behavior. |
+| **Game modes** | Windows single player. Multiplayer, hotseat and Mac are disabled in the manifest. |
+| **Saves** | Start a new game when adding these civilizations. Scripted cooldowns and civilization state persist through saves; engine playtesting remains pending where noted. |
+| **Other mods** | Specialized units may store private state outside a unit or key it by UnitID; generic ownership transfer cannot preserve all such external state. |
+| **Release status** | Alpha. Automated checks cover database, assets and mocked Lua behavior; in-game layout, pathfinding and interactions with other mods still need playtesting. |
+
+### Interface and ownership transfers
+
+The shared right-side panel switches between Freehold Possession, Dominion Body Swap and Ultimate Mass Possession. Ultimate adds multi-selection, capacity/cooldown previews, active-unit tracking and unit/capital finders. Soft Kitty, Phone Stealer and Princedom have their own civilization-specific panels. Panels hide in city view and do not replace core TopPanel, UnitPanel, CityView, Community Patch or EUI contexts.
+
+The original three possession systems temporarily normalize unit ownership while saving, then restore active effects after saving or gameplay initialization on load. Dominion restores remaining duration, cooldown and unit state, including movement, damage, experience, level, name, promotions and attached ScriptData. Princedom has its own persistent ownership system, described in its [guide](Princedom/README.md).
+
+The collection uses base-game unit models with custom emblems and leader art. The first four civilizations share Una Court's location map; later variants use dedicated or framed court maps.
+
+## Development
+
+### Repository map
+
+| Path | Contents |
+| :--- | :--- |
+| [`Art/`](Art/) | Icon atlases, leader scenes, previews and retained source artwork/prompts |
+| [`SQL/`](SQL/) | Seven civilizations' definitions, inheritance, scaling and English text |
+| [`Lua/`](Lua/) | Possession, companion auras, songs, exile, Phone missions, audits, AI and save state |
+| [`UI/`](UI/) | Shared possession panel and isolated song / Phone Stash panels |
+| [`Princedom/`](Princedom/) | Princedom's isolated SQL, Lua, UI, art, documentation and engine checklist |
+| [`Tools/`](Tools/) | Packaging, reproducible art/inheritance builders and validators |
+| [`CHANGELOG.md`](CHANGELOG.md) · [`PATCHNOTES.md`](PATCHNOTES.md) | Detailed change history and release notes |
+
+<details>
+<summary><strong>🛠 Validation commands and playtesting</strong></summary>
+
+Run commands from the repository root. Packaging needs only Python 3.9+; art tools use **Pillow**, and gameplay tests use **Lupa / Lua 5.1**, with local dependencies in `.modbuddy/test-deps`. Phone Stealer's documented test setup uses Python 3.12. Database validators need the appropriate installed Community Patch baseline or debug database; inspect each tool's arguments before running on another installation.
+
+| Area | Database / asset validation | Gameplay tests |
+| :--- | :--- | :--- |
+| Shared possession safety | `python Tools/validate_mod.py` | `python Tools/test_possession_safety.py` |
+| Soft Kitty | `python Tools/validate_soft_kitty.py` | `python Tools/test_soft_kitty.py` |
+| Library Exile | `python Tools/validate_library_exile.py` | `python Tools/test_library_exile.py` |
+| Phone Stealer | `python Tools/validate_phone_stealer.py` | `python Tools/test_phone_stealer.py` |
+| Princedom | `python Tools/validate_princedom.py` | `python Tools/test_princedom.py` |
+| Wealthy | `python Tools/validate_wealthy.py` | `python Tools/test_wealthy.py` |
+
+**Reproducible assets:** `Tools/build_soft_kitty_art.py`, `Tools/build_library_exile_art.py`, `Tools/build_phone_stealer_art.py`, `Tools/build_princedom_art.py` and `Tools/build_wealthy_art.py` rebuild their respective artwork. Source images and prompts are retained in `Art/Source/`; Princedom's guide documents its reused artwork and generated glyphs. Corresponding inheritance builders are also in `Tools/`.
+
+**Wealthy inheritance:** `python Tools/build_wealthy_inheritance.py --check` checks exact regeneration against the CP v151 contract in `Tools/wealthy_schema.json`. `python Tools/test_wealthy_inheritance.py` checks schema failures and reproducibility. The builder and `validate_wealthy.py` accept `--baseline-db`, `--cp-root` and `--game-assets` for explicit read-only inputs.
+
+**Wealthy persistence:** `Modding.OpenSaveData` stores the last processed turn, next audit, two donor IDs and remaining installments under `TRENT_WEALTHY_V1_` keys. Only Trent's `PlayerDoTurn` advances transfers. Initialization/load cleans stale buildings; era/capture callbacks reconcile Palace tiers without levying Gold. Routine reconciliation is limited to Wealthy cities, with capture/gift/liberation cleaning the affected city. Unfinished installments survive a callback gap beyond the next audit date. See [WEALTHY_TESTING.md](WEALTHY_TESTING.md) for source evidence and CP-only Happiness caveats.
+
+### In-game smoke tests
+
+For every civilization, begin a **new game**, check selection/Civilopedia icons and opening units, exercise its ability, save/reload through active effects and cooldowns, and inspect **Lua.log** and **Database.log**.
+
+- **Soft Kitty:** meet a major, preview and confirm a song, test backlash/recovery, use an adjacent Hopeless Romantic, create a Great Work and verify Comfort Room bonuses. Open/close city view to check panel isolation.
+- **Library Exile:** build a School Library and station a Reader inside. Confirm a rival both denouncing and at war counts once; test three hostile majors and reconciliation. Let the first friendship expire, befriend someone else, then renew the original Visitor. Test Great Work and Political Treatise actions.
+- **Phone Stealer:** establish a Spy in a foreign Capital, complete a scaled mission, verify Capital yields and the victim's opinion, then save/reload with a held Phone and an active mission. Return a Phone, check protection, and test Butler capture by both rivals and Barbarians.
+- **Princedom:** follow the [engine checklist](Princedom/TESTING.md) and [CP v151 limitations](Princedom/CP151_NOTES.md), including identity across upgrades, both masteries and original-body death.
+- **Wealthy:** follow the [audit, Palace and save/load checklist](WEALTHY_TESTING.md). Automated scenarios do not replace the pending engine checks.
+
+Refresh the registered manifest after changing game files with `python Tools/package_mod.py`; use `--package` to also produce an installable folder.
+
+</details>
+
+---
+
+<p align="center"><em>Long live Una Court. Keep an eye on your phone.</em></p>
